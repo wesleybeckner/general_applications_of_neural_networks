@@ -1,6 +1,6 @@
 <a href="https://colab.research.google.com/github/wesleybeckner/general_applications_of_neural_networks/blob/main/notebooks/S2_Feed_Forward_Neural_Networks.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
-# General Applications of Neural Networks, Session 2: FFNNs with Keras/TensorFlow
+# General Applications of Neural Networks <br> Session 2: Feed Forward Neural Networks
 
 **Instructor**: Wesley Beckner
 
