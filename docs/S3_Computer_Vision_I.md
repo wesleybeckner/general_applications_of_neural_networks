@@ -1,15 +1,10 @@
-<a href="https://colab.research.google.com/github/wesleybeckner/technology_fundamentals/blob/main/C4%20Machine%20Learning%20II/Tech_Fun_C4_S1_Computer_Vision_Part_1.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+<a href="https://colab.research.google.com/github/wesleybeckner/general_applications_of_neural_networks/blob/main/notebooks/S3_Computer_Vision_I.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
-# Technology Fundamentals Course 4, Session 1: Computer Vision Part 1
+# General Applications of Neural Networks <br> Session 3: Computer Vision Part 1
 
 **Instructor**: Wesley Beckner
 
 **Contact**: wesleybeckner@gmail.com
-
-**Teaching Assitants**: Varsha Bang, Harsha Vardhan
-
-**Contact**: vbang@uw.edu, harshav@uw.edu
-<br>
 
 ---
 
@@ -34,25 +29,6 @@ _images in this notebook borrowed from [Ryan Holbrook](https://mathformachines.c
 <br>
 
 <a name='top'></a>
-
-# Contents
-
-* 3.0 [Preparing Environment and Importing Data](#x.0)
-  * 3.0.1 [Import Packages](#x.0.1)
-  * 3.0.2 [Load Dataset + Segway Into Images](#x.0.2)
-* 3.1 [The Classifier Structure](#x.1)
-* 3.2 [Convolutions, ReLU and Maximum Pooling](#x.2)
-  * 3.2.1 [The Convolution](#x.2.1)
-  * 3.2.2 [Activations](#x.2.2)
-  * 3.2.3 [ReLU](#x.2.3)
-  * 3.2.4 [Exercise: Experiment with Kernels](#x.2.4)
-  * 3.2.5 [Condense with Maximum Pooling](#x.2.5)
-* 3.3 [Enrichment: Practice with Global Average Pooling](#x.3)
-  
-
-<br>
-
----
 
 <a name='x.0'></a>
 
@@ -288,7 +264,7 @@ plt.axis('off')
     
 
 
-#### 3.0.2.1 Exercise: Loading Images
+#### 🏋️ Exercise 1: Loading Images
 
 Find 2 different images on the internet (any 2 of: jpg, png, and svg format). Load them into python as
 
@@ -342,15 +318,16 @@ Convolutional neural networks (CNNs, Convnets) take the gold for machine vision.
 A CNN consists of a **_base_** and a **_head_**. 
 
 <p align=center>
-<img src="https://i.imgur.com/U0n5xjU.png" width=600></img>
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/U0n5xjU.png" width=600></img>
+</p>
 
 The base is used to extract the relevant features from the image. It consits mainly of convolutional layers. The head is used to map those features to the classification task and mostly consits of dense layers. 
 
 What is a visual feature? It is a relevant abstraction from the image data, often edges and shapes, that then form more abstract objects like eyes, ears or wheels and windows:
 
 <p align=center>
-<img src="https://i.imgur.com/UUAafkn.png" width=600></img>
-
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/UUAafkn.png" width=600></img>
+</p>
 <small> note: this is an oversimplification but it gives the general idea. </small>
 
 A classification NN will always have this phenomenon where, early in the network layers are learning features, and later in the network layers are appropriating those features to different classes. In a CNN this phenomenon is accentuated by the base-head dynamic. Given that the feature generation task can be very similar across images, often we use the base of a **_pretrained_** model. This strategy is called **_transfer learning_** and is extraordinarily powerful when dealing with small datasets!
@@ -358,8 +335,8 @@ A classification NN will always have this phenomenon where, early in the network
 > "When doing transfer learning, it's generally not a good idea to retrain the entire base -- at least not without some care. The reason is that the random weights in the head will initially create large gradient updates, which propogate back into the base layers and destroy much of the pretraining. Using techniques known as fine tuning it's possible to further train the base on new data, but this requires some care to do well." -kaggle gurus
 
 <p align=center>
-<img src="https://imgur.com/E49fsmV.png" width=600></img>
-
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/E49fsmV.png" width=600></img>
+</p>
 
 <a name='x.2'></a>
 
@@ -376,8 +353,8 @@ We'll now discuss the three heavy-weights for convolutional networks: convolutio
 These three steps are demonstrated in the following image:
 
 <p align=center>
-<img src="https://i.imgur.com/IYO9lqp.png" width=600></img>
-
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/IYO9lqp.jpeg" width=600></img>
+</p>
 
 
 
@@ -405,12 +382,14 @@ Let's talk about the hyperparameters in `Conv2D`.
 The weights a CNN learns are primarily in its **_kernels_**. The kernels are a collection of arrays that are passed over the image to produce weighted sums. An example of a 3x3 kernel:
 
 <p align=center>
-<img src="https://i.imgur.com/uJfD9r9.png" width=200></img>
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/uJfD9r9.png" width=200></img>
+</p>
 
 As the kernel is swept over the image, it acts to accentuate certain features. For instance, some kernels will bring out vertical edges, some horizontal edges, others will accentuate gradients in a general sense. 
 
 <p align=center>
-<img src="https://i.imgur.com/j3lk26U.png" width=300></img>
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/j3lk26U.png" width=300></img>
+</p>
 
 As we train our CNN, it learns what kernels are best for learning relevant features for the classification task. We set the number of kernels with the `filters` hyperparameter and the shape with `kernel_size`. The shape will usually be an odd number so that the kernel is oriented around one center pixel, but this is not a requirement.  
 
@@ -424,7 +403,8 @@ As we train our CNN, it learns what kernels are best for learning relevant featu
 The **_activations_** also called **_feature maps_** are the output from the kernels. We can see an example:
 
 <p align=center>
-<img src="https://i.imgur.com/JxBwchH.png" width=800></img>
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/JxBwchH.png" width=800></img>
+</p>
 
 Notice that the left and middle kernels are augmenting horizontal boundaries.
 
@@ -437,13 +417,14 @@ Notice that the left and middle kernels are augmenting horizontal boundaries.
 The ReLU should be familiar by now. It appears here in CNNs to further isolate the presense of features in the feature maps. Remember that it sets anything below 0 to simply 0. In a way it is saying, anything that is unimportant, is equally unimportant. Let's see it in action:
 
 <p align=center>
-<img src="https://i.imgur.com/dKtwzPY.png" width=800></img>
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/dKtwzPY.png" width=800></img>
+</p>
 
 And, just as with dense layers, the ReLU allows us to create non-linear relationships within our network, something that we definitely want. 
 
 <a name='x.2.4'></a>
 
-### 3.2.4 Exercise: Experiment with Kernels
+#### 🏋️ Exercise 2: Experiment with Kernels
 
 [back to top](#top)
 
@@ -605,7 +586,7 @@ apply_the_KERN(kernel)
 
 <a name='x.2.5'></a>
 
-### 3.2.5 Condense with Maximum Pooling
+### 3.2.4 Condense with Maximum Pooling
 
 [back to top](#top)
 
@@ -616,8 +597,8 @@ In this last step that we'll cover, we're going to condense the image in a way t
 A `MaxPool2D` layer isn't much different from a `Conv2D` layer other than that, instead of taking a sum, the kernel (not really a kernel) just returns the maximum value. `kernel_size` is replaced with `pool_size` and there are no trainable weights (hence not a kernel).
 
 <p align=center>
-<img src="https://imgur.com/hK5U2cd.png" width=400></img>
-
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/hK5U2cd.png" width=400></img>
+</p>
 Features are indeed intensified by the max pooling, but another way to think of this is that carrying all those empty "black" pixels through the network is computationally expensive without adding much information. Max pooling is a quick and dirty way of consolidating the network and retaining only the most salient information.
 
 

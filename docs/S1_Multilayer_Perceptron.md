@@ -1,6 +1,6 @@
 <a href="https://colab.research.google.com/github/wesleybeckner/general_applications_of_neural_networks/blob/main/notebooks/S1_Multilayer_Perceptron.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
-# General Applications of Neural Networks, Session 1: The Multilayer Perceptron
+# General Applications of Neural Networks <br> Session 1: The Multilayer Perceptron
 
 **Instructor**: Wesley Beckner
 
