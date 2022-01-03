@@ -152,7 +152,7 @@ preprocessor
 
 <a name='x.1'></a>
 
-## 1.2 Neural Network Building Blocks
+## 1.1 Neural Network Building Blocks
 
 [back to top](#top)
 
@@ -162,22 +162,22 @@ preprocessor
 
 [back to top](#top)
 
-The simplest unit of a neural network is the perceptron. Given an input vector $x$ and an output vector $y$, we can illustrate this like so:
+The simplest unit of a neural network is the perceptron. Given an input vector \\(x\\) and an output vector \\(y\\), we can illustrate this like so:
 
 <p align=center>
-<img src="https://i.imgur.com/mfOlDR6.png"></img>
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/mfOlDR6.png"></img>
 </p>
 
-where $w$ is a weight applied to $x$ and $b$ is an unweighted term that we call the <i>bias</i>. We include a bias so that the perceptron is not entirely dependent on the input data. A neural network _learns_ by updating $w$ and $b$ so that it can accurately model $x$ to $y$. When we write out the perceptron mathematically we get the following:
+where \\(w\\) is a weight applied to \\(x\\) and \\(b\\) is an unweighted term that we call the <i>bias</i>. We include a bias so that the perceptron is not entirely dependent on the input data. A neural network _learns_ by updating \\(w\\) and \\(b\\) so that it can accurately model \\(x\\) to \\(y\\). When we write out the perceptron mathematically we get the following:
 
 $$ y = xw+b $$
 
 which should look familiar! This is our equation for a linear function. In fact, we will see that a neural network is essentially many instances of linear regression along side, and being fed into, one another. 
 
-Often, we will have not an input feature vector $x$ but an input feature matrix, $X$. We can update our schematic for a perceptron to account for this:
+Often, we will have not an input feature vector \\(x\\) but an input feature matrix, \\(X\\). We can update our schematic for a perceptron to account for this:
 
 <p align=center>
-<img src="https://i.imgur.com/vyXSnlZ.png"></img>
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/vyXSnlZ.png"></img>
 </p>
 
 We can write the mathematical formula for this neuron as follows:
@@ -202,7 +202,7 @@ In order to build this single perceptron with keras, I had to use some additiona
 
 After we introduce the other aspects of the neural network architecture, we will train a single perceptron model and compare it with a linear model, we will see that they are functionally no different.
 
-### 1.1.2 Exercise: Single Perceptron
+### 🏋️ Exercise 1: Single Perceptron
 
 define a single perceptron that could be used to predict wine density from acidity. 
 
@@ -213,7 +213,7 @@ Use the untrained model to predict y and plot this against true y
 
 
 ```python
-# Code cell for exercise 1.2.2
+# Code cell for exercise 1
 
 # DECLARE MODEL
 model = keras.Sequential([
@@ -277,8 +277,8 @@ plt.plot(y_pred, wine['density'], ls='', marker='o', alpha=0.3)
 Now that we have the idea of the most basic building block of a neural network, we will start to discuss the larger architecture. The reason we focused on the lowest building block, is that neural networks are _modular_. They are made up of instances of these perceptrons or neurons. neurons in parallel make up a _layer_
 
 <p align=center>
-<img src="https://i.imgur.com/2MA4iMV.png"></img>
-<p>
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/2MA4iMV.png"></img>
+</p>
 
 These layers feed into one another. When each node of a preceding layer is connected to every node of a following layer, we say they are _fully connected_ and the receiving layer is _a dense layer_. In a moment we will talk about input, output and hidden layers, for neural networks with three or more layers.
 
@@ -295,17 +295,18 @@ $$ max(f(x), 0) $$
 and the resulting node can be schematically drawn like this:
 
 <p align=center>
-<img src="https://i.imgur.com/eFry7Yu.png"></img>
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/eFry7Yu.png"></img>
 </p>
 
 with the inset of the summation node indicating that at a minimum the resultant y value is 0.
 
-#### 1.2.2.1 Exercise: The Rectifier Function
+#### 🏋️ Exercise 2: The Rectifier Function
 
-Write a function called `my_perceptron` that takes x, a length 2 array, as an input. Have your function return the maximum of $(0, w*x + b)$ where w is a length 2 weight vector.
+Write a function called `my_perceptron` that takes x, a length 2 array, as an input. Have your function return the maximum of \\((0, w*x + b)\\) where w is a length 2 weight vector.
 
 
 ```python
+# Code cell for exercise 2
 def my_perceptron(x):
   """
   a simple 2 input feature perceptron with predefined weights, intercept, and 
@@ -359,26 +360,26 @@ print("test passing")
 When we stack many layers together, we create what are traditionally regarded as neural networks. the first and last layers are called the _input_ and _output_ layers, while the inbetween layers are referred to as _hidden_ layers, since their outputs are not directly seen. Tradditionally, a neural network with three or more hidden layers is referred to as a _deep_ neural network.
 
 <p align=center>
-<img src="https://i.imgur.com/Y5iwFQZ.png"></img
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/Y5iwFQZ.png"></img>
 </p>
 
 Notice that in this schematic, the last node does not have an activation function. This is typical of a regression task. In a classification task, we might require an activation function here.
 
 <a name='x.2.2'></a>
 
-### 1.2.2 Building Sequential Neural Networks
+### 1.2.4 Building Sequential Neural Networks
 
 [back to top](#top)
 
 Now that we have the essential components of a neural network architecture, we can enter into the domain of overall naming conventions for architecure types. The classic neural network architecture is a _feed forward_ neural network, where every preceding layer feeds into the next layer. We will practice building that with keras.
 
-### 1.2.5 Exercise: Building Sequential Layers
+### 🏋️ Exercise 3: Building Sequential Layers
 
 In the cell bellow, use keras to build a 3-layer network with `activation='relu'` and 512 units. Create the output layer so that it can predict 1 continuous value.
 
 
 ```python
-# Cell for exercise 1.1.5
+# Code cell for exercise 3
 
 # DECLARE THE MODEL
 
@@ -393,7 +394,7 @@ model = keras.Sequential([
 ])
 ```
 
-### 1.2.6 Exercise: Other Activation Functions
+### 🏋️ Exercise 4: Other Activation Functions
 
 There are other activation functions we can use after the summation in a neural node. Use the code below to plot and inspect them!
 
@@ -401,6 +402,8 @@ Pick one and do a quick google search on what that activation function's best us
 
 
 ```python
+# Code cell for exercise 4
+
 import tensorflow as tf
 
 # YOUR CODE HERE: Change 'relu' to 'elu', 'selu', 'swish'... or something else
@@ -471,7 +474,7 @@ In order to update the neural network weights to improve the loss function, we r
 The three step process is repeated until a stop criteria is reached, the simplest being the loss stops improving above some threshold or a desired loss is achieved. 
 
 <p align=center>
-<img src="https://i.imgur.com/rFI1tIk.gif"></img>
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/rFI1tIk.gif"></img>
 </p>
 
 In the above animation, the black line represents the output of the model, the red dots make up a _minibatch_ or simply a _batch_ while the opaque red dots represent the whole training dataset. Exposing the model to an entire round of the training data is referred to as an _epoch_. The training loss improves with additional rounds of trianing (middle panel) and the weights are adjusted to update the model (right panel).
@@ -508,13 +511,13 @@ model.compile(
 )
 ```
 
-### 1.3.5 Exercise: Train your first Neural Networks
+### 🏋️ Exercise 5.1: Train your first Neural Networks
 
 [back to top](#top)
 
 We're going to train our first neural network.
 
-Take the model you created in exercise 1.2.5 and paste it in the cell below. Make sure that the `input_shape` of the first layer matches the number of features in `X_train_std`
+Take the model you created in exercise 3 and paste it in the cell below. Make sure that the `input_shape` of the first layer matches the number of features in `X_train_std`
 
 
 ```python
@@ -530,7 +533,7 @@ X_train_std.shape[1]
 
 
 ```python
-# Cell for exercise 1.1.5
+# Code cell for exercise 5
 
 # DECLARE THE MODEL
 
@@ -702,7 +705,7 @@ ax.set_ylim(0,.05)
     
 
 
-#### 1.3.5.1 Improve loss by varying nodes and hidden layers
+### 🏋️ Exercise 5.2: Improve loss by varying nodes and hidden layers
 
 Take your former model as a starting point and now either add nodes or layers to see if the model improves
 
@@ -767,7 +770,7 @@ plt.plot(np.exp(y_test_std), np.exp(y_pred), ls='', marker='o')
     
 
 
-#### 1.3.5.2 Learning Curves
+### 🏋️ Exercise 5.3: Learning Curves
 
 Using 4 hidden layers now create 4 models that run for 30 epochs each:
 
@@ -778,11 +781,6 @@ Using 4 hidden layers now create 4 models that run for 30 epochs each:
 
 ```python
 # Code Cell for Exercise 1.3.5
-```
-
-
-```python
-
 ```
 
 

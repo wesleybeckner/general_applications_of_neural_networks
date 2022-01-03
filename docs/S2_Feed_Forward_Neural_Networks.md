@@ -1,16 +1,10 @@
-<a href="https://colab.research.google.com/github/wesleybeckner/technology_fundamentals/blob/main/C3%20Machine%20Learning%20I/Tech_Fun_C3_S4_FFNNs_with_Keras_and_TensorFlow.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+<a href="https://colab.research.google.com/github/wesleybeckner/general_applications_of_neural_networks/blob/main/notebooks/S2_Feed_Forward_Neural_Networks.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
-# Technology Fundamentals Course 3, Session 4: FFNNs with Keras/TensorFlow
+# General Applications of Neural Networks, Session 2: FFNNs with Keras/TensorFlow
 
 **Instructor**: Wesley Beckner
 
 **Contact**: wesleybeckner@gmail.com
-
-**Teaching Assitants**: Varsha Bang, Harsha Vardhan
-
-**Contact**: vbang@uw.edu, harshav@uw.edu
-
-<br>
 
 ---
 
@@ -24,34 +18,7 @@ _images in this notebook borrowed from [Ryan Holbrook](https://mathformachines.c
 
 ---
 
-<br>
-
 <a name='top'></a>
-
-# Contents
-
-* 2.0 [Preparing Environment and Importing Data](#x.0)
-  * 2.0.1 [Import Packages](#x.0.1)
-  * 2.0.2 [Load Dataset](#x.0.2)
-* 2.1 [Feature Engineering](#x.1)
-* 2.2 [Building the Model](#x.2)
-  * 2.2.1 [Layers, Nodes, and Activation Functions](#x.2.1)
-* 2.3 [Compiling the Model](#x.3)
-  * 2.3.1 [Loss, Optimizer, and Metrics](#x.3.1)
-* 2.4 [Fitting the Model](#x.4)
-  * 2.4.1 [Epoch, Batch](#x.4.1)
-* 2.5 [Evaluating the Model](#x.5)
-* 2.6 [Convolutional NNs](#x.6)
-  * 2.6.1 [Convolutional Layers](#x.6.1)
-  * 2.6.2 [Pooling Layers](#x.6.2)
-  * 2.6.3 [Flattening](#x.6.3)
-  * 2.6.4 [Dropout](#x.6.4)
-  
-  
-
-<br>
-
----
 
 <a name='x.0'></a>
 
@@ -186,11 +153,11 @@ Recall learning curves from last week, where we plot model score (accuracy/mse/r
 
 <p align=center>
 <img src="https://jakevdp.github.io/PythonDataScienceHandbook/figures/05.03-validation-curve.png" width=500px></img>
-
-
-<small>[img src](https://jakevdp.github.io/PythonDataScienceHandbook/05.03-hyperparameters-and-model-validation.html)
-
 </p>
+
+<small>[img src](https://jakevdp.github.io/PythonDataScienceHandbook/05.03-hyperparameters-and-model-validation.html)</small>
+
+
 
 We have a similar situation with neural networks, accept here, the model complexity is defined by both the number of epochs, and the capacity of the model. 
 
@@ -238,7 +205,7 @@ model.fit(
 )
 ```
 
-### 2.1.3 Exercise: Try Early Stopping
+### 🏋️ Exercise 1: Try Early Stopping
 
 Take your best model from the last exercise in session 1 and apply early stopping
 
@@ -451,7 +418,7 @@ Dropout is the Neural Network response to the wide success of ensemble learning.
 Put another way, when a network does not contain dropout layers, and has a capacity that exceeds that which would be suited for the true, underlying complexity level of the data, it can begin to fit to noise. This ability to fit to noise is based on very specific relationships between neurons, which fire uniquely given the particular training example. Adding dropout _breaks_ these specific neural connections, and so the neural network as a whole is forced to find weights that apply generally, as there is no guarantee they will be _turned on_ when their specific training example they would usually overfit for comes around again. 
 
 <p align=center>
-<img src="https://i.imgur.com/a86utxY.gif"></img>
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/a86utxY.gif"></img>
 </p>
 <small> Network with 50% dropout </small>
 
@@ -889,7 +856,7 @@ print(model.summary())
     None
 
 
-### 2.2.3 Exercise: Try Batch Normalization and Dropout
+### 🏋️ Exercise 2: Try Batch Normalization and Dropout
 
 Create 3 models and train for 100 epochs with early stopping:
 
@@ -1109,8 +1076,8 @@ Formerly, we've encountered accuracy in classification tasks. It is the ratio of
 The problem with using accuracy as a loss function, is that it does not change smoothly (there are jumps in the numerator since it is just a count in correct predictions), which the SGD algorithm requires in order to work properly. We need another metric.
 
 <p align=center>
-<img src="https://i.imgur.com/DwVV9bR.png"></img>
-
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/DwVV9bR.png"></img>
+</p>
 <small> the further a model is from predicting the correct class, the higher the loss. </small>
 
 Instead we use **_cross-entropy_**, we won't go into detail here, other than that it is a distance measure between two probabilities (the probability of predicting the class or the incorrect class). We want the probability for predicting the correct class to be 1 (100%) and cross-entropy will measure the distance the current probability of the model is from 1. 
@@ -1132,8 +1099,8 @@ model.compile(
 Finally, we need to introduce a special activation function that will map our last layer outputs from 0 to 1, to feed into our loss function. The traditional function we use for this is the **_sigmoid function_**. 
 
 <p align=center>
-<img src="https://i.imgur.com/FYbRvJo.png"></img>
-
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/FYbRvJo.png"></img>
+</p>
 <small>The sigmoid function maps values on the interval [0, 1]</small>
 
 To get the final class prediction, we need a threshold probability, typically 0.5 where we will round up to the class label. Keras will set to 0.5 by default.
@@ -1646,13 +1613,13 @@ sns.heatmap(confusion_matrix(y_test_std,predictions),annot=True)
     
 
 
-## 2.3.4 Multi-Class Classification
+## 2.4 Multi-Class Classification
 
 [back to top](#top)
 
 It is good practice, and often necessary to one-hot encode the target values for a multi-class problem. We will need to do that with our wine data here.
 
-#### 2.3.4.1 Exercise: Multi-Class Classification
+#### 🏋️ Exercise 3: Multi-Class Classification
 
 1) Define Model
 
