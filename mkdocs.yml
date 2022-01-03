@@ -1,0 +1,33 @@
+site_name: General Applications of Neural Networks
+theme:
+  name: "material"
+  palette:
+    primary: "blue"
+    accent: "indigo"
+nav:
+  - About: about.md
+  - Sessions:
+      - The Multilayer Perceptron: S1_Multilayer_Perceptron.md
+      - Feed Forward Neural Networks: S2_Feed_Forward_Neural_Networks.md
+      - Computer Vision I: S3_Computer_Vision_I.md
+      - Computer Vision II: S4_Computer_Vision_II.md
+      - Time Series Analysis: S5_Time_Series_Analysis.md
+  - Exercises:
+      - Neural Network Linearity: exercises/E1_Neural_Network_Linearity.md
+      - Testing and Serving Code: exercises/E4_Testing_and_Serving_Code.md
+markdown_extensions:
+  - tables
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: true
+extra_javascript: 
+    - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+markdown_extensions:
+    - mdx_math
+extra:
+  analytics:
+    provider: google
+    property: "UA-114664473-1"
+extra_css: [extra.css]
