@@ -1,22 +1,16 @@
-<a href="https://colab.research.google.com/github/wesleybeckner/technology_fundamentals/blob/main/C3%20Machine%20Learning%20I/Tech_Fun_C3_S3_The_Multilayer_Perceptron.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+<a href="https://colab.research.google.com/github/wesleybeckner/general_applications_of_neural_networks/blob/main/notebooks/S1_Multilayer_Perceptron.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
-# Technology Fundamentals Course 3, Session 3: The Multilayer Perceptron
+# General Applications of Neural Networks, Session 1: The Multilayer Perceptron
 
 **Instructor**: Wesley Beckner
 
 **Contact**: wesleybeckner@gmail.com
 
-**Teaching Assitants**: Varsha Bang, Harsha Vardhan
-
-**Contact**: vbang@uw.edu, harshav@uw.edu
-
-<br>
-
 ---
 
 <br>
 
-In this session we will introduce NEURAL NETWORKS! We'll cover the over arching concepts used to talk about network architecture as well as their building blocks.
+In this session we will introduce Neural Networks! We'll cover the over arching concepts used to talk about network architecture as well as their building blocks.
 
 _images in this notebook borrowed from [Ryan Holbrook](https://mathformachines.com/)_
 
@@ -27,30 +21,6 @@ _images in this notebook borrowed from [Ryan Holbrook](https://mathformachines.c
 <br>
 
 <a name='top'></a>
-
-# Contents
-
-* 1.0 [Preparing Environment and Importing Data](#x.0)
-  * 1.0.1 [Import Packages](#x.0.1)
-  * 1.0.2 [Load Dataset](#x.0.2)
-* 1.1 [Neural Network Architectures](#x.1)
-  * 1.1.1 [Input, Output, and Hidden Layers](#x.1.1)
-  * 1.1.2 [Feed Forward](#x.1.2)
-  * 1.1.3 [Recurrent](#x.1.3)
-  * 1.1.4 [Convolutional](#x.1.4)
-* 1.2 [Neural Network Building Blocks](#x.2)
-  * 1.2.1 [Assigning Blame](#x.2.1)
-  * 1.2.2 [Chain Rule](#x.2.2)
-  * 1.2.3 [Back-Propagation](#x.2.3)
-  * 1.2.4 [Maximum Likelihood Estimation](#x.2.4)
-    * 1.2.4.1 [Linear Regression as Maximum Likelihood](#x.2.4.1)
-  * 1.2.5 [Activation Functions](#x.2.5)
-* 1.3 [Enrichment: Program Your Own Neural Network](#x.3)
-  
-
-<br>
-
----
 
 <a name='x.0'></a>
 

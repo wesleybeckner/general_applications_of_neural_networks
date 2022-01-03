@@ -2,7 +2,7 @@
 
 [visit the site](https://wesleybeckner.github.io/general_applications_of_neural_networks/)
 
-This course teaches you to deploy the workhorse of modern machine learning frameworks: neural networks. We start with the simplest building block, the perceptron, and demonstrate how these are organized into feed forward neural networks. We then explore predictive capabilities in computer vision, natural language processing, forecasting, and time series analysis. Different architectures are employed for specific application areas.
+This course teaches you to deploy the workhorse of modern machine learning frameworks: neural networks. We start with the simplest building block, the perceptron, and demonstrate how these are organized into feed forward neural networks. We then explore predictive capabilities in computer vision, natural language processing, and time series analysis. Different architectures are employed for specific application areas.
 
 The breakdown for this course is as follows:
 
