@@ -1,10 +1,10 @@
-# DSE Course 3 Session 6: Recurrent Neural Networks and Time Series Analysis
+<a href="https://colab.research.google.com/github/wesleybeckner/general_applications_of_neural_networks/blob/main/notebooks/S5_Time_Series_Analysis.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+
+# General Applications of Neural Networks <br> Session 5: Recurrent Neural Networks and Time Series Analysis
 
 **Instructor**: Wesley Beckner
 
 **Contact**: wesleybeckner@gmail.com
-
-<br>
 
 ---
 
@@ -20,37 +20,15 @@ In this session, we'll be exploring NN as they apply to sequenced data, specific
 
 <a name='top'></a>
 
-# Contents
-
-* 6.0 [Preparing Environment and Importing Data](#x.0)
-  * 6.0.1 [Import Packages](#x.0.1)
-  * 6.0.2 [Load Dataset](#x.0.2)
-* 6.1 [Why We Think in Sequences](#x.1)
-* 6.2 [Recurrent Neural Networks](#x.2)
-  * 6.2.1 [Long Short-Term Memory Neural Networks](#x.2.1)
-* 6.3 [Exploratory Data Analysis with Plotly/Pandas](#x.3)
-* 6.4 [Modeling](#x.4)
-  * 6.4.1 [Sweeping (Rolling) Window](#x.4.1)
-  * 6.4.2 [FFNN](#x.4.2)
-  * 6.4.3 [LSTM NN](#x.4.3)
-* 6.5 [Model Extensibility](#x.5)
-  * 6.5.1 [Exercise: Apply Model to Other Orders](#x.5.1)
-  * 6.5.2 [Exercise-Discussion: How Would You Create a General Forecast Model?](#x.5.2)
-  
-
-<br>
-
----
-
 <a name='x.0'></a>
 
-## 6.0 Preparing Environment and Importing Data
+## 5.0 Preparing Environment and Importing Data
 
 [back to top](#top)
 
 <a name='x.0.1'></a>
 
-### 6.0.1 Import Packages
+### 5.0.1 Import Packages
 
 [back to top](#top)
 
@@ -163,7 +141,7 @@ def train_test_process(data, train_test_val_ratios = [0.6, 0.8], window_size=3):
 
 <a name='x.0.2'></a>
 
-### 6.0.2 Load Dataset
+### 5.0.2 Load Dataset
 
 [back to top](#top)
 
@@ -347,7 +325,7 @@ orders.melt(id_vars=cat_cols, var_name='date', value_name='kg')
 
 <a name='x.1'></a>
 
-## 6.1 Why We Think in Sequences
+## 5.1 Why We Think in Sequences
 
 [back to top](#top)
 
@@ -361,7 +339,7 @@ State of the art handling of sequences has occurred in a class of networks calle
 
 <a name='x.2'></a>
 
-## 6.2 Recurrent Neural Networks
+## 5.2 Recurrent Neural Networks
 
 [back to top](#top)
 
@@ -373,11 +351,12 @@ Another problem is introduced when training recurrent neural networks, in that t
 
 <p align=center>
 <img src="https://miro.medium.com/max/4136/1*SKGAqkVVzT6co-sZ29ze-g.png"></img>
+</p>
 <small>LSTM shown in both typical and unfolded format</small>
 
 
 
-### 6.2.1 Long Short-Term Memory Networks
+### 5.2.1 Long Short-Term Memory Networks
 
 [back to top](#top)
 
@@ -394,7 +373,7 @@ These weights that configure these gates are learned during training, and their 
 
 <a name='x.3'></a>
 
-## 6.3 Exploratory Data Analysis with Plotly/Pandas
+## 5.3 Exploratory Data Analysis with Plotly/Pandas
 
 [back to top](#top)
 
@@ -1011,7 +990,7 @@ pd.plotting.autocorrelation_plot(data['KG'], ax=ax)
 
 
     
-![png](S5_Time_Series_Analysis_files/S5_Time_Series_Analysis_12_1.png)
+![png](S5_Time_Series_Analysis_files/S5_Time_Series_Analysis_13_1.png)
     
 
 
@@ -1021,7 +1000,7 @@ For more details on the stats-like models you can perform a cursory search on _A
 
 <a name='x.4'></a>
 
-## 6.4 Modeling
+## 5.4 Modeling
 
 [back to top](#top)
 
@@ -1033,7 +1012,7 @@ from tensorflow.keras import layers
 
 <a name='x.4.1'></a>
 
-### 6.4.1 Sweeping (Rolling) Window
+### 5.4.1 Sweeping (Rolling) Window
 
 [back to top](#top)
 
@@ -1097,7 +1076,7 @@ and so on.
 
 <a name='x.4.2'></a>
 
-### 6.4.2 FFNN
+### 5.4.2 FFNN
 
 [back to top](#top)
 
@@ -1424,7 +1403,7 @@ if (outputEl) {{
 
 <a name='x.4.2.1'></a>
 
-#### 6.4.2.1 Exercise-Discussion: Varify that the model is linear
+#### 🏋️ Exercise-Discussion 1: Varify that the model is linear
 
 [back to top](#top)
 
@@ -1434,12 +1413,12 @@ This is an open ended question and I myself don't have the _best_ answer. Think 
 
 
 ```python
-# Code cell for Exercise 6.3.3.1
+# Code cell for Exercise 1
 ```
 
 <a name='x.4.2.2'></a>
 
-#### 6.4.2.2 Exercise: Vary model architecture and window size
+#### 🏋️ Exercise 2: Vary model architecture and window size
 
 [back to top](#top)
 
@@ -1481,7 +1460,7 @@ You can use the same early_stopping and fit formula from 6.4.2
 
 
 ```python
-# Code cell for exercise 6.4.2.2
+# Code cell for exercise 2
 ```
 
 
@@ -1543,7 +1522,7 @@ if (outputEl) {{
 
 <a name='x.4.3'></a>
 
-### 6.4.3 LSTM NN
+### 5.4.3 LSTM NN
 
 [back to top](#top)
 
@@ -1700,13 +1679,13 @@ if (outputEl) {{
 
 <a name='x.3.4.1'></a>
 
-#### 6.3.4.1 Exercise: Compare LSTM with FFNN using Train/Val/Test sets and 3 Month Window
+#### 🏋️ Exercise 3: Compare LSTM with FFNN using Train/Val/Test sets and 3 Month Window
 
 [back to top](#top)
 
 
 ```python
-### YOUR OPT WINDOW SIZE FROM 6.4.2.2 ###
+### YOUR OPT WINDOW SIZE FROM EXERCISE 2 ###
 window_size = 3
 batch_size = 10
 patience = 50
@@ -1911,7 +1890,7 @@ if (outputEl) {{
 
 <a name='x.5'></a>
 
-## 6.5 Model Extensibility
+## 5.5 Model Extensibility
 
 [back to top](#top)
 
@@ -1922,7 +1901,7 @@ from ipywidgets import interact
 
 <a name='x.5.1'></a>
 
-### 6.5.1 Exercise: Apply Model to Other Orders
+### 🏋️ Exercise 4: Apply Model to Other Orders
 
 Take the last LSTM model and apply it to other orders in the dataset. What do you notice?
 
@@ -1974,7 +1953,7 @@ interact(apply_model)
 
 <a name='x.5.2'></a>
 
-### 6.5.2 Exercise-Discussion: How Would You Create a General Forecast Model?
+### 🏋️ Exercise-Discussion 5.1: How Would You Create a General Forecast Model?
 
 [back to top](#top)
 
@@ -2018,7 +1997,7 @@ interact(my_eda)
 
 <a name='x.5.2.1'></a>
 
-#### 6.5.2.1 E1: EDA
+### 🏋️ Exercise 5.2: EDA
 
 [back to top](#top)
 
@@ -2035,7 +2014,7 @@ From C1 S6, it may be useful to think of this diagram:
 
 <a name='x.5.2.2'></a>
 
-#### 6.5.2.2 E2: Decide on Model
+### 🏋️ Exercise 5.3: Decide on Model
 
 [back to top](#top)
 

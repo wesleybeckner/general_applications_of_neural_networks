@@ -1,15 +1,10 @@
-<a href="https://colab.research.google.com/github/wesleybeckner/technology_fundamentals/blob/main/C4%20Machine%20Learning%20II/Tech_Fun_C4_S2_Computer_Vision_Part_2_(Defect_Detection_Case_Study).ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+<a href="https://colab.research.google.com/github/wesleybeckner/general_applications_of_neural_networks/blob/main/notebooks/S4_Computer_Vision_II.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
-# Technology Fundamentals Course 4, Session 2: Computer Vision Part 2 (Defect Detection Case Study)
+# General Applications of Neural Networks <br> Session 4: Computer Vision Part 2 (Defect Detection Case Study)
 
 **Instructor**: Wesley Beckner
 
 **Contact**: wesleybeckner@gmail.com
-
-**Teaching Assitants**: Varsha Bang, Harsha Vardhan
-
-**Contact**: vbang@uw.edu, harshav@uw.edu
-<br>
 
 ---
 
@@ -26,31 +21,6 @@ _images in this notebook borrowed from [Ryan Holbrook](https://mathformachines.c
 <br>
 
 <a name='top'></a>
-
-# Contents
-
-* 4.0 [Preparing Environment and Importing Data](#x.0)
-  * 4.0.1 [Enabling and Testing the GPU](#x.0.1)
-  * 4.0.2 [Observe TensorFlow on GPU vs CPU](#x.0.2)
-  * 4.0.3 [Import Packages](#x.0.3)
-  * 4.0.4 [Load Dataset](#x.0.4)
-    * 4.0.4.1 [Loading Data with ImageDataGenerator](#x.0.4.1)
-    * 4.0.4.2 [Loading Data with image_dataset_from_directory](#x.0.4.2)
-* 4.1 [Sliding Window](#x.1)
-  * 4.1.1 [Stride](#x.1.1)
-  * 4.1.2 [Padding](#x.1.2)
-  * 4.1.3 [Exercise: Exploring Sliding Windows](#x.1.3)
-* 4.2 [Custom CNN](#x.2)
-  * 4.2.1 [Evaluate Model](#x.2.1)
-* 4.3 [Data Augmentation](#x.3)
-  * 4.3.1 [Evaluate Model](#x.3.1)
-  * 4.3.2 [Exercise: Image Preprocessing Layers](#x.3.2)
-* 4.4 [Transfer Learning](#x.4)
-  
-
-<br>
-
----
 
 <a name='x.0'></a>
 
@@ -319,7 +289,8 @@ plt.show();
 The kernels we just reviewed, need to be swept or _slid_ along the preceding layer. We call this a **_sliding window_**, the window being the kernel. 
 
 <p align=center>
-<img src="https://i.imgur.com/LueNK6b.gif" width=400></img>
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/LueNK6b.gif" width=400></img>
+</p>
 
 What do you notice about the gif? One perhaps obvious observation is that you can't scoot all the way up to the border of the input layer, this is because the kernel defines operations _around_ the centered pixel and so you bang up against the margin of the input array. We can change the behavior at the boundary with a **_padding_** hyperparameter. A second observation, is that the distance we move the kernel along in each step could be variable, we call this the **_stride_**. We will explore the affects of each of these.
 
@@ -353,7 +324,8 @@ Stride defines the the step size we take with each kernel as it passes along the
 
 
 <p align=center>
-<img src="https://i.imgur.com/Tlptsvt.gif" width=400></img>
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/Tlptsvt.gif" width=400></img>
+</p>
 
 The stride will often be 1 for CNNs, where we don't want to lose any important information. Maximum pooling layers will often have strides greater than 1, to better summarize/accentuate the relevant features/activations.
 
@@ -371,13 +343,14 @@ We have a couple popular options within the keras framework. We can set `padding
 
 
 <p align=center>
-<img src="https://i.imgur.com/RvGM2xb.gif" width=400></img>
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/RvGM2xb.gif" width=400></img>
+</p>
 
 The downside of setting the padding to same will be that features at the edges of the image will be diluted. 
 
 <a name='x.1.3'></a>
 
-### 4.1.3 Exercise: Exploring Sliding Windows
+### 🏋️ Exercise 1: Exploring Sliding Windows
 
 [back to top](#top)
 
@@ -771,12 +744,14 @@ Alright, alright, alright. We've done pretty good making our CNN model. But let'
 With any machine learning model, the more relevant training data we give the model, the better. The key here is _relevant_ training data. We can easily do this with images so long as we do not change the class of the image. For example, in the small plot below, we are changing contrast, hue, rotation, and doing other things to the image of a car; and this is okay because it does not change the classification from a car to, say, a truck.
 
 <p align=center>
-<img src="https://i.imgur.com/UaOm0ms.png" width=400></img>
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/UaOm0ms.png" width=400></img>
+</p>
 
 Typically when we do data augmentation for images, we do them _online_, i.e. during training. Recall that we train in batches (or minibatches) with CNNs. An example of a minibatch then, might be the small multiples plot below.
 
 <p align=center>
-<img src="https://i.imgur.com/MFviYoE.png" width=400></img>
+<img src="https://raw.githubusercontent.com/wesleybeckner/general_applications_of_neural_networks/main/assets/MFviYoE.png" width=400></img>
+</p>
 
 by varying the images in this way, the model always sees slightly new data, and becomes a more robust model. Remember that the caveat is that we can't muddle the relevant classification of the image. Sometimes the best way to see if data augmentation will be helpful is to just try it and see!
 
@@ -974,7 +949,7 @@ sns.heatmap(confusion_matrix(labels,predictions),annot=True)
 
 <a name='x.3.2'></a>
 
-### 4.3.2 Exercise: Image Preprocessing Layers
+### 🏋️ Exercise 2: Image Preprocessing Layers
 
 [back to top](#top)
 
