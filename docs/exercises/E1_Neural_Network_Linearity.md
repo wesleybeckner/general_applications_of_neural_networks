@@ -1,14 +1,10 @@
-<a href="https://colab.research.google.com/github/wesleybeckner/technology_fundamentals/blob/main/C4%20Machine%20Learning%20II/LABS_PROJECT/Tech_Fun_C4_L1_NN_Linearity.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+<a href="https://colab.research.google.com/github/wesleybeckner/general_applications_of_neural_networks/blob/main/notebooks/exercises/E1_Neural_Network_Linearity.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
 
-# Technology Fundamentals Course 4, Lab 1: Practice with FFNNs
+# General Applications of Neural Networks <br> Lab 1: Neural Network Linearity
 
 **Instructor**: Wesley Beckner
 
 **Contact**: wesleybeckner@gmail.com
-
-**Teaching Assitants**: Varsha Bang, Harsha Vardhan
-
-**Contact**: vbang@uw.edu, harshav@uw.edu
 
 <br>
 
@@ -25,7 +21,7 @@ In this lab we will compare the FFNN to the classification algorithms we created
 
 
 
-# Data and Helper Functions
+## Data and Helper Functions
 
 
 ```python
@@ -114,7 +110,7 @@ def plot_boundaries(X, clf, ax=False):
   
 ```
 
-# L1 Q1: 
+## 📈 L1 Q1: Build a Linear Model
 
 Build and train a linear classification model using keras tf. Verify that the model is linear by either showing the weights or plotting the decision boundary (hint: you can use `plot_boundaries` above).
 
@@ -283,7 +279,7 @@ plot_boundaries(X, model)
     
 
 
-# L1 Q2:
+## 🌀 L1 Q2: Build a Non-Linear Model
 
 Now add an activation function to your previous model. Does the model become non-linear?
 
@@ -432,7 +428,7 @@ plot_boundaries(X, model)
     
 
 
-# L1 Q3:
+## ✨ L1 Q3: Add Complexity
 
 Continue to add complexity to your Q3 model until  you get an accuracy above 99%
 

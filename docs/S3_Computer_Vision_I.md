@@ -24,6 +24,8 @@ In this session we will:
 
 _images in this notebook borrowed from [Ryan Holbrook](https://mathformachines.com/)_
 
+For more information on the dataset we are using today watch this [video](https://www.youtube.com/watch?v=4sDfwS48p0A)
+
 ---
 
 <br>

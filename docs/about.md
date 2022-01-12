@@ -16,11 +16,12 @@ The breakdown for this course is as follows:
     * S7: Natural Language Processing II
 *	Exercises
     * E1: Neural Network Linearity
-    * E2: Wine Quality Prediction with Neural Networks
-    * E3: Customer Forecasting with Neural Networks
-    * E4: TBD
+    * E2: Wine Quality Prediction
+    * E3: Object Classification
+    * E4: Customer Forecasting 
     * E5: TBD
 *	Project
     * P1: Object Detection I
     * P2: Object Detection II
-    * P3: Defect Detection
+    * P3: TBD
+    * P4: TBD

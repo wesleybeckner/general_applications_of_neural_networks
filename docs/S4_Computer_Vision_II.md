@@ -16,6 +16,9 @@ In this session we will continue with our exploration of CNNs. In the previous s
 
 _images in this notebook borrowed from [Ryan Holbrook](https://mathformachines.com/)_
 
+For more information on the dataset we are using today watch this [video](https://www.youtube.com/watch?v=4sDfwS48p0A)
+
+
 ---
 
 <br>
@@ -108,10 +111,10 @@ print('GPU speedup over CPU: {}x'.format(int(cpu_time/gpu_time)))
 
     Time (s) to convolve 32x7x7x3 filter over random 100x100x100x3 images (batch x height x width x channel). Sum of ten runs.
     CPU (s):
-    2.8009356639999936
+    3.7607866190000436
     GPU (s):
-    0.03463296600000376
-    GPU speedup over CPU: 80x
+    0.04739101299998083
+    GPU speedup over CPU: 79x
 
 
 <a name='x.0.3'></a>
@@ -122,35 +125,40 @@ print('GPU speedup over CPU: {}x'.format(int(cpu_time/gpu_time)))
 
 
 ```python
+# clear memory from cpu/gpu task (skimage load method is ram intensive)
+import gc
+gc.collect()
+```
+
+
+
+
+    61
+
+
+
+
+```python
 import os
 import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
+from skimage import io, feature, filters, exposure, color
+from skimage.transform import rescale, resize
+from sklearn.metrics import classification_report,confusion_matrix
 
+#importing required tf libraries
 import tensorflow as tf
+from tensorflow.keras import layers
+from tensorflow.keras.layers import Activation, Dropout, Flatten, Dense, Conv2D, MaxPooling2D, InputLayer
+from tensorflow.data.experimental import AUTOTUNE
+from tensorflow.keras.layers.experimental import preprocessing
 from tensorflow.keras.preprocessing import image_dataset_from_directory
-```
-
-
-```python
-#importing required libraries
 from tensorflow.keras.preprocessing.image import ImageDataGenerator, load_img, img_to_array
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Activation, Dropout, Flatten, Dense, Conv2D, MaxPooling2D, InputLayer
 from tensorflow.keras.callbacks import EarlyStopping
-from sklearn.metrics import classification_report,confusion_matrix
 ```
-
-<a name='x.0.4'></a>
-
-### 4.0.4 Load Dataset
-
-[back to top](#top)
-
-We will actually take a beat here today. When we started building our ML frameworks, we simply wanted our data in a numpy array to feed it into our pipeline. At some point, especially when working with images, the data becomes too large to fit into memory. For this reason we need an alternative way to import our data. With the merger of keras/tf two popular frameworks became available, `ImageDataGenerator` and `image_dataset_from_directory` both under `tf.keras.preprocessing.image`. `image_dataset_from_directory` can sometimes be faster (tf origin) but `ImageDataGenerator` is a lot simpler to use and has on-the-fly data augmentation capability (keras).
-
-For a full comparison of methods visit [this link](https://towardsdatascience.com/what-is-the-best-input-pipeline-to-train-image-classification-models-with-tf-keras-eb3fe26d3cc5)
 
 
 ```python
@@ -162,9 +170,17 @@ drive.mount("/content/drive")
     Mounted at /content/drive
 
 
-<a name='x.0.4.1'></a>
+<a name='x.0.4'></a>
 
-#### 4.0.4.1 Loading Data with `ImageDataGenerator`
+### 4.0.4 Load Dataset
+
+[back to top](#top)
+
+We will actually take a beat here today. When we started building our ML frameworks, we simply wanted our data in a numpy array to feed it into our pipeline. At some point, especially when working with images, the data becomes too large to fit into memory. For this reason we need an alternative way to import our data. With the merger of keras/tf two popular frameworks became available, `ImageDataGenerator` and `image_dataset_from_directory` both under `tf.keras.preprocessing.image`. `image_dataset_from_directory` can sometimes be faster (tf origin) but `ImageDataGenerator` is a lot simpler to use and has on-the-fly data augmentation capability (keras).
+
+For a full comparison of methods visit [this link](https://towardsdatascience.com/what-is-the-best-input-pipeline-to-train-image-classification-models-with-tf-keras-eb3fe26d3cc5)
+
+#### 4.0.4.0 Define Global Parameters
 
 [back to top](#top)
 
@@ -173,45 +189,164 @@ drive.mount("/content/drive")
 # full dataset can be attained from kaggle if you are interested
 # https://www.kaggle.com/ravirajsinh45/real-life-industrial-dataset-of-casting-product?select=casting_data
 
-path_to_casting_data = '/content/drive/MyDrive/courses/tech_fundamentals/TECH_FUNDAMENTALS/data/casting_data_class_practice'
-
-image_shape = (300,300,1)
+# set global parameters for all import dataset methods
+image_shape = (300,300,3) # the images actually are 300,300,3
 batch_size = 32
+validation_split = 0.1
+seed_value = 42
 
+path_to_casting_data = '/content/drive/MyDrive/courses/tech_fundamentals/TECH_FUNDAMENTALS/data/casting_data_class_practice'
 technocast_train_path = path_to_casting_data + '/train/'
 technocast_test_path = path_to_casting_data + '/test/'
 
-image_gen = ImageDataGenerator(rescale=1/255) # normalize pixels to 0-1
+from numpy.random import seed
+seed(seed_value)
+tf.random.set_seed(seed_value)
+```
+
+#### 4.0.4.1 Loading data with skimage
+
+[back to top](#top)
+
+
+```python
+class MyImageLoader: 
+    def __init__(self):
+        self.classifer = None
+        self.folder = path_to_casting_data
+
+    def imread_convert(self, f):
+        return io.imread(f).astype(np.uint8)
+
+    def load_data_from_folder(self, dir):
+        # read all images into an image 
+        if type(dir) != list:
+          ic = io.ImageCollection(self.folder + dir + "*.bmp",
+                                  load_func=self.imread_convert)
+        else:
+          dir1 = dir[0]
+          dir2 = dir[1]
+          ic = io.ImageCollection(self.folder + dir1 + "*.jpeg:" + self.folder + dir2 + "*.jpeg",
+                                load_func=self.imread_convert)
+        
+        #create one large array of image data
+        data = io.concatenate_images(ic)
+
+        #resize to target shape
+        # data = resize(data, (data.shape[0], *image_shape[:2])) #uncomment if you need to resize images
+        
+        #extract labels from image names
+        labels = np.array(ic.files)
+        for i, f in enumerate(labels):
+            labels[i] = '_'.join(f.split('/')[-1].split('_')[:2])
+            # print(f, labels[i])
+        return(data,labels)
+
+# Create an object of the class `MyImageLoader`
+img_clf = MyImageLoader()
+
+# load images
+(train_val_raw, train_val_labels) = img_clf.load_data_from_folder(['/train/ok_front/', '/train/def_front/'])
+(test_raw, test_labels) = img_clf.load_data_from_folder(['/test/ok_front/', '/test/def_front/'])
+
+classes = list(np.unique(train_val_labels))
+print(f"Classes: {classes}")
+print("train and validation labels: {}".format(len(train_val_labels)))
+print("test labels: {}".format(len(test_labels)))
+
+# convert labels to numeric
+for i in range(len(classes)):
+    train_val_labels[train_val_labels == classes[i]] = i
+    test_labels[test_labels == classes[i]] = i
+
+train_val_labels = train_val_labels.astype(float)
+test_labels = test_labels.astype(float)
+
+# create train/val/test and shuffle
+train_val_dataset = tf.data.Dataset.from_tensor_slices((train_val_raw, train_val_labels)) 
+# shuffling the `train+val` dataset before separating them
+train_val_dataset = train_val_dataset.shuffle(buffer_size=len(train_val_dataset), seed=seed_value)
+
+# use validation_split
+val_len = int(validation_split * len(train_val_raw))
+val_dataset = train_val_dataset.take(val_len)
+train_dataset = train_val_dataset.skip(val_len)
+
+test_dataset = tf.data.Dataset.from_tensor_slices((test_raw, test_labels)) 
+# test_dataset = test_dataset.shuffle(buffer_size=len(test_dataset), seed=seed_value)        
+
+print(f"Train size: {len(train_dataset)}\nVal size: {len(val_dataset)}\nTest size: {len(test_dataset)}")
+
+# batch the data
+train_dataset_batched = train_dataset.batch(batch_size)
+val_dataset_batched = val_dataset.batch(batch_size)
+test_dataset_batched = test_dataset.batch(batch_size)
+
+print(f"Train batches: {len(train_dataset_batched)}\nVal batches: {len(val_dataset_batched)}\nTest batches: {len(test_dataset_batched)}")
+```
+
+    Classes: ['cast_def', 'cast_ok']
+    train and validation labels: 840
+    test labels: 678
+    Train size: 756
+    Val size: 84
+    Test size: 678
+    Train batches: 24
+    Val batches: 3
+    Test batches: 22
+
+
+<a name='x.0.4.1'></a>
+
+#### 4.0.4.2 Loading Data with `ImageDataGenerator`
+
+[back to top](#top)
+
+
+```python
+image_gen = ImageDataGenerator(rescale=1/255,
+                               validation_split=validation_split) # normalize pixels to 0-1
 
 #we're using keras inbuilt function to ImageDataGenerator so we 
 # dont need to label all images into 0 and 1 
 print("loading training set...")
-
-train_set = image_gen.flow_from_directory(technocast_train_path,
+train_set_keras = image_gen.flow_from_directory(technocast_train_path,
                                           target_size=image_shape[:2],
-                                          color_mode="grayscale",
+                                          color_mode="rgb",
                                           batch_size=batch_size,
-                                          class_mode='binary',
-                                          shuffle=True)
-
+                                          class_mode="sparse",
+                                          subset="training",
+                                          shuffle=True,
+                                          seed=seed_value)
+print("loading validation set...")
+val_set_keras = image_gen.flow_from_directory(technocast_train_path,
+                                          target_size=image_shape[:2],
+                                          color_mode="rgb",
+                                          batch_size=batch_size,
+                                          class_mode="sparse",
+                                          subset="validation",
+                                          shuffle=True,
+                                          seed=seed_value)
 print("loading testing set...")
-test_set = image_gen.flow_from_directory(technocast_test_path,
+test_set_keras = image_gen.flow_from_directory(technocast_test_path,
                                           target_size=image_shape[:2],
-                                          color_mode="grayscale",
+                                          color_mode="rgb",
                                           batch_size=batch_size,
-                                          class_mode='binary',
-                                         shuffle=False)
+                                          class_mode="sparse",
+                                          shuffle=False)
 ```
 
     loading training set...
-    Found 840 images belonging to 2 classes.
+    Found 757 images belonging to 2 classes.
+    loading validation set...
+    Found 83 images belonging to 2 classes.
     loading testing set...
-    Found 715 images belonging to 2 classes.
+    Found 678 images belonging to 2 classes.
 
 
 <a name='x.0.4.2'></a>
 
-#### 4.0.4.2 loading data with `image_dataset_from_directory`
+#### 4.0.4.3 loading data with `image_dataset_from_directory`
 
 [back to top](#top)
 
@@ -219,45 +354,62 @@ This method should be approx 2x faster than `ImageDataGenerator`
 
 
 ```python
-from tensorflow.keras.preprocessing import image_dataset_from_directory
-from tensorflow.data.experimental import AUTOTUNE
-
-path_to_casting_data = '/content/drive/MyDrive/courses/tech_fundamentals/TECH_FUNDAMENTALS/data/casting_data_class_practice'
-
-technocast_train_path = path_to_casting_data + '/train/'
-technocast_test_path = path_to_casting_data + '/test/'
-
 # Load training and validation sets
-
-image_shape = (300,300,1)
-batch_size = 32
-
+print("loading training set...")
 ds_train_ = image_dataset_from_directory(
     technocast_train_path,
-    labels='inferred',
-    label_mode='binary',
-    color_mode="grayscale",
+    labels="inferred",
+    label_mode="int",
+    color_mode="rgb",
     image_size=image_shape[:2],
     batch_size=batch_size,
+    validation_split=validation_split,
+    subset="training",
     shuffle=True,
+    seed=seed_value,
 )
-ds_valid_ = image_dataset_from_directory(
+print("loading validation set...")
+ds_val_ = image_dataset_from_directory(
+    technocast_train_path,
+    labels="inferred",
+    label_mode="int",
+    color_mode="rgb",
+    image_size=image_shape[:2],
+    batch_size=batch_size,
+    validation_split=validation_split,
+    subset="validation",
+    shuffle=True,
+    seed=seed_value,
+)
+print("loading testing set...")
+ds_test_ = image_dataset_from_directory(
     technocast_test_path,
-    labels='inferred',
-    label_mode='binary',
-    color_mode="grayscale",
+    labels="inferred",
+    label_mode="int",
+    color_mode="rgb",
     image_size=image_shape[:2],
     batch_size=batch_size,
     shuffle=False,
 )
 
-train_set = ds_train_.prefetch(buffer_size=AUTOTUNE)
-test_set = ds_valid_.prefetch(buffer_size=AUTOTUNE)
+train_set_tf = ds_train_.prefetch(buffer_size=AUTOTUNE)
+val_set_tf = ds_val_.prefetch(buffer_size=AUTOTUNE)
+test_set_tf = ds_test_.prefetch(buffer_size=AUTOTUNE)
 ```
 
+    loading training set...
     Found 840 files belonging to 2 classes.
-    Found 715 files belonging to 2 classes.
+    Using 756 files for training.
+    loading validation set...
+    Found 840 files belonging to 2 classes.
+    Using 84 files for validation.
+    loading testing set...
+    Found 678 files belonging to 2 classes.
 
+
+#### 4.0.4.4 View Images
+
+[back to top](#top)
 
 
 ```python
@@ -267,6 +419,8 @@ ok_path = '/ok_front/cast_ok_0_1.jpeg'
 image_path = technocast_train_path + ok_path
 image = tf.io.read_file(image_path)
 image = tf.io.decode_jpeg(image)
+image = resize(image, (256, 256),
+                anti_aliasing=True)
 
 plt.figure(figsize=(6, 6))
 plt.imshow(tf.squeeze(image), cmap='gray')
@@ -276,13 +430,13 @@ plt.show();
 
 
     
-![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_16_0.png)
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_21_0.png)
     
 
 
 <a name='x.1'></a>
 
-## 4.1 Sliding Window
+## 4.1 Understanding the Sliding Window
 
 [back to top](#top)
 
@@ -486,7 +640,7 @@ show_kernel(kernel)
 
 
     
-![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_24_0.png)
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_29_0.png)
     
 
 
@@ -511,7 +665,7 @@ show_extraction(
 
 
     
-![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_26_0.png)
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_31_0.png)
     
 
 
@@ -534,7 +688,7 @@ show_extraction(
 
 
     
-![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_28_0.png)
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_33_0.png)
     
 
 
@@ -554,7 +708,7 @@ Given a total condensation of 8 (I'm taking condensation to mean `conv_stride` x
 
 <a name='x.2'></a>
 
-## 4.2 Custom CNN
+## 4.2 Building a Custom CNN
 
 [back to top](#top)
 
@@ -562,176 +716,525 @@ As we move through the network, small-scale features (lines, edges, etc.) turn t
 
 We will design a custom CNN for the Casting Defect Detection Dataset.
 
+### 4.2.1 Define Architecture
+
+[back to top](#top)
+
 In the following I'm going to double the filter size after the first block. This is a common pattern as the max pooling layers forces us in the opposite direction.
 
 
 ```python
-#Creating model
+def build_model():
+  # Creating model
+  model = Sequential()
 
-model = Sequential()
+  model.add(InputLayer(input_shape=(image_shape)))
 
-model.add(InputLayer(input_shape=(image_shape)))
+  model.add(Conv2D(filters=8, kernel_size=(3,3), activation='relu',))
+  model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(Conv2D(filters=8, kernel_size=(3,3), activation='relu',))
-model.add(MaxPooling2D(pool_size=(2, 2)))
+  model.add(Conv2D(filters=16, kernel_size=(3,3), activation='relu',))
+  model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(Conv2D(filters=16, kernel_size=(3,3), activation='relu',))
-model.add(MaxPooling2D(pool_size=(2, 2)))
+  model.add(Conv2D(filters=16, kernel_size=(3,3), activation='relu',))
+  model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(Conv2D(filters=16, kernel_size=(3,3), activation='relu',))
-model.add(MaxPooling2D(pool_size=(2, 2)))
+  model.add(Flatten())
 
-model.add(Flatten())
+  model.add(Dense(224))
+  model.add(Activation('relu'))
 
-model.add(Dense(224))
-model.add(Activation('relu'))
+  # Last layer
+  model.add(Dense(2))
 
-# Last layer
-model.add(Dense(1))
-model.add(Activation('sigmoid'))
+  base_learning_rate = 0.001
+  model.compile(loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+                optimizer=tf.keras.optimizers.Adam(learning_rate=base_learning_rate),
+                metrics=['accuracy'])
 
-model.compile(loss='binary_crossentropy',
-              optimizer='adam',
-              metrics=['binary_accuracy'])
+  print(model.summary())
+  return model
 
 early_stop = EarlyStopping(monitor='val_loss',
-                           patience=5,
-                           restore_best_weights=True,)
-```
-
-
-```python
-# with CPU + ImageDataGenerator runs for about 40 minutes (5 epochs)
-# with GPU + image_dataset_from_directory runs for about 4 minutes (16 epochs)
-with tf.device('/device:GPU:0'):
-  results = model.fit(train_set,
-                      epochs=20,
-                      validation_data=test_set,
-                      callbacks=[early_stop])
-```
-
-    Epoch 1/20
-    27/27 [==============================] - 224s 7s/step - loss: 68.2100 - binary_accuracy: 0.5714 - val_loss: 0.8023 - val_binary_accuracy: 0.5343
-    Epoch 2/20
-    27/27 [==============================] - 3s 86ms/step - loss: 0.5720 - binary_accuracy: 0.7048 - val_loss: 0.5140 - val_binary_accuracy: 0.7399
-    Epoch 3/20
-    27/27 [==============================] - 3s 82ms/step - loss: 0.4475 - binary_accuracy: 0.7881 - val_loss: 0.4868 - val_binary_accuracy: 0.7524
-    Epoch 4/20
-    27/27 [==============================] - 3s 84ms/step - loss: 0.4018 - binary_accuracy: 0.8202 - val_loss: 0.5074 - val_binary_accuracy: 0.7469
-    Epoch 5/20
-    27/27 [==============================] - 3s 87ms/step - loss: 0.3237 - binary_accuracy: 0.8631 - val_loss: 0.4168 - val_binary_accuracy: 0.8112
-    Epoch 6/20
-    27/27 [==============================] - 3s 82ms/step - loss: 0.1998 - binary_accuracy: 0.9333 - val_loss: 0.3857 - val_binary_accuracy: 0.8322
-    Epoch 7/20
-    27/27 [==============================] - 3s 83ms/step - loss: 0.1086 - binary_accuracy: 0.9738 - val_loss: 0.2786 - val_binary_accuracy: 0.8853
-    Epoch 8/20
-    27/27 [==============================] - 3s 83ms/step - loss: 0.0560 - binary_accuracy: 0.9929 - val_loss: 0.3389 - val_binary_accuracy: 0.8615
-    Epoch 9/20
-    27/27 [==============================] - 3s 85ms/step - loss: 0.0345 - binary_accuracy: 0.9952 - val_loss: 0.2035 - val_binary_accuracy: 0.9175
-    Epoch 10/20
-    27/27 [==============================] - 3s 85ms/step - loss: 0.0772 - binary_accuracy: 0.9762 - val_loss: 0.2724 - val_binary_accuracy: 0.8979
-    Epoch 11/20
-    27/27 [==============================] - 3s 87ms/step - loss: 0.0336 - binary_accuracy: 0.9976 - val_loss: 0.4880 - val_binary_accuracy: 0.8420
-    Epoch 12/20
-    27/27 [==============================] - 3s 84ms/step - loss: 0.0387 - binary_accuracy: 0.9881 - val_loss: 0.2376 - val_binary_accuracy: 0.9105
-    Epoch 13/20
-    27/27 [==============================] - 3s 86ms/step - loss: 0.0172 - binary_accuracy: 0.9988 - val_loss: 0.2523 - val_binary_accuracy: 0.9133
-    Epoch 14/20
-    27/27 [==============================] - 3s 88ms/step - loss: 0.0045 - binary_accuracy: 1.0000 - val_loss: 0.3099 - val_binary_accuracy: 0.9021
-
-
-
-```python
-# model.save('inspection_of_casting_products.h5')
+                            patience=5,
+                            restore_best_weights=True,)
 ```
 
 <a name='x.2.1'></a>
 
-### 4.2.1 Evaluate Model
+### 4.2.1 Train and Evaluate Model
+
+[back to top](#top)
+
+To save/load weights and training history:
+```
+# model.save('inspection_of_casting_products.h5')
+# model.load_weights('inspection_of_casting_products.h5')
+# losses.to_csv('history_simple_model.csv', index=False)
+```
+
+#### 4.2.1.1 Skimage
 
 [back to top](#top)
 
 
 ```python
-# model.load_weights('inspection_of_casting_products.h5')
+%%time
+model = build_model()
+with tf.device('/device:GPU:0'):
+  results = model.fit(train_dataset_batched,
+                      epochs=30,
+                      validation_data=val_dataset_batched,
+                      callbacks=[early_stop]
+                      )
 ```
+
+    Model: "sequential_3"
+    _________________________________________________________________
+     Layer (type)                Output Shape              Param #   
+    =================================================================
+     conv2d_25 (Conv2D)          (None, 298, 298, 8)       224       
+                                                                     
+     max_pooling2d_3 (MaxPooling  (None, 149, 149, 8)      0         
+     2D)                                                             
+                                                                     
+     conv2d_26 (Conv2D)          (None, 147, 147, 16)      1168      
+                                                                     
+     max_pooling2d_4 (MaxPooling  (None, 73, 73, 16)       0         
+     2D)                                                             
+                                                                     
+     conv2d_27 (Conv2D)          (None, 71, 71, 16)        2320      
+                                                                     
+     max_pooling2d_5 (MaxPooling  (None, 35, 35, 16)       0         
+     2D)                                                             
+                                                                     
+     flatten (Flatten)           (None, 19600)             0         
+                                                                     
+     dense (Dense)               (None, 224)               4390624   
+                                                                     
+     activation_2 (Activation)   (None, 224)               0         
+                                                                     
+     dense_1 (Dense)             (None, 2)                 450       
+                                                                     
+    =================================================================
+    Total params: 4,394,786
+    Trainable params: 4,394,786
+    Non-trainable params: 0
+    _________________________________________________________________
+    None
+    Epoch 1/30
+    24/24 [==============================] - 4s 95ms/step - loss: 83.8552 - accuracy: 0.5423 - val_loss: 1.2317 - val_accuracy: 0.6548
+    Epoch 2/30
+    24/24 [==============================] - 2s 72ms/step - loss: 0.6356 - accuracy: 0.7011 - val_loss: 0.3245 - val_accuracy: 0.8571
+    Epoch 3/30
+    24/24 [==============================] - 2s 71ms/step - loss: 0.3996 - accuracy: 0.7976 - val_loss: 0.3156 - val_accuracy: 0.8452
+    Epoch 4/30
+    24/24 [==============================] - 2s 72ms/step - loss: 0.2368 - accuracy: 0.8995 - val_loss: 0.1321 - val_accuracy: 0.9643
+    Epoch 5/30
+    24/24 [==============================] - 2s 72ms/step - loss: 0.1764 - accuracy: 0.9325 - val_loss: 0.1329 - val_accuracy: 0.9524
+    Epoch 6/30
+    24/24 [==============================] - 2s 71ms/step - loss: 0.1729 - accuracy: 0.9352 - val_loss: 0.1492 - val_accuracy: 0.9524
+    Epoch 7/30
+    24/24 [==============================] - 2s 72ms/step - loss: 0.0984 - accuracy: 0.9616 - val_loss: 0.0482 - val_accuracy: 0.9881
+    Epoch 8/30
+    24/24 [==============================] - 2s 71ms/step - loss: 0.0494 - accuracy: 0.9868 - val_loss: 0.0247 - val_accuracy: 1.0000
+    Epoch 9/30
+    24/24 [==============================] - 2s 71ms/step - loss: 0.0632 - accuracy: 0.9828 - val_loss: 0.0292 - val_accuracy: 1.0000
+    Epoch 10/30
+    24/24 [==============================] - 2s 71ms/step - loss: 0.0411 - accuracy: 0.9868 - val_loss: 0.0139 - val_accuracy: 1.0000
+    Epoch 11/30
+    24/24 [==============================] - 2s 71ms/step - loss: 0.0183 - accuracy: 0.9974 - val_loss: 0.0096 - val_accuracy: 1.0000
+    Epoch 12/30
+    24/24 [==============================] - 2s 72ms/step - loss: 0.0077 - accuracy: 1.0000 - val_loss: 0.0048 - val_accuracy: 1.0000
+    Epoch 13/30
+    24/24 [==============================] - 2s 71ms/step - loss: 0.0083 - accuracy: 0.9987 - val_loss: 0.0050 - val_accuracy: 1.0000
+    Epoch 14/30
+    24/24 [==============================] - 2s 72ms/step - loss: 0.0047 - accuracy: 1.0000 - val_loss: 0.0054 - val_accuracy: 1.0000
+    Epoch 15/30
+    24/24 [==============================] - 2s 73ms/step - loss: 0.0048 - accuracy: 0.9987 - val_loss: 0.0033 - val_accuracy: 1.0000
+    Epoch 16/30
+    24/24 [==============================] - 2s 72ms/step - loss: 0.0692 - accuracy: 0.9841 - val_loss: 0.1683 - val_accuracy: 0.9286
+    Epoch 17/30
+    24/24 [==============================] - 2s 71ms/step - loss: 0.2085 - accuracy: 0.9378 - val_loss: 0.1657 - val_accuracy: 0.9405
+    Epoch 18/30
+    24/24 [==============================] - 2s 71ms/step - loss: 0.1278 - accuracy: 0.9537 - val_loss: 0.0475 - val_accuracy: 0.9762
+    Epoch 19/30
+    24/24 [==============================] - 2s 73ms/step - loss: 0.1368 - accuracy: 0.9471 - val_loss: 0.0586 - val_accuracy: 0.9762
+    Epoch 20/30
+    24/24 [==============================] - 2s 72ms/step - loss: 0.0445 - accuracy: 0.9854 - val_loss: 0.0144 - val_accuracy: 1.0000
+    CPU times: user 34.5 s, sys: 1.8 s, total: 36.3 s
+    Wall time: 47.6 s
+
 
 
 ```python
 losses = pd.DataFrame(results.history)
-# losses.to_csv('history_simple_model.csv', index=False)
-```
-
-
-```python
 fig, ax = plt.subplots(1, 2, figsize=(10,5))
 losses[['loss','val_loss']].plot(ax=ax[0])
-losses[['binary_accuracy','val_binary_accuracy']].plot(ax=ax[1])
+losses[['accuracy','val_accuracy']].plot(ax=ax[1])
 ```
 
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x7f20b425fa50>
+    <matplotlib.axes._subplots.AxesSubplot at 0x7ff3801d4ad0>
 
 
 
 
     
-![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_38_1.png)
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_41_1.png)
     
 
+
+##### 4.2.1.1.1 Evaluate
+
+[back to top](#top)
 
 
 ```python
-# predict test set
-pred_probability = model.predict(test_set)
-
-# convert to bool
-predictions = pred_probability > 0.5
-
-# precision / recall / f1-score 
-
-# test_set.classes to get images from ImageDataGenerator
-
-# for image_dataset_from_directory we have to do a little gymnastics 
-# to get the labels
-labels = np.array([])
-for x, y in ds_valid_:
-  labels = np.concatenate([labels, tf.squeeze(y.numpy()).numpy()])
-
+pred = []
+label = []
+for batch in range(len(test_dataset_batched)):
+  image_batch, label_batch = train_dataset_batched.as_numpy_iterator().next()
+  predictions = model.predict_on_batch(image_batch).argmax(axis=1)
+  # print(f"Labels     : {label_batch}\nPredictions: {predictions.astype(float)}")
+  pred.append(predictions)
+  label.append(label_batch)
+predictions = np.array(pred).flatten()
+labels = np.array(label).flatten()
 print(classification_report(labels,predictions))
+
+plt.figure(figsize=(10,6))
+sns.heatmap(confusion_matrix(labels,predictions), annot=True)
 ```
 
                   precision    recall  f1-score   support
     
-             0.0       0.97      0.90      0.93       453
-             1.0       0.84      0.95      0.89       262
+             0.0       1.00      1.00      1.00       331
+             1.0       1.00      1.00      1.00       373
     
-        accuracy                           0.92       715
-       macro avg       0.91      0.93      0.91       715
-    weighted avg       0.92      0.92      0.92       715
+        accuracy                           1.00       704
+       macro avg       1.00      1.00      1.00       704
+    weighted avg       1.00      1.00      1.00       704
     
+
+
+
+
+
+    <matplotlib.axes._subplots.AxesSubplot at 0x7ff3800f0350>
+
+
+
+
+    
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_43_2.png)
+    
+
+
+#### 4.2.1.2 TF - image_dataset_from_directory
+
+[back to top](#top)
+
+
+```python
+%%time
+model = build_model()
+with tf.device('/device:GPU:0'):
+  results = model.fit(train_set_tf,
+                      epochs=30,
+                      validation_data=val_set_tf,
+                      callbacks=[early_stop]
+                      )
+```
+
+    Model: "sequential_4"
+    _________________________________________________________________
+     Layer (type)                Output Shape              Param #   
+    =================================================================
+     conv2d_28 (Conv2D)          (None, 298, 298, 8)       224       
+                                                                     
+     max_pooling2d_6 (MaxPooling  (None, 149, 149, 8)      0         
+     2D)                                                             
+                                                                     
+     conv2d_29 (Conv2D)          (None, 147, 147, 16)      1168      
+                                                                     
+     max_pooling2d_7 (MaxPooling  (None, 73, 73, 16)       0         
+     2D)                                                             
+                                                                     
+     conv2d_30 (Conv2D)          (None, 71, 71, 16)        2320      
+                                                                     
+     max_pooling2d_8 (MaxPooling  (None, 35, 35, 16)       0         
+     2D)                                                             
+                                                                     
+     flatten_1 (Flatten)         (None, 19600)             0         
+                                                                     
+     dense_2 (Dense)             (None, 224)               4390624   
+                                                                     
+     activation_3 (Activation)   (None, 224)               0         
+                                                                     
+     dense_3 (Dense)             (None, 2)                 450       
+                                                                     
+    =================================================================
+    Total params: 4,394,786
+    Trainable params: 4,394,786
+    Non-trainable params: 0
+    _________________________________________________________________
+    None
+    Epoch 1/30
+    24/24 [==============================] - 4s 110ms/step - loss: 134.4262 - accuracy: 0.4907 - val_loss: 1.5430 - val_accuracy: 0.4643
+    Epoch 2/30
+    24/24 [==============================] - 3s 104ms/step - loss: 0.8062 - accuracy: 0.6323 - val_loss: 0.5887 - val_accuracy: 0.7262
+    Epoch 3/30
+    24/24 [==============================] - 3s 104ms/step - loss: 0.5298 - accuracy: 0.7526 - val_loss: 0.4983 - val_accuracy: 0.7857
+    Epoch 4/30
+    24/24 [==============================] - 3s 102ms/step - loss: 0.3654 - accuracy: 0.8452 - val_loss: 0.4701 - val_accuracy: 0.7738
+    Epoch 5/30
+    24/24 [==============================] - 3s 102ms/step - loss: 0.3978 - accuracy: 0.8082 - val_loss: 0.4899 - val_accuracy: 0.7738
+    Epoch 6/30
+    24/24 [==============================] - 3s 102ms/step - loss: 0.2814 - accuracy: 0.8796 - val_loss: 0.6540 - val_accuracy: 0.7262
+    Epoch 7/30
+    24/24 [==============================] - 3s 105ms/step - loss: 0.8786 - accuracy: 0.7817 - val_loss: 0.8129 - val_accuracy: 0.6429
+    Epoch 8/30
+    24/24 [==============================] - 3s 103ms/step - loss: 0.3586 - accuracy: 0.8320 - val_loss: 0.5316 - val_accuracy: 0.8333
+    Epoch 9/30
+    24/24 [==============================] - 3s 104ms/step - loss: 0.2162 - accuracy: 0.9180 - val_loss: 0.5447 - val_accuracy: 0.8095
+    CPU times: user 26 s, sys: 2.77 s, total: 28.8 s
+    Wall time: 39.1 s
 
 
 
 ```python
-plt.figure(figsize=(10,6))
-sns.heatmap(confusion_matrix(labels,predictions),annot=True)
+losses = pd.DataFrame(results.history)
+fig, ax = plt.subplots(1, 2, figsize=(10,5))
+losses[['loss','val_loss']].plot(ax=ax[0])
+losses[['accuracy','val_accuracy']].plot(ax=ax[1])
 ```
 
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x7f20bc8bd150>
+    <matplotlib.axes._subplots.AxesSubplot at 0x7ff389cf4050>
 
 
 
 
     
-![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_40_1.png)
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_46_1.png)
     
 
+
+##### 4.2.1.2.1 Evaluate
+
+[back to top](#top)
+
+
+```python
+predictions = model.predict(test_set_tf).argmax(axis=1)
+labels = np.array([])
+for x, y in ds_test_:
+  labels = np.concatenate([labels, tf.squeeze(y.numpy()).numpy()])
+print(classification_report(labels,predictions))
+plt.figure(figsize=(10,6))
+sns.heatmap(confusion_matrix(labels,predictions), annot=True)
+```
+
+                  precision    recall  f1-score   support
+    
+             0.0       0.95      0.69      0.80       416
+             1.0       0.66      0.94      0.78       262
+    
+        accuracy                           0.79       678
+       macro avg       0.80      0.82      0.79       678
+    weighted avg       0.84      0.79      0.79       678
+    
+
+
+
+
+
+    <matplotlib.axes._subplots.AxesSubplot at 0x7ff381bb5710>
+
+
+
+
+    
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_48_2.png)
+    
+
+
+#### 4.2.1.3 Keras - ImageDataGenerator
+
+[back to top](#top)
+
+
+```python
+%%time
+model = build_model()
+with tf.device('/device:GPU:0'):
+  results = model.fit(train_set_keras,
+                      epochs=30,
+                      validation_data=val_set_keras,
+                      callbacks=[early_stop]
+                      )
+```
+
+    Model: "sequential_5"
+    _________________________________________________________________
+     Layer (type)                Output Shape              Param #   
+    =================================================================
+     conv2d_31 (Conv2D)          (None, 298, 298, 8)       224       
+                                                                     
+     max_pooling2d_9 (MaxPooling  (None, 149, 149, 8)      0         
+     2D)                                                             
+                                                                     
+     conv2d_32 (Conv2D)          (None, 147, 147, 16)      1168      
+                                                                     
+     max_pooling2d_10 (MaxPoolin  (None, 73, 73, 16)       0         
+     g2D)                                                            
+                                                                     
+     conv2d_33 (Conv2D)          (None, 71, 71, 16)        2320      
+                                                                     
+     max_pooling2d_11 (MaxPoolin  (None, 35, 35, 16)       0         
+     g2D)                                                            
+                                                                     
+     flatten_2 (Flatten)         (None, 19600)             0         
+                                                                     
+     dense_4 (Dense)             (None, 224)               4390624   
+                                                                     
+     activation_4 (Activation)   (None, 224)               0         
+                                                                     
+     dense_5 (Dense)             (None, 2)                 450       
+                                                                     
+    =================================================================
+    Total params: 4,394,786
+    Trainable params: 4,394,786
+    Non-trainable params: 0
+    _________________________________________________________________
+    None
+    Epoch 1/30
+    24/24 [==============================] - 6s 218ms/step - loss: 0.7728 - accuracy: 0.5667 - val_loss: 0.6439 - val_accuracy: 0.6747
+    Epoch 2/30
+    24/24 [==============================] - 4s 183ms/step - loss: 0.5682 - accuracy: 0.7133 - val_loss: 0.5502 - val_accuracy: 0.7349
+    Epoch 3/30
+    24/24 [==============================] - 4s 183ms/step - loss: 0.4538 - accuracy: 0.7860 - val_loss: 0.5121 - val_accuracy: 0.7470
+    Epoch 4/30
+    24/24 [==============================] - 4s 186ms/step - loss: 0.3994 - accuracy: 0.8177 - val_loss: 0.5352 - val_accuracy: 0.7108
+    Epoch 5/30
+    24/24 [==============================] - 4s 184ms/step - loss: 0.3441 - accuracy: 0.8507 - val_loss: 0.4172 - val_accuracy: 0.7952
+    Epoch 6/30
+    24/24 [==============================] - 4s 182ms/step - loss: 0.2397 - accuracy: 0.9075 - val_loss: 0.3036 - val_accuracy: 0.8675
+    Epoch 7/30
+    24/24 [==============================] - 4s 184ms/step - loss: 0.1906 - accuracy: 0.9366 - val_loss: 0.2806 - val_accuracy: 0.9157
+    Epoch 8/30
+    24/24 [==============================] - 4s 185ms/step - loss: 0.1218 - accuracy: 0.9789 - val_loss: 0.2270 - val_accuracy: 0.9277
+    Epoch 9/30
+    24/24 [==============================] - 5s 187ms/step - loss: 0.1146 - accuracy: 0.9683 - val_loss: 0.6334 - val_accuracy: 0.7590
+    Epoch 10/30
+    24/24 [==============================] - 4s 185ms/step - loss: 0.1193 - accuracy: 0.9696 - val_loss: 0.2541 - val_accuracy: 0.9157
+    Epoch 11/30
+    24/24 [==============================] - 5s 187ms/step - loss: 0.1129 - accuracy: 0.9538 - val_loss: 0.3443 - val_accuracy: 0.8675
+    Epoch 12/30
+    24/24 [==============================] - 5s 189ms/step - loss: 0.1410 - accuracy: 0.9445 - val_loss: 0.2417 - val_accuracy: 0.9036
+    Epoch 13/30
+    24/24 [==============================] - 4s 186ms/step - loss: 0.0431 - accuracy: 0.9921 - val_loss: 0.2299 - val_accuracy: 0.9277
+    CPU times: user 53.5 s, sys: 4.18 s, total: 57.7 s
+    Wall time: 1min
+
+
+
+```python
+losses = pd.DataFrame(results.history)
+fig, ax = plt.subplots(1, 2, figsize=(10,5))
+losses[['loss','val_loss']].plot(ax=ax[0])
+losses[['accuracy','val_accuracy']].plot(ax=ax[1])
+```
+
+
+
+
+    <matplotlib.axes._subplots.AxesSubplot at 0x7ff37fdbe790>
+
+
+
+
+    
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_51_1.png)
+    
+
+
+##### 4.2.1.3.1 Evaluate
+
+[back to top](#top)
+
+
+```python
+predictions = model.predict(test_set_keras).argmax(axis=1)
+labels = test_set_keras.classes
+print(classification_report(labels,predictions))
+plt.figure(figsize=(10,6))
+sns.heatmap(confusion_matrix(labels,predictions), annot=True)
+```
+
+                  precision    recall  f1-score   support
+    
+               0       0.99      0.88      0.93       416
+               1       0.83      0.98      0.90       262
+    
+        accuracy                           0.92       678
+       macro avg       0.91      0.93      0.92       678
+    weighted avg       0.93      0.92      0.92       678
+    
+
+
+
+
+
+    <matplotlib.axes._subplots.AxesSubplot at 0x7ff37fef4d10>
+
+
+
+
+    
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_53_2.png)
+    
+
+
+### 🏋️ Exercise 2: Binary Output
+
+In the above, we used a type of loss function called *sparse categorical crossentropy*
+
+This loss is useful when we have many target classes set as different integers, i.e.
+
+```
+good = 1
+bad = 2
+ugly = 3
+```
+
+another type of loss function is *categorical crossentropy* this is for when the target classes are one-hot encoded, i.e.
+
+```
+good = [1,0,0]
+bad = [0,1,0]
+ugly = [0,0,1]
+```
+
+1. Choose one of the datatset import methods from above
+2. Specify the labels as binary during the loading process
+3. Redefine the model using 
+  * a single dense node as the final layer with
+  * a sigmoidal activation function
+4. Compile with the new loss set to 'binary_crossentropy',
+5. Train the model
+6. Evaluate the F1/Precision/Recall metrics and display the confusion matrix. 
+  * *note: our prior method of obtaining the classification using `argmax` will not work, as the output is now a probability score ranging 0-1*
+
+
+```python
+# Code cell for exercise 2
+```
 
 <a name='x.3'></a>
 
@@ -755,17 +1258,21 @@ Typically when we do data augmentation for images, we do them _online_, i.e. dur
 
 by varying the images in this way, the model always sees slightly new data, and becomes a more robust model. Remember that the caveat is that we can't muddle the relevant classification of the image. Sometimes the best way to see if data augmentation will be helpful is to just try it and see!
 
+### 4.3.1 Define Architecture
+
+[back to top](#top)
+
 
 ```python
-from tensorflow.keras.layers.experimental import preprocessing
-
 #Creating model
-
 model = Sequential()
 
-model.add(preprocessing.RandomFlip('horizontal')), # flip left-to-right
-model.add(preprocessing.RandomFlip('vertical')), # flip upside-down
-model.add(preprocessing.RandomContrast(0.5)), # contrast change by up to 50%
+model.add(InputLayer(input_shape=(image_shape)))
+
+model.add(preprocessing.RandomFlip('horizontal', seed=seed_value)), # flip left-to-right
+model.add(preprocessing.RandomFlip('vertical', seed=seed_value)), # flip upside-down
+model.add(preprocessing.RandomContrast(0.1, seed=seed_value)), # contrast change by up to 50%
+model.add(preprocessing.RandomRotation(factor=1, fill_mode='constant', seed=seed_value))
 
 model.add(Conv2D(filters=8, kernel_size=(3,3),input_shape=image_shape, activation='relu',))
 model.add(MaxPooling2D(pool_size=(2, 2)))
@@ -782,174 +1289,179 @@ model.add(Dense(224))
 model.add(Activation('relu'))
 
 # Last layer
-model.add(Dense(1))
-model.add(Activation('sigmoid'))
-
-model.compile(loss='binary_crossentropy',
-              optimizer='adam',
-              metrics=['binary_accuracy'])
+model.add(Dense(2))
 
 early_stop = EarlyStopping(monitor='val_loss',
                            patience=5,
                            restore_best_weights=True,)
+
+base_learning_rate = 0.001
+model.compile(loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+              optimizer=tf.keras.optimizers.Adam(learning_rate=base_learning_rate),
+              metrics=['accuracy'])
+
+model.summary()
 ```
+
+    Model: "sequential_6"
+    _________________________________________________________________
+     Layer (type)                Output Shape              Param #   
+    =================================================================
+     random_flip (RandomFlip)    (None, 300, 300, 3)       0         
+                                                                     
+     random_flip_1 (RandomFlip)  (None, 300, 300, 3)       0         
+                                                                     
+     random_contrast (RandomCont  (None, 300, 300, 3)      0         
+     rast)                                                           
+                                                                     
+     random_rotation (RandomRota  (None, 300, 300, 3)      0         
+     tion)                                                           
+                                                                     
+     conv2d_34 (Conv2D)          (None, 298, 298, 8)       224       
+                                                                     
+     max_pooling2d_12 (MaxPoolin  (None, 149, 149, 8)      0         
+     g2D)                                                            
+                                                                     
+     conv2d_35 (Conv2D)          (None, 147, 147, 16)      1168      
+                                                                     
+     max_pooling2d_13 (MaxPoolin  (None, 73, 73, 16)       0         
+     g2D)                                                            
+                                                                     
+     conv2d_36 (Conv2D)          (None, 71, 71, 16)        2320      
+                                                                     
+     max_pooling2d_14 (MaxPoolin  (None, 35, 35, 16)       0         
+     g2D)                                                            
+                                                                     
+     flatten_3 (Flatten)         (None, 19600)             0         
+                                                                     
+     dense_6 (Dense)             (None, 224)               4390624   
+                                                                     
+     activation_5 (Activation)   (None, 224)               0         
+                                                                     
+     dense_7 (Dense)             (None, 2)                 450       
+                                                                     
+    =================================================================
+    Total params: 4,394,786
+    Trainable params: 4,394,786
+    Non-trainable params: 0
+    _________________________________________________________________
+
 
 
 ```python
-results = model.fit(train_set,
+%%time
+results = model.fit(train_set_tf,
                     epochs=30,
-                    validation_data=test_set,
+                    validation_data=val_set_tf,
                     callbacks=[early_stop])
 ```
 
     Epoch 1/30
-    27/27 [==============================] - 3s 89ms/step - loss: 63.6867 - binary_accuracy: 0.5500 - val_loss: 1.4445 - val_binary_accuracy: 0.5888
+    24/24 [==============================] - 4s 116ms/step - loss: 119.8577 - accuracy: 0.4960 - val_loss: 4.5860 - val_accuracy: 0.5952
     Epoch 2/30
-    27/27 [==============================] - 3s 87ms/step - loss: 1.5593 - binary_accuracy: 0.6036 - val_loss: 1.2496 - val_binary_accuracy: 0.6573
+    24/24 [==============================] - 3s 108ms/step - loss: 1.8653 - accuracy: 0.6561 - val_loss: 0.9853 - val_accuracy: 0.6310
     Epoch 3/30
-    27/27 [==============================] - 3s 86ms/step - loss: 1.0772 - binary_accuracy: 0.6869 - val_loss: 0.4536 - val_binary_accuracy: 0.8014
+    24/24 [==============================] - 3s 110ms/step - loss: 0.7695 - accuracy: 0.7143 - val_loss: 0.7379 - val_accuracy: 0.6548
     Epoch 4/30
-    27/27 [==============================] - 3s 85ms/step - loss: 0.8275 - binary_accuracy: 0.7095 - val_loss: 0.3635 - val_binary_accuracy: 0.8336
+    24/24 [==============================] - 3s 110ms/step - loss: 0.7312 - accuracy: 0.7196 - val_loss: 0.4667 - val_accuracy: 0.7500
     Epoch 5/30
-    27/27 [==============================] - 3s 86ms/step - loss: 0.5000 - binary_accuracy: 0.7821 - val_loss: 0.3140 - val_binary_accuracy: 0.8643
+    24/24 [==============================] - 3s 109ms/step - loss: 0.5811 - accuracy: 0.7513 - val_loss: 0.5543 - val_accuracy: 0.7262
     Epoch 6/30
-    27/27 [==============================] - 3s 86ms/step - loss: 0.4402 - binary_accuracy: 0.8214 - val_loss: 0.2672 - val_binary_accuracy: 0.8783
+    24/24 [==============================] - 3s 110ms/step - loss: 0.5251 - accuracy: 0.7619 - val_loss: 0.4778 - val_accuracy: 0.7976
     Epoch 7/30
-    27/27 [==============================] - 3s 85ms/step - loss: 0.3306 - binary_accuracy: 0.8524 - val_loss: 0.9402 - val_binary_accuracy: 0.6825
+    24/24 [==============================] - 3s 113ms/step - loss: 0.4472 - accuracy: 0.7950 - val_loss: 0.4601 - val_accuracy: 0.8214
     Epoch 8/30
-    27/27 [==============================] - 3s 86ms/step - loss: 1.1711 - binary_accuracy: 0.7143 - val_loss: 0.4291 - val_binary_accuracy: 0.8252
+    24/24 [==============================] - 3s 112ms/step - loss: 0.5250 - accuracy: 0.7765 - val_loss: 0.4135 - val_accuracy: 0.7976
     Epoch 9/30
-    27/27 [==============================] - 3s 86ms/step - loss: 0.3464 - binary_accuracy: 0.8583 - val_loss: 0.5895 - val_binary_accuracy: 0.7832
+    24/24 [==============================] - 3s 110ms/step - loss: 0.3857 - accuracy: 0.8241 - val_loss: 0.3998 - val_accuracy: 0.8333
     Epoch 10/30
-    27/27 [==============================] - 3s 85ms/step - loss: 0.3010 - binary_accuracy: 0.8738 - val_loss: 0.4319 - val_binary_accuracy: 0.8196
+    24/24 [==============================] - 3s 114ms/step - loss: 0.3940 - accuracy: 0.8241 - val_loss: 0.4778 - val_accuracy: 0.7976
     Epoch 11/30
-    27/27 [==============================] - 3s 89ms/step - loss: 0.2554 - binary_accuracy: 0.8893 - val_loss: 0.2068 - val_binary_accuracy: 0.9091
+    24/24 [==============================] - 3s 111ms/step - loss: 0.3229 - accuracy: 0.8505 - val_loss: 0.3675 - val_accuracy: 0.8095
     Epoch 12/30
-    27/27 [==============================] - 3s 86ms/step - loss: 0.1639 - binary_accuracy: 0.9512 - val_loss: 0.1869 - val_binary_accuracy: 0.9189
+    24/24 [==============================] - 3s 110ms/step - loss: 0.4138 - accuracy: 0.8280 - val_loss: 0.4310 - val_accuracy: 0.8214
     Epoch 13/30
-    27/27 [==============================] - 3s 89ms/step - loss: 0.1728 - binary_accuracy: 0.9298 - val_loss: 0.1441 - val_binary_accuracy: 0.9441
+    24/24 [==============================] - 3s 113ms/step - loss: 0.4179 - accuracy: 0.8280 - val_loss: 0.3730 - val_accuracy: 0.8690
     Epoch 14/30
-    27/27 [==============================] - 3s 85ms/step - loss: 0.1314 - binary_accuracy: 0.9536 - val_loss: 0.1434 - val_binary_accuracy: 0.9455
+    24/24 [==============================] - 3s 111ms/step - loss: 0.3174 - accuracy: 0.8704 - val_loss: 0.4226 - val_accuracy: 0.7976
     Epoch 15/30
-    27/27 [==============================] - 3s 85ms/step - loss: 0.1620 - binary_accuracy: 0.9512 - val_loss: 0.2196 - val_binary_accuracy: 0.9091
+    24/24 [==============================] - 3s 111ms/step - loss: 0.3104 - accuracy: 0.8704 - val_loss: 0.3007 - val_accuracy: 0.8929
     Epoch 16/30
-    27/27 [==============================] - 3s 87ms/step - loss: 0.1345 - binary_accuracy: 0.9512 - val_loss: 0.1243 - val_binary_accuracy: 0.9538
+    24/24 [==============================] - 3s 110ms/step - loss: 0.2717 - accuracy: 0.8915 - val_loss: 0.3191 - val_accuracy: 0.8929
     Epoch 17/30
-    27/27 [==============================] - 3s 86ms/step - loss: 0.3751 - binary_accuracy: 0.8500 - val_loss: 0.6976 - val_binary_accuracy: 0.7580
+    24/24 [==============================] - 3s 109ms/step - loss: 0.2499 - accuracy: 0.9008 - val_loss: 0.4745 - val_accuracy: 0.7857
     Epoch 18/30
-    27/27 [==============================] - 3s 86ms/step - loss: 0.2022 - binary_accuracy: 0.9214 - val_loss: 0.1656 - val_binary_accuracy: 0.9231
+    24/24 [==============================] - 3s 106ms/step - loss: 0.2226 - accuracy: 0.9008 - val_loss: 0.2697 - val_accuracy: 0.8929
     Epoch 19/30
-    27/27 [==============================] - 3s 84ms/step - loss: 0.1082 - binary_accuracy: 0.9571 - val_loss: 0.1395 - val_binary_accuracy: 0.9371
+    24/24 [==============================] - 3s 110ms/step - loss: 0.2619 - accuracy: 0.8876 - val_loss: 0.1840 - val_accuracy: 0.9167
     Epoch 20/30
-    27/27 [==============================] - 3s 84ms/step - loss: 0.0978 - binary_accuracy: 0.9643 - val_loss: 0.1182 - val_binary_accuracy: 0.9441
+    24/24 [==============================] - 3s 111ms/step - loss: 0.1931 - accuracy: 0.9061 - val_loss: 0.1650 - val_accuracy: 0.9048
     Epoch 21/30
-    27/27 [==============================] - 3s 88ms/step - loss: 0.1174 - binary_accuracy: 0.9583 - val_loss: 0.1207 - val_binary_accuracy: 0.9469
+    24/24 [==============================] - 3s 108ms/step - loss: 0.1871 - accuracy: 0.9259 - val_loss: 0.2051 - val_accuracy: 0.8929
     Epoch 22/30
-    27/27 [==============================] - 3s 87ms/step - loss: 0.0898 - binary_accuracy: 0.9774 - val_loss: 0.1390 - val_binary_accuracy: 0.9413
+    24/24 [==============================] - 3s 110ms/step - loss: 0.2252 - accuracy: 0.9153 - val_loss: 0.1596 - val_accuracy: 0.9167
     Epoch 23/30
-    27/27 [==============================] - 3s 89ms/step - loss: 0.1028 - binary_accuracy: 0.9607 - val_loss: 0.1150 - val_binary_accuracy: 0.9552
+    24/24 [==============================] - 3s 111ms/step - loss: 0.1519 - accuracy: 0.9431 - val_loss: 0.1245 - val_accuracy: 0.9643
     Epoch 24/30
-    27/27 [==============================] - 3s 86ms/step - loss: 0.1146 - binary_accuracy: 0.9583 - val_loss: 0.1078 - val_binary_accuracy: 0.9650
+    24/24 [==============================] - 3s 109ms/step - loss: 0.1538 - accuracy: 0.9405 - val_loss: 0.1161 - val_accuracy: 0.9524
     Epoch 25/30
-    27/27 [==============================] - 3s 89ms/step - loss: 0.1007 - binary_accuracy: 0.9643 - val_loss: 0.0802 - val_binary_accuracy: 0.9692
+    24/24 [==============================] - 3s 109ms/step - loss: 0.2514 - accuracy: 0.9127 - val_loss: 0.1773 - val_accuracy: 0.9167
     Epoch 26/30
-    27/27 [==============================] - 3s 88ms/step - loss: 0.0882 - binary_accuracy: 0.9750 - val_loss: 0.0755 - val_binary_accuracy: 0.9692
+    24/24 [==============================] - 3s 106ms/step - loss: 0.1651 - accuracy: 0.9339 - val_loss: 0.1341 - val_accuracy: 0.9643
     Epoch 27/30
-    27/27 [==============================] - 3s 89ms/step - loss: 0.0884 - binary_accuracy: 0.9750 - val_loss: 0.1813 - val_binary_accuracy: 0.9385
+    24/24 [==============================] - 3s 111ms/step - loss: 0.1599 - accuracy: 0.9418 - val_loss: 0.1689 - val_accuracy: 0.9167
     Epoch 28/30
-    27/27 [==============================] - 3s 85ms/step - loss: 0.0908 - binary_accuracy: 0.9631 - val_loss: 0.1431 - val_binary_accuracy: 0.9385
+    24/24 [==============================] - 3s 109ms/step - loss: 0.1578 - accuracy: 0.9471 - val_loss: 0.1424 - val_accuracy: 0.9286
     Epoch 29/30
-    27/27 [==============================] - 3s 87ms/step - loss: 0.0576 - binary_accuracy: 0.9833 - val_loss: 0.0920 - val_binary_accuracy: 0.9664
-    Epoch 30/30
-    27/27 [==============================] - 3s 87ms/step - loss: 0.1199 - binary_accuracy: 0.9500 - val_loss: 0.3270 - val_binary_accuracy: 0.8769
+    24/24 [==============================] - 3s 110ms/step - loss: 0.1286 - accuracy: 0.9524 - val_loss: 0.1622 - val_accuracy: 0.9286
+    CPU times: user 1min 25s, sys: 9.96 s, total: 1min 35s
+    Wall time: 2min 4s
 
 
 <a name='x.3.1'></a>
 
-### 4.3.1 Evaluate Model
+### 4.3.2 Evaluate Model
 
 [back to top](#top)
 
 
 ```python
-losses = pd.DataFrame(results.history)
-# losses.to_csv('history_augment_model.csv', index=False)
-```
-
-
-```python
-fig, ax = plt.subplots(1, 2, figsize=(10,5))
-losses[['loss','val_loss']].plot(ax=ax[0])
-losses[['binary_accuracy','val_binary_accuracy']].plot(ax=ax[1])
-```
-
-
-
-
-    <matplotlib.axes._subplots.AxesSubplot at 0x7f20bbbc59d0>
-
-
-
-
-    
-![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_46_1.png)
-    
-
-
-
-```python
-# predict test set
-pred_probability = model.predict(test_set)
-
-# convert to bool
-predictions = pred_probability > 0.5
-
-# precision / recall / f1-score 
-
-# test_set.classes to get images from ImageDataGenerator
-
-# for image_dataset_from_directory we have to do a little gymnastics 
-# to get the labels
+predictions = model.predict(test_set_tf).argmax(axis=1)
 labels = np.array([])
-for x, y in ds_valid_:
+for x, y in ds_test_:
   labels = np.concatenate([labels, tf.squeeze(y.numpy()).numpy()])
-
 print(classification_report(labels,predictions))
+plt.figure(figsize=(10,6))
+sns.heatmap(confusion_matrix(labels,predictions), annot=True)
 ```
 
                   precision    recall  f1-score   support
     
-             0.0       1.00      0.81      0.89       453
-             1.0       0.75      1.00      0.86       262
+             0.0       0.96      0.95      0.96       416
+             1.0       0.93      0.94      0.94       262
     
-        accuracy                           0.88       715
-       macro avg       0.87      0.90      0.87       715
-    weighted avg       0.91      0.88      0.88       715
+        accuracy                           0.95       678
+       macro avg       0.95      0.95      0.95       678
+    weighted avg       0.95      0.95      0.95       678
     
 
 
 
-```python
-plt.figure(figsize=(10,6))
-sns.heatmap(confusion_matrix(labels,predictions),annot=True)
-```
 
 
-
-
-    <matplotlib.axes._subplots.AxesSubplot at 0x7f20bda35890>
+    <matplotlib.axes._subplots.AxesSubplot at 0x7ff389e48f90>
 
 
 
 
     
-![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_48_1.png)
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_61_2.png)
     
 
 
 <a name='x.3.2'></a>
 
-### 🏋️ Exercise 2: Image Preprocessing Layers
+### 🏋️ Exercise 3: Image Preprocessing Layers
 
 [back to top](#top)
 
@@ -967,7 +1479,7 @@ Use any combination of random augmentation transforms and retrain your model. Ca
 
 
 ```python
-# code cell for exercise 4.3.2
+# Code cell for exercise 3
 ```
 
 <a name='x.4'></a>
@@ -976,137 +1488,271 @@ Use any combination of random augmentation transforms and retrain your model. Ca
 
 [back to top](#top)
 
-Transfer learning with [EfficientNet](https://keras.io/examples/vision/image_classification_efficientnet_fine_tuning/)
+MobileNetV2 - A general purpose, deployable computer vision neural network designed by Google that works efficiently for classification, detection and segmentation.  
+
+![](https://miro.medium.com/max/1016/1*5iA55983nBMlQn9f6ICxKg.png)
+
+### 4.4.1 Define Architecture
+
+[back to top](#top)
 
 
 ```python
-from tensorflow.keras.preprocessing import image_dataset_from_directory
-from tensorflow.data.experimental import AUTOTUNE
-
-path_to_casting_data = '/content/drive/MyDrive/courses/TECH_FUNDAMENTALS/data/casting_data_class_practice'
-
-technocast_train_path = path_to_casting_data + '/train/'
-technocast_test_path = path_to_casting_data + '/test/'
-
-# Load training and validation sets
-
-image_shape = (300,300,3)
-batch_size = 32
-
-ds_train_ = image_dataset_from_directory(
-    technocast_train_path,
-    labels='inferred',
-    label_mode='binary',
-    color_mode="grayscale",
-    image_size=image_shape[:2],
-    batch_size=batch_size,
-    shuffle=True,
-)
-
-ds_valid_ = image_dataset_from_directory(
-    technocast_test_path,
-    labels='inferred',
-    label_mode='binary',
-    color_mode="grayscale",
-    image_size=image_shape[:2],
-    batch_size=batch_size,
-    shuffle=False,
-)
-
-train_set = ds_train_.prefetch(buffer_size=AUTOTUNE)
-test_set = ds_valid_.prefetch(buffer_size=AUTOTUNE)
+### COMPONENTS (IN ORDER)
+resize = layers.experimental.preprocessing.Resizing(224,224)
+preprocess_input_fn = tf.keras.applications.mobilenet_v2.preprocess_input 
+base_model = tf.keras.applications.MobileNetV2(input_shape=(224,224,3),
+                                               include_top=False,
+                                               weights='imagenet')
+base_model.trainable=False
+global_average_layer = tf.keras.layers.GlobalAveragePooling2D()
+prediction_layer = tf.keras.layers.Dense(len(classes))
 ```
 
-    Found 840 files belonging to 2 classes.
-    Found 715 files belonging to 2 classes.
+    Downloading data from https://storage.googleapis.com/tensorflow/keras-applications/mobilenet_v2/mobilenet_v2_weights_tf_dim_ordering_tf_kernels_1.0_224_no_top.h5
+    9412608/9406464 [==============================] - 0s 0us/step
+    9420800/9406464 [==============================] - 0s 0us/step
 
 
 
 ```python
-def build_model(image_shape):
-    input = tf.keras.layers.Input(shape=(image_shape))
+### MODEL
+inputs = tf.keras.Input(shape=image_shape)
+x = resize(inputs)
+x = preprocess_input_fn(x)
+x = base_model(x, training=False)
+x = global_average_layer(x)
+x = tf.keras.layers.Dropout(0.2)(x)
+outputs = prediction_layer(x)
 
-    # include_top = False will take of the last dense layer used for classification
-    model = tf.keras.applications.EfficientNetB3(include_top=False, 
-                                                 input_tensor=input, 
-                                                 weights="imagenet")
-
-    # Freeze the pretrained weights
-    model.trainable = False
-
-    # now we have to rebuild the top
-    x = tf.keras.layers.GlobalAveragePooling2D(name="avg_pool")(model.output)
-    x = tf.keras.layers.BatchNormalization()(x)
-
-    top_dropout_rate = 0.2
-    x = tf.keras.layers.Dropout(top_dropout_rate, name="top_dropout")(x)
-
-    # use num-nodes = 1 for binary, class # for multiclass
-    output = tf.keras.layers.Dense(1, activation="softmax", name="pred")(x)
-
-    # Compile
-    model = tf.keras.Model(input, output, name="EfficientNet")
-    model.compile(optimizer='adam', 
-                  loss="binary_crossentropy", 
-                  metrics=["binary_accuracy"])
-    return model
+model = tf.keras.Model(inputs, outputs)
 ```
 
 
 ```python
-model = build_model(image_shape)
+base_learning_rate = 0.0001
+model.compile(optimizer=tf.keras.optimizers.Adam(lr=base_learning_rate),
+              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+              metrics=['accuracy'])
+
+early_stop = EarlyStopping(monitor='val_loss',
+                           patience=5,
+                           restore_best_weights=True,)
+model.summary()
 ```
+
+    Model: "model"
+    _________________________________________________________________
+     Layer (type)                Output Shape              Param #   
+    =================================================================
+     input_6 (InputLayer)        [(None, 300, 300, 3)]     0         
+                                                                     
+     resizing (Resizing)         (None, 224, 224, 3)       0         
+                                                                     
+     tf.math.truediv (TFOpLambda  (None, 224, 224, 3)      0         
+     )                                                               
+                                                                     
+     tf.math.subtract (TFOpLambd  (None, 224, 224, 3)      0         
+     a)                                                              
+                                                                     
+     mobilenetv2_1.00_224 (Funct  (None, 7, 7, 1280)       2257984   
+     ional)                                                          
+                                                                     
+     global_average_pooling2d (G  (None, 1280)             0         
+     lobalAveragePooling2D)                                          
+                                                                     
+     dropout (Dropout)           (None, 1280)              0         
+                                                                     
+     dense_8 (Dense)             (None, 2)                 2562      
+                                                                     
+    =================================================================
+    Total params: 2,260,546
+    Trainable params: 2,562
+    Non-trainable params: 2,257,984
+    _________________________________________________________________
+
+
+    /usr/local/lib/python3.7/dist-packages/keras/optimizer_v2/adam.py:105: UserWarning: The `lr` argument is deprecated, use `learning_rate` instead.
+      super(Adam, self).__init__(name, **kwargs)
+
+
+### 4.4.2 Train Head
+
+[back to top](#top)
 
 
 ```python
+%%time
 with tf.device('/device:GPU:0'):
-  results = model.fit(train_set,
-                      epochs=20,
-                      validation_data=test_set,
-                      callbacks=[early_stop])
+  results = model.fit(train_set_tf,
+                      epochs=50,
+                      validation_data=val_set_tf,
+                      callbacks=[early_stop]
+                      )
 ```
 
-    Epoch 1/20
-    WARNING:tensorflow:Model was constructed with shape (None, 300, 300, 3) for input KerasTensor(type_spec=TensorSpec(shape=(None, 300, 300, 3), dtype=tf.float32, name='input_12'), name='input_12', description="created by layer 'input_12'"), but it was called on an input with incompatible shape (None, 300, 300, 1).
-    WARNING:tensorflow:Model was constructed with shape (None, 300, 300, 3) for input KerasTensor(type_spec=TensorSpec(shape=(None, 300, 300, 3), dtype=tf.float32, name='input_12'), name='input_12', description="created by layer 'input_12'"), but it was called on an input with incompatible shape (None, 300, 300, 1).
-    27/27 [==============================] - ETA: 0s - loss: 0.4457 - binary_accuracy: 0.4905WARNING:tensorflow:Model was constructed with shape (None, 300, 300, 3) for input KerasTensor(type_spec=TensorSpec(shape=(None, 300, 300, 3), dtype=tf.float32, name='input_12'), name='input_12', description="created by layer 'input_12'"), but it was called on an input with incompatible shape (None, 300, 300, 1).
-    27/27 [==============================] - 20s 442ms/step - loss: 0.4457 - binary_accuracy: 0.4905 - val_loss: 0.4851 - val_binary_accuracy: 0.3664
-    Epoch 2/20
-    27/27 [==============================] - 11s 381ms/step - loss: 0.1878 - binary_accuracy: 0.4905 - val_loss: 0.3930 - val_binary_accuracy: 0.3664
-    Epoch 3/20
-    27/27 [==============================] - 11s 384ms/step - loss: 0.1816 - binary_accuracy: 0.4905 - val_loss: 0.3407 - val_binary_accuracy: 0.3664
-    Epoch 4/20
-    27/27 [==============================] - 11s 378ms/step - loss: 0.1394 - binary_accuracy: 0.4905 - val_loss: 0.2971 - val_binary_accuracy: 0.3664
-    Epoch 5/20
-    27/27 [==============================] - 11s 380ms/step - loss: 0.0982 - binary_accuracy: 0.4905 - val_loss: 0.2490 - val_binary_accuracy: 0.3664
-    Epoch 6/20
-    27/27 [==============================] - 11s 376ms/step - loss: 0.1032 - binary_accuracy: 0.4905 - val_loss: 0.2130 - val_binary_accuracy: 0.3664
-    Epoch 7/20
-    27/27 [==============================] - 11s 380ms/step - loss: 0.0801 - binary_accuracy: 0.4905 - val_loss: 0.1846 - val_binary_accuracy: 0.3664
-    Epoch 8/20
-    27/27 [==============================] - 11s 383ms/step - loss: 0.0806 - binary_accuracy: 0.4905 - val_loss: 0.1509 - val_binary_accuracy: 0.3664
-    Epoch 9/20
-    27/27 [==============================] - 11s 379ms/step - loss: 0.0736 - binary_accuracy: 0.4905 - val_loss: 0.1263 - val_binary_accuracy: 0.3664
-    Epoch 10/20
-    27/27 [==============================] - 11s 379ms/step - loss: 0.0916 - binary_accuracy: 0.4905 - val_loss: 0.1008 - val_binary_accuracy: 0.3664
-    Epoch 11/20
-    27/27 [==============================] - 11s 381ms/step - loss: 0.0618 - binary_accuracy: 0.4905 - val_loss: 0.0886 - val_binary_accuracy: 0.3664
-    Epoch 12/20
-    27/27 [==============================] - 11s 380ms/step - loss: 0.0843 - binary_accuracy: 0.4905 - val_loss: 0.0728 - val_binary_accuracy: 0.3664
-    Epoch 13/20
-    27/27 [==============================] - 11s 383ms/step - loss: 0.0741 - binary_accuracy: 0.4905 - val_loss: 0.0593 - val_binary_accuracy: 0.3664
-    Epoch 14/20
-    27/27 [==============================] - 11s 381ms/step - loss: 0.0637 - binary_accuracy: 0.4905 - val_loss: 0.0535 - val_binary_accuracy: 0.3664
-    Epoch 15/20
-    27/27 [==============================] - 11s 380ms/step - loss: 0.0657 - binary_accuracy: 0.4905 - val_loss: 0.0491 - val_binary_accuracy: 0.3664
-    Epoch 16/20
-    27/27 [==============================] - 11s 375ms/step - loss: 0.0653 - binary_accuracy: 0.4905 - val_loss: 0.0424 - val_binary_accuracy: 0.3664
-    Epoch 17/20
-    27/27 [==============================] - 11s 378ms/step - loss: 0.0451 - binary_accuracy: 0.4905 - val_loss: 0.0394 - val_binary_accuracy: 0.3664
-    Epoch 18/20
-    27/27 [==============================] - 11s 382ms/step - loss: 0.0667 - binary_accuracy: 0.4905 - val_loss: 0.0345 - val_binary_accuracy: 0.3664
-    Epoch 19/20
-    27/27 [==============================] - 11s 382ms/step - loss: 0.0541 - binary_accuracy: 0.4905 - val_loss: 0.0351 - val_binary_accuracy: 0.3664
-    Epoch 20/20
-    27/27 [==============================] - 11s 381ms/step - loss: 0.0353 - binary_accuracy: 0.4905 - val_loss: 0.0365 - val_binary_accuracy: 0.3664
+    Epoch 1/50
+    24/24 [==============================] - 9s 181ms/step - loss: 0.9359 - accuracy: 0.3955 - val_loss: 0.7577 - val_accuracy: 0.4881
+    Epoch 2/50
+    24/24 [==============================] - 4s 121ms/step - loss: 0.8204 - accuracy: 0.4802 - val_loss: 0.6900 - val_accuracy: 0.5238
+    Epoch 3/50
+    24/24 [==============================] - 4s 120ms/step - loss: 0.7541 - accuracy: 0.5423 - val_loss: 0.6381 - val_accuracy: 0.6071
+    Epoch 4/50
+    24/24 [==============================] - 4s 118ms/step - loss: 0.7042 - accuracy: 0.5913 - val_loss: 0.5892 - val_accuracy: 0.7143
+    Epoch 5/50
+    24/24 [==============================] - 4s 123ms/step - loss: 0.6486 - accuracy: 0.6389 - val_loss: 0.5492 - val_accuracy: 0.8214
+    Epoch 6/50
+    24/24 [==============================] - 4s 121ms/step - loss: 0.6115 - accuracy: 0.6614 - val_loss: 0.5149 - val_accuracy: 0.8452
+    Epoch 7/50
+    24/24 [==============================] - 4s 123ms/step - loss: 0.5769 - accuracy: 0.6905 - val_loss: 0.4887 - val_accuracy: 0.8929
+    Epoch 8/50
+    24/24 [==============================] - 3s 119ms/step - loss: 0.5645 - accuracy: 0.6997 - val_loss: 0.4639 - val_accuracy: 0.8929
+    Epoch 9/50
+    24/24 [==============================] - 3s 119ms/step - loss: 0.5212 - accuracy: 0.7500 - val_loss: 0.4404 - val_accuracy: 0.9048
+    Epoch 10/50
+    24/24 [==============================] - 4s 120ms/step - loss: 0.4703 - accuracy: 0.7844 - val_loss: 0.4205 - val_accuracy: 0.9048
+    Epoch 11/50
+    24/24 [==============================] - 4s 121ms/step - loss: 0.4738 - accuracy: 0.7857 - val_loss: 0.4020 - val_accuracy: 0.9167
+    Epoch 12/50
+    24/24 [==============================] - 3s 119ms/step - loss: 0.4544 - accuracy: 0.8069 - val_loss: 0.3888 - val_accuracy: 0.9048
+    Epoch 13/50
+    24/24 [==============================] - 4s 122ms/step - loss: 0.4313 - accuracy: 0.8148 - val_loss: 0.3707 - val_accuracy: 0.9405
+    Epoch 14/50
+    24/24 [==============================] - 4s 121ms/step - loss: 0.4249 - accuracy: 0.8161 - val_loss: 0.3597 - val_accuracy: 0.9405
+    Epoch 15/50
+    24/24 [==============================] - 4s 122ms/step - loss: 0.4151 - accuracy: 0.8320 - val_loss: 0.3483 - val_accuracy: 0.9405
+    Epoch 16/50
+    24/24 [==============================] - 4s 121ms/step - loss: 0.4108 - accuracy: 0.8214 - val_loss: 0.3373 - val_accuracy: 0.9405
+    Epoch 17/50
+    24/24 [==============================] - 4s 122ms/step - loss: 0.3905 - accuracy: 0.8373 - val_loss: 0.3260 - val_accuracy: 0.9524
+    Epoch 18/50
+    24/24 [==============================] - 4s 124ms/step - loss: 0.3772 - accuracy: 0.8439 - val_loss: 0.3169 - val_accuracy: 0.9524
+    Epoch 19/50
+    24/24 [==============================] - 4s 121ms/step - loss: 0.3610 - accuracy: 0.8651 - val_loss: 0.3086 - val_accuracy: 0.9524
+    Epoch 20/50
+    24/24 [==============================] - 4s 121ms/step - loss: 0.3484 - accuracy: 0.8611 - val_loss: 0.3014 - val_accuracy: 0.9524
+    Epoch 21/50
+    24/24 [==============================] - 4s 121ms/step - loss: 0.3475 - accuracy: 0.8571 - val_loss: 0.2932 - val_accuracy: 0.9524
+    Epoch 22/50
+    24/24 [==============================] - 4s 123ms/step - loss: 0.3524 - accuracy: 0.8413 - val_loss: 0.2856 - val_accuracy: 0.9524
+    Epoch 23/50
+    24/24 [==============================] - 4s 122ms/step - loss: 0.3252 - accuracy: 0.8690 - val_loss: 0.2809 - val_accuracy: 0.9524
+    Epoch 24/50
+    24/24 [==============================] - 4s 121ms/step - loss: 0.3215 - accuracy: 0.8862 - val_loss: 0.2728 - val_accuracy: 0.9524
+    Epoch 25/50
+    24/24 [==============================] - 4s 122ms/step - loss: 0.3094 - accuracy: 0.8915 - val_loss: 0.2671 - val_accuracy: 0.9524
+    Epoch 26/50
+    24/24 [==============================] - 4s 121ms/step - loss: 0.3063 - accuracy: 0.8902 - val_loss: 0.2622 - val_accuracy: 0.9524
+    Epoch 27/50
+    24/24 [==============================] - 4s 124ms/step - loss: 0.3060 - accuracy: 0.8810 - val_loss: 0.2553 - val_accuracy: 0.9524
+    Epoch 28/50
+    24/24 [==============================] - 4s 122ms/step - loss: 0.2958 - accuracy: 0.9008 - val_loss: 0.2532 - val_accuracy: 0.9524
+    Epoch 29/50
+    24/24 [==============================] - 4s 122ms/step - loss: 0.2996 - accuracy: 0.8889 - val_loss: 0.2460 - val_accuracy: 0.9524
+    Epoch 30/50
+    24/24 [==============================] - 4s 121ms/step - loss: 0.2908 - accuracy: 0.8955 - val_loss: 0.2403 - val_accuracy: 0.9524
+    Epoch 31/50
+    24/24 [==============================] - 4s 122ms/step - loss: 0.2956 - accuracy: 0.8981 - val_loss: 0.2371 - val_accuracy: 0.9524
+    Epoch 32/50
+    24/24 [==============================] - 4s 121ms/step - loss: 0.2861 - accuracy: 0.8981 - val_loss: 0.2352 - val_accuracy: 0.9524
+    Epoch 33/50
+    24/24 [==============================] - 4s 122ms/step - loss: 0.2808 - accuracy: 0.9101 - val_loss: 0.2278 - val_accuracy: 0.9643
+    Epoch 34/50
+    24/24 [==============================] - 4s 122ms/step - loss: 0.2705 - accuracy: 0.9114 - val_loss: 0.2237 - val_accuracy: 0.9643
+    Epoch 35/50
+    24/24 [==============================] - 3s 120ms/step - loss: 0.2751 - accuracy: 0.8955 - val_loss: 0.2195 - val_accuracy: 0.9524
+    Epoch 36/50
+    24/24 [==============================] - 4s 120ms/step - loss: 0.2596 - accuracy: 0.9114 - val_loss: 0.2168 - val_accuracy: 0.9643
+    Epoch 37/50
+    24/24 [==============================] - 4s 123ms/step - loss: 0.2610 - accuracy: 0.9114 - val_loss: 0.2140 - val_accuracy: 0.9643
+    Epoch 38/50
+    24/24 [==============================] - 4s 121ms/step - loss: 0.2568 - accuracy: 0.9074 - val_loss: 0.2097 - val_accuracy: 0.9524
+    Epoch 39/50
+    24/24 [==============================] - 4s 121ms/step - loss: 0.2489 - accuracy: 0.9114 - val_loss: 0.2080 - val_accuracy: 0.9643
+    Epoch 40/50
+    24/24 [==============================] - 4s 121ms/step - loss: 0.2451 - accuracy: 0.9193 - val_loss: 0.2040 - val_accuracy: 0.9643
+    Epoch 41/50
+    24/24 [==============================] - 4s 121ms/step - loss: 0.2434 - accuracy: 0.9153 - val_loss: 0.2011 - val_accuracy: 0.9643
+    Epoch 42/50
+    24/24 [==============================] - 4s 121ms/step - loss: 0.2393 - accuracy: 0.9206 - val_loss: 0.1984 - val_accuracy: 0.9643
+    Epoch 43/50
+    24/24 [==============================] - 3s 120ms/step - loss: 0.2363 - accuracy: 0.9193 - val_loss: 0.1948 - val_accuracy: 0.9643
+    Epoch 44/50
+    24/24 [==============================] - 4s 120ms/step - loss: 0.2455 - accuracy: 0.9167 - val_loss: 0.1926 - val_accuracy: 0.9643
+    Epoch 45/50
+    24/24 [==============================] - 4s 121ms/step - loss: 0.2252 - accuracy: 0.9206 - val_loss: 0.1899 - val_accuracy: 0.9643
+    Epoch 46/50
+    24/24 [==============================] - 4s 122ms/step - loss: 0.2296 - accuracy: 0.9312 - val_loss: 0.1869 - val_accuracy: 0.9643
+    Epoch 47/50
+    24/24 [==============================] - 4s 123ms/step - loss: 0.2369 - accuracy: 0.9140 - val_loss: 0.1844 - val_accuracy: 0.9643
+    Epoch 48/50
+    24/24 [==============================] - 4s 121ms/step - loss: 0.2199 - accuracy: 0.9259 - val_loss: 0.1822 - val_accuracy: 0.9643
+    Epoch 49/50
+    24/24 [==============================] - 4s 120ms/step - loss: 0.2202 - accuracy: 0.9246 - val_loss: 0.1800 - val_accuracy: 0.9643
+    Epoch 50/50
+    24/24 [==============================] - 3s 117ms/step - loss: 0.2098 - accuracy: 0.9325 - val_loss: 0.1803 - val_accuracy: 0.9643
+    CPU times: user 2min 18s, sys: 17 s, total: 2min 35s
+    Wall time: 3min 41s
 
+
+### 4.4.3 Evaluate Model
+
+[back to top](#top)
+
+
+```python
+predictions = model.predict(test_set_tf).argmax(axis=1)
+labels = np.array([])
+for x, y in ds_test_:
+  labels = np.concatenate([labels, tf.squeeze(y.numpy()).numpy()])
+print(classification_report(labels,predictions))
+plt.figure(figsize=(10,6))
+sns.heatmap(confusion_matrix(labels,predictions), annot=True)
+```
+
+                  precision    recall  f1-score   support
+    
+             0.0       0.98      0.92      0.95       416
+             1.0       0.88      0.97      0.92       262
+    
+        accuracy                           0.94       678
+       macro avg       0.93      0.94      0.93       678
+    weighted avg       0.94      0.94      0.94       678
+    
+
+
+
+
+
+    <matplotlib.axes._subplots.AxesSubplot at 0x7ff380d62450>
+
+
+
+
+    
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_72_2.png)
+    
+
+
+### 🏋️ Exercise 4: Transfer Learn with other Base Models
+
+visit [keras](https://www.tensorflow.org/api_docs/python/tf/keras/applications) and read about 2-3 of the available models. Choose one and reimplement our transfer learning procedure from above!
+
+
+```python
+# Code cell for exercise 4
+```
+
+## 4.5 Summary
+
+If you ran this notebook as-is you should've gotten something similar to the following table
+
+| Data Handling | Model       | Data Augmentation | Weighted F1 | Training Time (min:sec) |
+|---------------|-------------|-------------------|-------------|-------------------------|
+| Keras         | CNN         | No                | 0.92        | 1:00                    |
+| Tensorflow    | CNN         | No                | 0.79        | 0:39                    |
+| Scikit-Image  | CNN         | No                | 1.00        | 0:47                    |
+| Tensorflow    | CNN         | Yes               | 0.95        | 2:04                    |
+| Tensorflow    | MobileNetV2 | No                | 0.94        | 3:41                    |
+
+In conclusion, we can see an appreciable difference in speed when we decide to transfer learn or augment the original dataset. Curiously, Loading our data with scikit-image gives us the best performance in our custom CNN model.

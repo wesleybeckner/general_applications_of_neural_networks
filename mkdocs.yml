@@ -5,6 +5,7 @@ theme:
     primary: "blue"
     accent: "indigo"
 nav:
+  - Introduction: "index.md"
   - About: about.md
   - Sessions:
       - The Multilayer Perceptron: S1_Multilayer_Perceptron.md
