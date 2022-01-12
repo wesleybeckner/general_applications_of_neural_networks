@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#technology-fundamentals-course-4-lab-1-practice-with-ffnns" class="md-skip">
+        <a href="#general-applications-of-neural-networks-lab-1-neural-network-linearity" class="md-skip">
           Skip to content
         </a>
       
@@ -426,12 +426,10 @@
               
                 
 
-<p><a href="https://colab.research.google.com/github/wesleybeckner/technology_fundamentals/blob/main/C4%20Machine%20Learning%20II/LABS_PROJECT/Tech_Fun_C4_L1_NN_Linearity.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
-<h1 id="technology-fundamentals-course-4-lab-1-practice-with-ffnns">Technology Fundamentals Course 4, Lab 1: Practice with FFNNs<a class="headerlink" href="#technology-fundamentals-course-4-lab-1-practice-with-ffnns" title="Permanent link">&para;</a></h1>
+<p><a href="https://colab.research.google.com/github/wesleybeckner/general_applications_of_neural_networks/blob/main/notebooks/exercises/E1_Neural_Network_Linearity.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<h1 id="general-applications-of-neural-networks-lab-1-neural-network-linearity">General Applications of Neural Networks <br> Lab 1: Neural Network Linearity<a class="headerlink" href="#general-applications-of-neural-networks-lab-1-neural-network-linearity" title="Permanent link">&para;</a></h1>
 <p><strong>Instructor</strong>: Wesley Beckner</p>
 <p><strong>Contact</strong>: <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#119;&#101;&#115;&#108;&#101;&#121;&#98;&#101;&#99;&#107;&#110;&#101;&#114;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#119;&#101;&#115;&#108;&#101;&#121;&#98;&#101;&#99;&#107;&#110;&#101;&#114;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></p>
-<p><strong>Teaching Assitants</strong>: Varsha Bang, Harsha Vardhan</p>
-<p><strong>Contact</strong>: <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#118;&#98;&#97;&#110;&#103;&#64;&#117;&#119;&#46;&#101;&#100;&#117;">&#118;&#98;&#97;&#110;&#103;&#64;&#117;&#119;&#46;&#101;&#100;&#117;</a>, <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#104;&#97;&#114;&#115;&#104;&#97;&#118;&#64;&#117;&#119;&#46;&#101;&#100;&#117;">&#104;&#97;&#114;&#115;&#104;&#97;&#118;&#64;&#117;&#119;&#46;&#101;&#100;&#117;</a></p>
 <p><br></p>
 <hr />
 <p><br></p>
@@ -518,7 +516,7 @@ if (outputEl) {{
     <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
 </code></pre></div>
 
-<h1 id="l1-q1">L1 Q1:<a class="headerlink" href="#l1-q1" title="Permanent link">&para;</a></h1>
+<h1 id="l1-q1-build-a-linear-model">📈 L1 Q1: Build a Linear Model<a class="headerlink" href="#l1-q1-build-a-linear-model" title="Permanent link">&para;</a></h1>
 <p>Build and train a linear classification model using keras tf. Verify that the model is linear by either showing the weights or plotting the decision boundary (hint: you can use <code>plot_boundaries</code> above).</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># Code Cell for L1 Q1</span>
 <span class="kn">from</span> <span class="nn">tensorflow</span> <span class="kn">import</span> <span class="n">keras</span>
@@ -671,7 +669,7 @@ if (outputEl) {{
 </code></pre></div>
 
 <p><img alt="png" src="../E1_Neural_Network_Linearity_files/E1_Neural_Network_Linearity_7_0.png" /></p>
-<h1 id="l1-q2">L1 Q2:<a class="headerlink" href="#l1-q2" title="Permanent link">&para;</a></h1>
+<h1 id="l1-q2-build-a-non-linear-model">🌀 L1 Q2: Build a Non-Linear Model<a class="headerlink" href="#l1-q2-build-a-non-linear-model" title="Permanent link">&para;</a></h1>
 <p>Now add an activation function to your previous model. Does the model become non-linear?</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># Code Cell for L1 Q2</span>
 
@@ -803,7 +801,7 @@ if (outputEl) {{
 </code></pre></div>
 
 <p><img alt="png" src="../E1_Neural_Network_Linearity_files/E1_Neural_Network_Linearity_10_0.png" /></p>
-<h1 id="l1-q3">L1 Q3:<a class="headerlink" href="#l1-q3" title="Permanent link">&para;</a></h1>
+<h1 id="l1-q3-add-complexity">✨ L1 Q3: Add Complexity<a class="headerlink" href="#l1-q3-add-complexity" title="Permanent link">&para;</a></h1>
 <p>Continue to add complexity to your Q3 model until  you get an accuracy above 99%</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># Code Cell for L1 Q3</span>
 
