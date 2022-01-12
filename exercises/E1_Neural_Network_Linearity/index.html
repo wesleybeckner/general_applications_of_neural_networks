@@ -366,9 +366,61 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Neural Network Linearity
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         Neural Network Linearity
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#data-and-helper-functions" class="md-nav__link">
+    Data and Helper Functions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#l1-q1-build-a-linear-model" class="md-nav__link">
+    📈 L1 Q1: Build a Linear Model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#l1-q2-build-a-non-linear-model" class="md-nav__link">
+    🌀 L1 Q2: Build a Non-Linear Model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#l1-q3-add-complexity" class="md-nav__link">
+    ✨ L1 Q3: Add Complexity
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -415,6 +467,42 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#data-and-helper-functions" class="md-nav__link">
+    Data and Helper Functions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#l1-q1-build-a-linear-model" class="md-nav__link">
+    📈 L1 Q1: Build a Linear Model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#l1-q2-build-a-non-linear-model" class="md-nav__link">
+    🌀 L1 Q2: Build a Non-Linear Model
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#l1-q3-add-complexity" class="md-nav__link">
+    ✨ L1 Q3: Add Complexity
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -436,7 +524,7 @@
 <p>In this lab we will compare the FFNN to the classification algorithms we created in Course 2.</p>
 <p><br></p>
 <hr />
-<h1 id="data-and-helper-functions">Data and Helper Functions<a class="headerlink" href="#data-and-helper-functions" title="Permanent link">&para;</a></h1>
+<h2 id="data-and-helper-functions">Data and Helper Functions<a class="headerlink" href="#data-and-helper-functions" title="Permanent link">&para;</a></h2>
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span><span class="p">,</span> <span class="n">make_moons</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -516,7 +604,7 @@ if (outputEl) {{
     <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
 </code></pre></div>
 
-<h1 id="l1-q1-build-a-linear-model">📈 L1 Q1: Build a Linear Model<a class="headerlink" href="#l1-q1-build-a-linear-model" title="Permanent link">&para;</a></h1>
+<h2 id="l1-q1-build-a-linear-model">📈 L1 Q1: Build a Linear Model<a class="headerlink" href="#l1-q1-build-a-linear-model" title="Permanent link">&para;</a></h2>
 <p>Build and train a linear classification model using keras tf. Verify that the model is linear by either showing the weights or plotting the decision boundary (hint: you can use <code>plot_boundaries</code> above).</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># Code Cell for L1 Q1</span>
 <span class="kn">from</span> <span class="nn">tensorflow</span> <span class="kn">import</span> <span class="n">keras</span>
@@ -669,7 +757,7 @@ if (outputEl) {{
 </code></pre></div>
 
 <p><img alt="png" src="../E1_Neural_Network_Linearity_files/E1_Neural_Network_Linearity_7_0.png" /></p>
-<h1 id="l1-q2-build-a-non-linear-model">🌀 L1 Q2: Build a Non-Linear Model<a class="headerlink" href="#l1-q2-build-a-non-linear-model" title="Permanent link">&para;</a></h1>
+<h2 id="l1-q2-build-a-non-linear-model">🌀 L1 Q2: Build a Non-Linear Model<a class="headerlink" href="#l1-q2-build-a-non-linear-model" title="Permanent link">&para;</a></h2>
 <p>Now add an activation function to your previous model. Does the model become non-linear?</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># Code Cell for L1 Q2</span>
 
@@ -801,7 +889,7 @@ if (outputEl) {{
 </code></pre></div>
 
 <p><img alt="png" src="../E1_Neural_Network_Linearity_files/E1_Neural_Network_Linearity_10_0.png" /></p>
-<h1 id="l1-q3-add-complexity">✨ L1 Q3: Add Complexity<a class="headerlink" href="#l1-q3-add-complexity" title="Permanent link">&para;</a></h1>
+<h2 id="l1-q3-add-complexity">✨ L1 Q3: Add Complexity<a class="headerlink" href="#l1-q3-add-complexity" title="Permanent link">&para;</a></h2>
 <p>Continue to add complexity to your Q3 model until  you get an accuracy above 99%</p>
 <div class="codehilite"><pre><span></span><code><span class="c1"># Code Cell for L1 Q3</span>
 
