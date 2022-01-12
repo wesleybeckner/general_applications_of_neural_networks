@@ -468,11 +468,11 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#4211-keras-imagedatagenerator" class="md-nav__link">
-    4.2.1.1 Keras - ImageDataGenerator
+  <a href="#4211-skimage" class="md-nav__link">
+    4.2.1.1 Skimage
   </a>
   
-    <nav class="md-nav" aria-label="4.2.1.1 Keras - ImageDataGenerator">
+    <nav class="md-nav" aria-label="4.2.1.1 Skimage">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -508,11 +508,11 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4213-skimage" class="md-nav__link">
-    4.2.1.3 Skimage
+  <a href="#4213-keras-imagedatagenerator" class="md-nav__link">
+    4.2.1.3 Keras - ImageDataGenerator
   </a>
   
-    <nav class="md-nav" aria-label="4.2.1.3 Skimage">
+    <nav class="md-nav" aria-label="4.2.1.3 Keras - ImageDataGenerator">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -607,8 +607,22 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#exercise-4-transfer-learn-with-other-base-models" class="md-nav__link">
+    🏋️ Exercise 4: Transfer Learn with other Base Models
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#45-summary" class="md-nav__link">
+    4.5 Summary
+  </a>
   
 </li>
       
@@ -869,11 +883,11 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#4211-keras-imagedatagenerator" class="md-nav__link">
-    4.2.1.1 Keras - ImageDataGenerator
+  <a href="#4211-skimage" class="md-nav__link">
+    4.2.1.1 Skimage
   </a>
   
-    <nav class="md-nav" aria-label="4.2.1.1 Keras - ImageDataGenerator">
+    <nav class="md-nav" aria-label="4.2.1.1 Skimage">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -909,11 +923,11 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4213-skimage" class="md-nav__link">
-    4.2.1.3 Skimage
+  <a href="#4213-keras-imagedatagenerator" class="md-nav__link">
+    4.2.1.3 Keras - ImageDataGenerator
   </a>
   
-    <nav class="md-nav" aria-label="4.2.1.3 Skimage">
+    <nav class="md-nav" aria-label="4.2.1.3 Keras - ImageDataGenerator">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1008,8 +1022,22 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#exercise-4-transfer-learn-with-other-base-models" class="md-nav__link">
+    🏋️ Exercise 4: Transfer Learn with other Base Models
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#45-summary" class="md-nav__link">
+    4.5 Summary
+  </a>
   
 </li>
       
@@ -1110,10 +1138,10 @@ to compare execution speed.</p>
 
 <div class="codehilite"><pre><span></span><code>Time (s) to convolve 32x7x7x3 filter over random 100x100x100x3 images (batch x height x width x channel). Sum of ten runs.
 CPU (s):
-3.6013758809995124
+3.7607866190000436
 GPU (s):
-0.05695467800069309
-GPU speedup over CPU: 63x
+0.04739101299998083
+GPU speedup over CPU: 79x
 </code></pre></div>
 
 <p><a name='x.0.3'></a></p>
@@ -1124,7 +1152,7 @@ GPU speedup over CPU: 63x
 <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
 </code></pre></div>
 
-<div class="codehilite"><pre><span></span><code>3
+<div class="codehilite"><pre><span></span><code>61
 </code></pre></div>
 
 <div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">os</span>
@@ -1141,6 +1169,7 @@ GPU speedup over CPU: 63x
 <span class="kn">from</span> <span class="nn">tensorflow.keras</span> <span class="kn">import</span> <span class="n">layers</span>
 <span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="n">Activation</span><span class="p">,</span> <span class="n">Dropout</span><span class="p">,</span> <span class="n">Flatten</span><span class="p">,</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Conv2D</span><span class="p">,</span> <span class="n">MaxPooling2D</span><span class="p">,</span> <span class="n">InputLayer</span>
 <span class="kn">from</span> <span class="nn">tensorflow.data.experimental</span> <span class="kn">import</span> <span class="n">AUTOTUNE</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.layers.experimental</span> <span class="kn">import</span> <span class="n">preprocessing</span>
 <span class="kn">from</span> <span class="nn">tensorflow.keras.preprocessing</span> <span class="kn">import</span> <span class="n">image_dataset_from_directory</span>
 <span class="kn">from</span> <span class="nn">tensorflow.keras.preprocessing.image</span> <span class="kn">import</span> <span class="n">ImageDataGenerator</span><span class="p">,</span> <span class="n">load_img</span><span class="p">,</span> <span class="n">img_to_array</span>
 <span class="kn">from</span> <span class="nn">tensorflow.keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
@@ -1152,7 +1181,7 @@ GPU speedup over CPU: 63x
 <span class="n">drive</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s2">&quot;/content/drive&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<div class="codehilite"><pre><span></span><code>Drive already mounted at /content/drive; to attempt to forcibly remount, call drive.mount(&quot;/content/drive&quot;, force_remount=True).
+<div class="codehilite"><pre><span></span><code>Mounted at /content/drive
 </code></pre></div>
 
 <p><a name='x.0.4'></a></p>
@@ -1169,10 +1198,15 @@ GPU speedup over CPU: 63x
 <span class="n">image_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">300</span><span class="p">,</span><span class="mi">300</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># the images actually are 300,300,3</span>
 <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">32</span>
 <span class="n">validation_split</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">seed_value</span> <span class="o">=</span> <span class="mi">42</span>
 
 <span class="n">path_to_casting_data</span> <span class="o">=</span> <span class="s1">&#39;/content/drive/MyDrive/courses/tech_fundamentals/TECH_FUNDAMENTALS/data/casting_data_class_practice&#39;</span>
 <span class="n">technocast_train_path</span> <span class="o">=</span> <span class="n">path_to_casting_data</span> <span class="o">+</span> <span class="s1">&#39;/train/&#39;</span>
 <span class="n">technocast_test_path</span> <span class="o">=</span> <span class="n">path_to_casting_data</span> <span class="o">+</span> <span class="s1">&#39;/test/&#39;</span>
+
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">seed</span>
+<span class="n">seed</span><span class="p">(</span><span class="n">seed_value</span><span class="p">)</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_seed</span><span class="p">(</span><span class="n">seed_value</span><span class="p">)</span>
 </code></pre></div>
 
 <h4 id="4041-loading-data-with-skimage">4.0.4.1 Loading data with skimage<a class="headerlink" href="#4041-loading-data-with-skimage" title="Permanent link">&para;</a></h4>
@@ -1232,7 +1266,7 @@ GPU speedup over CPU: 63x
 <span class="c1"># create train/val/test and shuffle</span>
 <span class="n">train_val_dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">((</span><span class="n">train_val_raw</span><span class="p">,</span> <span class="n">train_val_labels</span><span class="p">))</span> 
 <span class="c1"># shuffling the `train+val` dataset before separating them</span>
-<span class="n">train_val_dataset</span> <span class="o">=</span> <span class="n">train_val_dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">train_val_dataset</span><span class="p">),</span> <span class="n">seed</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">train_val_dataset</span> <span class="o">=</span> <span class="n">train_val_dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">train_val_dataset</span><span class="p">),</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed_value</span><span class="p">)</span>
 
 <span class="c1"># use validation_split</span>
 <span class="n">val_len</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">validation_split</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_val_raw</span><span class="p">))</span>
@@ -1240,7 +1274,7 @@ GPU speedup over CPU: 63x
 <span class="n">train_dataset</span> <span class="o">=</span> <span class="n">train_val_dataset</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="n">val_len</span><span class="p">)</span>
 
 <span class="n">test_dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">((</span><span class="n">test_raw</span><span class="p">,</span> <span class="n">test_labels</span><span class="p">))</span> 
-<span class="c1"># test_dataset = test_dataset.shuffle(buffer_size=len(test_dataset), seed=12)        </span>
+<span class="c1"># test_dataset = test_dataset.shuffle(buffer_size=len(test_dataset), seed=seed_value)        </span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Train size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">Val size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">val_dataset</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">Test size: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -1278,7 +1312,8 @@ Test batches: 22
                                           <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
                                           <span class="n">class_mode</span><span class="o">=</span><span class="s2">&quot;sparse&quot;</span><span class="p">,</span>
                                           <span class="n">subset</span><span class="o">=</span><span class="s2">&quot;training&quot;</span><span class="p">,</span>
-                                          <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                                          <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                          <span class="n">seed</span><span class="o">=</span><span class="n">seed_value</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;loading validation set...&quot;</span><span class="p">)</span>
 <span class="n">val_set_keras</span> <span class="o">=</span> <span class="n">image_gen</span><span class="o">.</span><span class="n">flow_from_directory</span><span class="p">(</span><span class="n">technocast_train_path</span><span class="p">,</span>
                                           <span class="n">target_size</span><span class="o">=</span><span class="n">image_shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span>
@@ -1286,14 +1321,15 @@ Test batches: 22
                                           <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
                                           <span class="n">class_mode</span><span class="o">=</span><span class="s2">&quot;sparse&quot;</span><span class="p">,</span>
                                           <span class="n">subset</span><span class="o">=</span><span class="s2">&quot;validation&quot;</span><span class="p">,</span>
-                                          <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                                          <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                          <span class="n">seed</span><span class="o">=</span><span class="n">seed_value</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;loading testing set...&quot;</span><span class="p">)</span>
 <span class="n">test_set_keras</span> <span class="o">=</span> <span class="n">image_gen</span><span class="o">.</span><span class="n">flow_from_directory</span><span class="p">(</span><span class="n">technocast_test_path</span><span class="p">,</span>
                                           <span class="n">target_size</span><span class="o">=</span><span class="n">image_shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span>
                                           <span class="n">color_mode</span><span class="o">=</span><span class="s2">&quot;rgb&quot;</span><span class="p">,</span>
                                           <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
                                           <span class="n">class_mode</span><span class="o">=</span><span class="s2">&quot;sparse&quot;</span><span class="p">,</span>
-                                         <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                                          <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
 
 <div class="codehilite"><pre><span></span><code>loading training set...
@@ -1320,7 +1356,7 @@ Found 678 images belonging to 2 classes.
     <span class="n">validation_split</span><span class="o">=</span><span class="n">validation_split</span><span class="p">,</span>
     <span class="n">subset</span><span class="o">=</span><span class="s2">&quot;training&quot;</span><span class="p">,</span>
     <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="n">seed_value</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;loading validation set...&quot;</span><span class="p">)</span>
 <span class="n">ds_val_</span> <span class="o">=</span> <span class="n">image_dataset_from_directory</span><span class="p">(</span>
@@ -1333,7 +1369,7 @@ Found 678 images belonging to 2 classes.
     <span class="n">validation_split</span><span class="o">=</span><span class="n">validation_split</span><span class="p">,</span>
     <span class="n">subset</span><span class="o">=</span><span class="s2">&quot;validation&quot;</span><span class="p">,</span>
     <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="n">seed_value</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;loading testing set...&quot;</span><span class="p">)</span>
 <span class="n">ds_test_</span> <span class="o">=</span> <span class="n">image_dataset_from_directory</span><span class="p">(</span>
@@ -1600,47 +1636,61 @@ pool_stride=YOUR_VALUE, # condenses pixels
 <h3 id="421-define-architecture">4.2.1 Define Architecture<a class="headerlink" href="#421-define-architecture" title="Permanent link">&para;</a></h3>
 <p><a href="#top">back to top</a></p>
 <p>In the following I'm going to double the filter size after the first block. This is a common pattern as the max pooling layers forces us in the opposite direction.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># Creating model</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">build_model</span><span class="p">():</span>
+  <span class="c1"># Creating model</span>
+  <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
 
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">InputLayer</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="n">image_shape</span><span class="p">)))</span>
+  <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">InputLayer</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="n">image_shape</span><span class="p">)))</span>
 
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,))</span>
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+  <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,))</span>
+  <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,))</span>
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+  <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,))</span>
+  <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,))</span>
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+  <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,))</span>
+  <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Flatten</span><span class="p">())</span>
+  <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Flatten</span><span class="p">())</span>
 
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">224</span><span class="p">))</span>
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+  <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">224</span><span class="p">))</span>
+  <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
 
-<span class="c1"># Last layer</span>
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+  <span class="c1"># Last layer</span>
+  <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+
+  <span class="n">base_learning_rate</span> <span class="o">=</span> <span class="mf">0.001</span>
+  <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">SparseCategoricalCrossentropy</span><span class="p">(</span><span class="n">from_logits</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                <span class="n">optimizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">base_learning_rate</span><span class="p">),</span>
+                <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+
+  <span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+  <span class="k">return</span> <span class="n">model</span>
 
 <span class="n">early_stop</span> <span class="o">=</span> <span class="n">EarlyStopping</span><span class="p">(</span><span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;val_loss&#39;</span><span class="p">,</span>
-                           <span class="n">patience</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-                           <span class="n">restore_best_weights</span><span class="o">=</span><span class="kc">True</span><span class="p">,)</span>
+                            <span class="n">patience</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+                            <span class="n">restore_best_weights</span><span class="o">=</span><span class="kc">True</span><span class="p">,)</span>
+</code></pre></div>
 
-<span class="c1"># FOR BINARY MODE</span>
-<span class="c1"># model.add(Dense(1))</span>
-<span class="c1"># model.add(Activation(&#39;sigmoid&#39;))</span>
+<p><a name='x.2.1'></a></p>
+<h3 id="421-train-and-evaluate-model">4.2.1 Train and Evaluate Model<a class="headerlink" href="#421-train-and-evaluate-model" title="Permanent link">&para;</a></h3>
+<p><a href="#top">back to top</a></p>
+<p>To save/load weights and training history:</p>
+<div class="codehilite"><pre><span></span><code># model.save(&#39;inspection_of_casting_products.h5&#39;)
+# model.load_weights(&#39;inspection_of_casting_products.h5&#39;)
+# losses.to_csv(&#39;history_simple_model.csv&#39;, index=False)
+</code></pre></div>
 
-<span class="c1"># model.compile(loss=&#39;binary_crossentropy&#39;,</span>
-<span class="c1">#               optimizer=&#39;adam&#39;,</span>
-<span class="c1">#               metrics=[&#39;binary_accuracy&#39;])</span>
-
-<span class="c1"># MULTIPLE LABELS</span>
-<span class="n">base_learning_rate</span> <span class="o">=</span> <span class="mf">0.001</span>
-<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">SparseCategoricalCrossentropy</span><span class="p">(</span><span class="n">from_logits</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-              <span class="n">optimizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">base_learning_rate</span><span class="p">),</span>
-              <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
-
-<span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+<h4 id="4211-skimage">4.2.1.1 Skimage<a class="headerlink" href="#4211-skimage" title="Permanent link">&para;</a></h4>
+<p><a href="#top">back to top</a></p>
+<div class="codehilite"><pre><span></span><code><span class="o">%%</span><span class="n">time</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">build_model</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;/device:GPU:0&#39;</span><span class="p">):</span>
+  <span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_dataset_batched</span><span class="p">,</span>
+                      <span class="n">epochs</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+                      <span class="n">validation_data</span><span class="o">=</span><span class="n">val_dataset_batched</span><span class="p">,</span>
+                      <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">early_stop</span><span class="p">]</span>
+                      <span class="p">)</span>
 </code></pre></div>
 
 <div class="codehilite"><pre><span></span><code>Model: &quot;sequential_3&quot;
@@ -1675,58 +1725,49 @@ Total params: 4,394,786
 Trainable params: 4,394,786
 Non-trainable params: 0
 _________________________________________________________________
-</code></pre></div>
-
-<p><a name='x.2.1'></a></p>
-<h3 id="421-train-and-evaluate-model">4.2.1 Train and Evaluate Model<a class="headerlink" href="#421-train-and-evaluate-model" title="Permanent link">&para;</a></h3>
-<p><a href="#top">back to top</a></p>
-<p>To save/load weights and training history:</p>
-<div class="codehilite"><pre><span></span><code># model.save(&#39;inspection_of_casting_products.h5&#39;)
-# model.load_weights(&#39;inspection_of_casting_products.h5&#39;)
-# losses.to_csv(&#39;history_simple_model.csv&#39;, index=False)
-</code></pre></div>
-
-<h4 id="4211-keras-imagedatagenerator">4.2.1.1 Keras - ImageDataGenerator<a class="headerlink" href="#4211-keras-imagedatagenerator" title="Permanent link">&para;</a></h4>
-<p><a href="#top">back to top</a></p>
-<div class="codehilite"><pre><span></span><code><span class="o">%%</span><span class="n">time</span>
-<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;/device:GPU:0&#39;</span><span class="p">):</span>
-  <span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_set_keras</span><span class="p">,</span>
-                      <span class="n">epochs</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
-                      <span class="n">validation_data</span><span class="o">=</span><span class="n">val_set_keras</span><span class="p">,</span>
-                      <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">early_stop</span><span class="p">]</span>
-                      <span class="p">)</span>
-</code></pre></div>
-
-<div class="codehilite"><pre><span></span><code>Epoch 1/30
-24/24 [==============================] - 7s 227ms/step - loss: 0.7593 - accuracy: 0.5482 - val_loss: 0.6591 - val_accuracy: 0.6627
+None
+Epoch 1/30
+24/24 [==============================] - 4s 95ms/step - loss: 83.8552 - accuracy: 0.5423 - val_loss: 1.2317 - val_accuracy: 0.6548
 Epoch 2/30
-24/24 [==============================] - 5s 194ms/step - loss: 0.6028 - accuracy: 0.6816 - val_loss: 0.6366 - val_accuracy: 0.5904
+24/24 [==============================] - 2s 72ms/step - loss: 0.6356 - accuracy: 0.7011 - val_loss: 0.3245 - val_accuracy: 0.8571
 Epoch 3/30
-24/24 [==============================] - 5s 188ms/step - loss: 0.5142 - accuracy: 0.7213 - val_loss: 0.5086 - val_accuracy: 0.7831
+24/24 [==============================] - 2s 71ms/step - loss: 0.3996 - accuracy: 0.7976 - val_loss: 0.3156 - val_accuracy: 0.8452
 Epoch 4/30
-24/24 [==============================] - 5s 192ms/step - loss: 0.4111 - accuracy: 0.8151 - val_loss: 0.5355 - val_accuracy: 0.6867
+24/24 [==============================] - 2s 72ms/step - loss: 0.2368 - accuracy: 0.8995 - val_loss: 0.1321 - val_accuracy: 0.9643
 Epoch 5/30
-24/24 [==============================] - 5s 192ms/step - loss: 0.4172 - accuracy: 0.7913 - val_loss: 0.4081 - val_accuracy: 0.8313
+24/24 [==============================] - 2s 72ms/step - loss: 0.1764 - accuracy: 0.9325 - val_loss: 0.1329 - val_accuracy: 0.9524
 Epoch 6/30
-24/24 [==============================] - 5s 194ms/step - loss: 0.2995 - accuracy: 0.8771 - val_loss: 0.3466 - val_accuracy: 0.8916
+24/24 [==============================] - 2s 71ms/step - loss: 0.1729 - accuracy: 0.9352 - val_loss: 0.1492 - val_accuracy: 0.9524
 Epoch 7/30
-24/24 [==============================] - 5s 194ms/step - loss: 0.2150 - accuracy: 0.9221 - val_loss: 0.3527 - val_accuracy: 0.8795
+24/24 [==============================] - 2s 72ms/step - loss: 0.0984 - accuracy: 0.9616 - val_loss: 0.0482 - val_accuracy: 0.9881
 Epoch 8/30
-24/24 [==============================] - 5s 193ms/step - loss: 0.1643 - accuracy: 0.9498 - val_loss: 0.2129 - val_accuracy: 0.9277
+24/24 [==============================] - 2s 71ms/step - loss: 0.0494 - accuracy: 0.9868 - val_loss: 0.0247 - val_accuracy: 1.0000
 Epoch 9/30
-24/24 [==============================] - 5s 195ms/step - loss: 0.1013 - accuracy: 0.9762 - val_loss: 0.1806 - val_accuracy: 0.9518
+24/24 [==============================] - 2s 71ms/step - loss: 0.0632 - accuracy: 0.9828 - val_loss: 0.0292 - val_accuracy: 1.0000
 Epoch 10/30
-24/24 [==============================] - 5s 192ms/step - loss: 0.0878 - accuracy: 0.9736 - val_loss: 0.2076 - val_accuracy: 0.9157
+24/24 [==============================] - 2s 71ms/step - loss: 0.0411 - accuracy: 0.9868 - val_loss: 0.0139 - val_accuracy: 1.0000
 Epoch 11/30
-24/24 [==============================] - 5s 193ms/step - loss: 0.0735 - accuracy: 0.9802 - val_loss: 0.2817 - val_accuracy: 0.9277
+24/24 [==============================] - 2s 71ms/step - loss: 0.0183 - accuracy: 0.9974 - val_loss: 0.0096 - val_accuracy: 1.0000
 Epoch 12/30
-24/24 [==============================] - 5s 190ms/step - loss: 0.0507 - accuracy: 0.9881 - val_loss: 0.1857 - val_accuracy: 0.9518
+24/24 [==============================] - 2s 72ms/step - loss: 0.0077 - accuracy: 1.0000 - val_loss: 0.0048 - val_accuracy: 1.0000
 Epoch 13/30
-24/24 [==============================] - 5s 194ms/step - loss: 0.0456 - accuracy: 0.9855 - val_loss: 0.2405 - val_accuracy: 0.9277
+24/24 [==============================] - 2s 71ms/step - loss: 0.0083 - accuracy: 0.9987 - val_loss: 0.0050 - val_accuracy: 1.0000
 Epoch 14/30
-24/24 [==============================] - 5s 193ms/step - loss: 0.0269 - accuracy: 0.9947 - val_loss: 0.2210 - val_accuracy: 0.9277
-CPU times: user 1min 1s, sys: 4.75 s, total: 1min 6s
-Wall time: 1min 8s
+24/24 [==============================] - 2s 72ms/step - loss: 0.0047 - accuracy: 1.0000 - val_loss: 0.0054 - val_accuracy: 1.0000
+Epoch 15/30
+24/24 [==============================] - 2s 73ms/step - loss: 0.0048 - accuracy: 0.9987 - val_loss: 0.0033 - val_accuracy: 1.0000
+Epoch 16/30
+24/24 [==============================] - 2s 72ms/step - loss: 0.0692 - accuracy: 0.9841 - val_loss: 0.1683 - val_accuracy: 0.9286
+Epoch 17/30
+24/24 [==============================] - 2s 71ms/step - loss: 0.2085 - accuracy: 0.9378 - val_loss: 0.1657 - val_accuracy: 0.9405
+Epoch 18/30
+24/24 [==============================] - 2s 71ms/step - loss: 0.1278 - accuracy: 0.9537 - val_loss: 0.0475 - val_accuracy: 0.9762
+Epoch 19/30
+24/24 [==============================] - 2s 73ms/step - loss: 0.1368 - accuracy: 0.9471 - val_loss: 0.0586 - val_accuracy: 0.9762
+Epoch 20/30
+24/24 [==============================] - 2s 72ms/step - loss: 0.0445 - accuracy: 0.9854 - val_loss: 0.0144 - val_accuracy: 1.0000
+CPU times: user 34.5 s, sys: 1.8 s, total: 36.3 s
+Wall time: 47.6 s
 </code></pre></div>
 
 <div class="codehilite"><pre><span></span><code><span class="n">losses</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">history</span><span class="p">)</span>
@@ -1735,185 +1776,11 @@ Wall time: 1min 8s
 <span class="n">losses</span><span class="p">[[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span><span class="s1">&#39;val_accuracy&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 </code></pre></div>
 
-<div class="codehilite"><pre><span></span><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f213b72ed90&gt;
+<div class="codehilite"><pre><span></span><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7ff3801d4ad0&gt;
 </code></pre></div>
 
 <p><img alt="png" src="../S4_Computer_Vision_II_files/S4_Computer_Vision_II_41_1.png" /></p>
 <h5 id="42111-evaluate">4.2.1.1.1 Evaluate<a class="headerlink" href="#42111-evaluate" title="Permanent link">&para;</a></h5>
-<p><a href="#top">back to top</a></p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># Keras/ImageDataGenerator results</span>
-<span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_set_keras</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">labels</span> <span class="o">=</span> <span class="n">test_set_keras</span><span class="o">.</span><span class="n">classes</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span><span class="n">predictions</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span><span class="n">predictions</span><span class="p">),</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</code></pre></div>
-
-<div class="codehilite"><pre><span></span><code>              precision    recall  f1-score   support
-
-           0       0.99      0.90      0.94       416
-           1       0.86      0.98      0.92       262
-
-    accuracy                           0.93       678
-   macro avg       0.93      0.94      0.93       678
-weighted avg       0.94      0.93      0.93       678
-
-
-
-
-
-
-&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f213bae9590&gt;
-</code></pre></div>
-
-<p><img alt="png" src="../S4_Computer_Vision_II_files/S4_Computer_Vision_II_43_2.png" /></p>
-<h4 id="4212-tf-image_dataset_from_directory">4.2.1.2 TF - image_dataset_from_directory<a class="headerlink" href="#4212-tf-image_dataset_from_directory" title="Permanent link">&para;</a></h4>
-<p><a href="#top">back to top</a></p>
-<div class="codehilite"><pre><span></span><code><span class="o">%%</span><span class="n">time</span>
-<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;/device:GPU:0&#39;</span><span class="p">):</span>
-  <span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_set_tf</span><span class="p">,</span>
-                      <span class="n">epochs</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
-                      <span class="n">validation_data</span><span class="o">=</span><span class="n">val_set_tf</span><span class="p">,</span>
-                      <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">early_stop</span><span class="p">]</span>
-                      <span class="p">)</span>
-</code></pre></div>
-
-<div class="codehilite"><pre><span></span><code>Epoch 1/30
-24/24 [==============================] - 4s 140ms/step - loss: 55.5491 - accuracy: 0.8201 - val_loss: 5.1122 - val_accuracy: 0.8929
-Epoch 2/30
-24/24 [==============================] - 3s 116ms/step - loss: 2.8739 - accuracy: 0.8955 - val_loss: 4.8220 - val_accuracy: 0.8214
-Epoch 3/30
-24/24 [==============================] - 3s 119ms/step - loss: 1.2538 - accuracy: 0.9312 - val_loss: 2.1922 - val_accuracy: 0.9167
-Epoch 4/30
-24/24 [==============================] - 3s 113ms/step - loss: 0.5790 - accuracy: 0.9524 - val_loss: 1.4201 - val_accuracy: 0.9286
-Epoch 5/30
-24/24 [==============================] - 3s 116ms/step - loss: 0.4030 - accuracy: 0.9696 - val_loss: 1.5978 - val_accuracy: 0.8452
-Epoch 6/30
-24/24 [==============================] - 3s 114ms/step - loss: 0.2560 - accuracy: 0.9735 - val_loss: 1.7492 - val_accuracy: 0.9286
-Epoch 7/30
-24/24 [==============================] - 4s 117ms/step - loss: 0.3537 - accuracy: 0.9656 - val_loss: 1.4600 - val_accuracy: 0.8929
-Epoch 8/30
-24/24 [==============================] - 3s 116ms/step - loss: 0.2665 - accuracy: 0.9643 - val_loss: 1.3548 - val_accuracy: 0.9286
-Epoch 9/30
-24/24 [==============================] - 3s 116ms/step - loss: 0.1182 - accuracy: 0.9828 - val_loss: 1.1673 - val_accuracy: 0.9286
-Epoch 10/30
-24/24 [==============================] - 3s 113ms/step - loss: 0.0726 - accuracy: 0.9934 - val_loss: 1.1526 - val_accuracy: 0.9286
-Epoch 11/30
-24/24 [==============================] - 3s 116ms/step - loss: 0.1035 - accuracy: 0.9854 - val_loss: 1.0764 - val_accuracy: 0.9286
-Epoch 12/30
-24/24 [==============================] - 3s 115ms/step - loss: 0.0740 - accuracy: 0.9934 - val_loss: 1.1382 - val_accuracy: 0.9286
-Epoch 13/30
-24/24 [==============================] - 3s 116ms/step - loss: 0.0715 - accuracy: 0.9947 - val_loss: 1.2261 - val_accuracy: 0.9286
-Epoch 14/30
-24/24 [==============================] - 3s 117ms/step - loss: 0.0572 - accuracy: 0.9960 - val_loss: 1.1134 - val_accuracy: 0.9286
-Epoch 15/30
-24/24 [==============================] - 3s 116ms/step - loss: 0.0354 - accuracy: 0.9974 - val_loss: 1.1387 - val_accuracy: 0.9167
-Epoch 16/30
-24/24 [==============================] - 3s 117ms/step - loss: 0.0244 - accuracy: 0.9960 - val_loss: 1.2322 - val_accuracy: 0.9286
-CPU times: user 50.5 s, sys: 5.47 s, total: 56 s
-Wall time: 1min 6s
-</code></pre></div>
-
-<div class="codehilite"><pre><span></span><code><span class="n">losses</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">history</span><span class="p">)</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
-<span class="n">losses</span><span class="p">[[</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span><span class="s1">&#39;val_loss&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">losses</span><span class="p">[[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span><span class="s1">&#39;val_accuracy&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-</code></pre></div>
-
-<div class="codehilite"><pre><span></span><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f213cccda90&gt;
-</code></pre></div>
-
-<p><img alt="png" src="../S4_Computer_Vision_II_files/S4_Computer_Vision_II_46_1.png" /></p>
-<h5 id="42121-evaluate">4.2.1.2.1 Evaluate<a class="headerlink" href="#42121-evaluate" title="Permanent link">&para;</a></h5>
-<p><a href="#top">back to top</a></p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># Keras/ImageDataGenerator results</span>
-<span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_set_tf</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">labels</span> <span class="o">=</span> <span class="n">test_set_keras</span><span class="o">.</span><span class="n">classes</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span><span class="n">predictions</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span><span class="n">predictions</span><span class="p">),</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</code></pre></div>
-
-<div class="codehilite"><pre><span></span><code>              precision    recall  f1-score   support
-
-           0       0.98      0.83      0.90       416
-           1       0.78      0.97      0.86       262
-
-    accuracy                           0.88       678
-   macro avg       0.88      0.90      0.88       678
-weighted avg       0.90      0.88      0.88       678
-
-
-
-
-
-
-&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f213cdb3a10&gt;
-</code></pre></div>
-
-<p><img alt="png" src="../S4_Computer_Vision_II_files/S4_Computer_Vision_II_48_2.png" /></p>
-<h4 id="4213-skimage">4.2.1.3 Skimage<a class="headerlink" href="#4213-skimage" title="Permanent link">&para;</a></h4>
-<p><a href="#top">back to top</a></p>
-<div class="codehilite"><pre><span></span><code><span class="o">%%</span><span class="n">time</span>
-<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;/device:GPU:0&#39;</span><span class="p">):</span>
-  <span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_dataset_batched</span><span class="p">,</span>
-                      <span class="n">epochs</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
-                      <span class="n">validation_data</span><span class="o">=</span><span class="n">val_dataset_batched</span><span class="p">,</span>
-                      <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">early_stop</span><span class="p">]</span>
-                      <span class="p">)</span>
-</code></pre></div>
-
-<div class="codehilite"><pre><span></span><code>Epoch 1/30
-24/24 [==============================] - 3s 102ms/step - loss: 0.1753 - accuracy: 0.9907 - val_loss: 0.1404 - val_accuracy: 0.9762
-Epoch 2/30
-24/24 [==============================] - 2s 94ms/step - loss: 0.1238 - accuracy: 0.9828 - val_loss: 0.0573 - val_accuracy: 0.9881
-Epoch 3/30
-24/24 [==============================] - 2s 94ms/step - loss: 0.1051 - accuracy: 0.9854 - val_loss: 0.0135 - val_accuracy: 0.9881
-Epoch 4/30
-24/24 [==============================] - 2s 94ms/step - loss: 0.1496 - accuracy: 0.9881 - val_loss: 1.4501e-04 - val_accuracy: 1.0000
-Epoch 5/30
-24/24 [==============================] - 2s 94ms/step - loss: 0.0523 - accuracy: 0.9960 - val_loss: 1.0566e-04 - val_accuracy: 1.0000
-Epoch 6/30
-24/24 [==============================] - 2s 94ms/step - loss: 0.0832 - accuracy: 0.9828 - val_loss: 0.0013 - val_accuracy: 1.0000
-Epoch 7/30
-24/24 [==============================] - 2s 95ms/step - loss: 0.0398 - accuracy: 0.9921 - val_loss: 0.2791 - val_accuracy: 0.9881
-Epoch 8/30
-24/24 [==============================] - 2s 94ms/step - loss: 0.0828 - accuracy: 0.9907 - val_loss: 0.1926 - val_accuracy: 0.9762
-Epoch 9/30
-24/24 [==============================] - 2s 94ms/step - loss: 0.0173 - accuracy: 0.9934 - val_loss: 1.9447e-05 - val_accuracy: 1.0000
-Epoch 10/30
-24/24 [==============================] - 2s 94ms/step - loss: 0.0234 - accuracy: 0.9974 - val_loss: 0.1100 - val_accuracy: 0.9881
-Epoch 11/30
-24/24 [==============================] - 2s 93ms/step - loss: 0.0213 - accuracy: 0.9960 - val_loss: 5.2849e-05 - val_accuracy: 1.0000
-Epoch 12/30
-24/24 [==============================] - 2s 93ms/step - loss: 0.0197 - accuracy: 0.9947 - val_loss: 0.0372 - val_accuracy: 0.9762
-Epoch 13/30
-24/24 [==============================] - 2s 94ms/step - loss: 0.0230 - accuracy: 0.9947 - val_loss: 3.8684e-06 - val_accuracy: 1.0000
-Epoch 14/30
-24/24 [==============================] - 2s 94ms/step - loss: 0.0151 - accuracy: 0.9974 - val_loss: 7.6069e-04 - val_accuracy: 1.0000
-Epoch 15/30
-24/24 [==============================] - 2s 94ms/step - loss: 0.0112 - accuracy: 0.9987 - val_loss: 2.3023e-04 - val_accuracy: 1.0000
-Epoch 16/30
-24/24 [==============================] - 2s 93ms/step - loss: 0.0049 - accuracy: 0.9960 - val_loss: 9.3551e-06 - val_accuracy: 1.0000
-Epoch 17/30
-24/24 [==============================] - 2s 95ms/step - loss: 3.3230e-04 - accuracy: 1.0000 - val_loss: 1.6679e-04 - val_accuracy: 1.0000
-Epoch 18/30
-24/24 [==============================] - 2s 93ms/step - loss: 1.5592e-04 - accuracy: 1.0000 - val_loss: 0.0010 - val_accuracy: 1.0000
-CPU times: user 36 s, sys: 1.42 s, total: 37.4 s
-Wall time: 44.7 s
-</code></pre></div>
-
-<div class="codehilite"><pre><span></span><code><span class="n">losses</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">history</span><span class="p">)</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
-<span class="n">losses</span><span class="p">[[</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span><span class="s1">&#39;val_loss&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">losses</span><span class="p">[[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span><span class="s1">&#39;val_accuracy&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-</code></pre></div>
-
-<div class="codehilite"><pre><span></span><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f213b4fc8d0&gt;
-</code></pre></div>
-
-<p><img alt="png" src="../S4_Computer_Vision_II_files/S4_Computer_Vision_II_51_1.png" /></p>
-<h5 id="42131-evaluate">4.2.1.3.1 Evaluate<a class="headerlink" href="#42131-evaluate" title="Permanent link">&para;</a></h5>
 <p><a href="#top">back to top</a></p>
 <div class="codehilite"><pre><span></span><code><span class="n">pred</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">label</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1933,8 +1800,8 @@ Wall time: 44.7 s
 
 <div class="codehilite"><pre><span></span><code>              precision    recall  f1-score   support
 
-         0.0       1.00      1.00      1.00       365
-         1.0       1.00      1.00      1.00       339
+         0.0       1.00      1.00      1.00       331
+         1.0       1.00      1.00      1.00       373
 
     accuracy                           1.00       704
    macro avg       1.00      1.00      1.00       704
@@ -1945,7 +1812,225 @@ weighted avg       1.00      1.00      1.00       704
 
 
 
-&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f213b530b90&gt;
+&lt;matplotlib.axes._subplots.AxesSubplot at 0x7ff3800f0350&gt;
+</code></pre></div>
+
+<p><img alt="png" src="../S4_Computer_Vision_II_files/S4_Computer_Vision_II_43_2.png" /></p>
+<h4 id="4212-tf-image_dataset_from_directory">4.2.1.2 TF - image_dataset_from_directory<a class="headerlink" href="#4212-tf-image_dataset_from_directory" title="Permanent link">&para;</a></h4>
+<p><a href="#top">back to top</a></p>
+<div class="codehilite"><pre><span></span><code><span class="o">%%</span><span class="n">time</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">build_model</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;/device:GPU:0&#39;</span><span class="p">):</span>
+  <span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_set_tf</span><span class="p">,</span>
+                      <span class="n">epochs</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+                      <span class="n">validation_data</span><span class="o">=</span><span class="n">val_set_tf</span><span class="p">,</span>
+                      <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">early_stop</span><span class="p">]</span>
+                      <span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>Model: &quot;sequential_4&quot;
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ conv2d_28 (Conv2D)          (None, 298, 298, 8)       224
+
+ max_pooling2d_6 (MaxPooling  (None, 149, 149, 8)      0         
+ 2D)
+
+ conv2d_29 (Conv2D)          (None, 147, 147, 16)      1168
+
+ max_pooling2d_7 (MaxPooling  (None, 73, 73, 16)       0         
+ 2D)
+
+ conv2d_30 (Conv2D)          (None, 71, 71, 16)        2320
+
+ max_pooling2d_8 (MaxPooling  (None, 35, 35, 16)       0         
+ 2D)
+
+ flatten_1 (Flatten)         (None, 19600)             0
+
+ dense_2 (Dense)             (None, 224)               4390624
+
+ activation_3 (Activation)   (None, 224)               0
+
+ dense_3 (Dense)             (None, 2)                 450
+
+=================================================================
+Total params: 4,394,786
+Trainable params: 4,394,786
+Non-trainable params: 0
+_________________________________________________________________
+None
+Epoch 1/30
+24/24 [==============================] - 4s 110ms/step - loss: 134.4262 - accuracy: 0.4907 - val_loss: 1.5430 - val_accuracy: 0.4643
+Epoch 2/30
+24/24 [==============================] - 3s 104ms/step - loss: 0.8062 - accuracy: 0.6323 - val_loss: 0.5887 - val_accuracy: 0.7262
+Epoch 3/30
+24/24 [==============================] - 3s 104ms/step - loss: 0.5298 - accuracy: 0.7526 - val_loss: 0.4983 - val_accuracy: 0.7857
+Epoch 4/30
+24/24 [==============================] - 3s 102ms/step - loss: 0.3654 - accuracy: 0.8452 - val_loss: 0.4701 - val_accuracy: 0.7738
+Epoch 5/30
+24/24 [==============================] - 3s 102ms/step - loss: 0.3978 - accuracy: 0.8082 - val_loss: 0.4899 - val_accuracy: 0.7738
+Epoch 6/30
+24/24 [==============================] - 3s 102ms/step - loss: 0.2814 - accuracy: 0.8796 - val_loss: 0.6540 - val_accuracy: 0.7262
+Epoch 7/30
+24/24 [==============================] - 3s 105ms/step - loss: 0.8786 - accuracy: 0.7817 - val_loss: 0.8129 - val_accuracy: 0.6429
+Epoch 8/30
+24/24 [==============================] - 3s 103ms/step - loss: 0.3586 - accuracy: 0.8320 - val_loss: 0.5316 - val_accuracy: 0.8333
+Epoch 9/30
+24/24 [==============================] - 3s 104ms/step - loss: 0.2162 - accuracy: 0.9180 - val_loss: 0.5447 - val_accuracy: 0.8095
+CPU times: user 26 s, sys: 2.77 s, total: 28.8 s
+Wall time: 39.1 s
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="n">losses</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">history</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">losses</span><span class="p">[[</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span><span class="s1">&#39;val_loss&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">losses</span><span class="p">[[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span><span class="s1">&#39;val_accuracy&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7ff389cf4050&gt;
+</code></pre></div>
+
+<p><img alt="png" src="../S4_Computer_Vision_II_files/S4_Computer_Vision_II_46_1.png" /></p>
+<h5 id="42121-evaluate">4.2.1.2.1 Evaluate<a class="headerlink" href="#42121-evaluate" title="Permanent link">&para;</a></h5>
+<p><a href="#top">back to top</a></p>
+<div class="codehilite"><pre><span></span><code><span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_set_tf</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">ds_test_</span><span class="p">:</span>
+  <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">labels</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span><span class="o">.</span><span class="n">numpy</span><span class="p">()])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span><span class="n">predictions</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span><span class="n">predictions</span><span class="p">),</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>              precision    recall  f1-score   support
+
+         0.0       0.95      0.69      0.80       416
+         1.0       0.66      0.94      0.78       262
+
+    accuracy                           0.79       678
+   macro avg       0.80      0.82      0.79       678
+weighted avg       0.84      0.79      0.79       678
+
+
+
+
+
+
+&lt;matplotlib.axes._subplots.AxesSubplot at 0x7ff381bb5710&gt;
+</code></pre></div>
+
+<p><img alt="png" src="../S4_Computer_Vision_II_files/S4_Computer_Vision_II_48_2.png" /></p>
+<h4 id="4213-keras-imagedatagenerator">4.2.1.3 Keras - ImageDataGenerator<a class="headerlink" href="#4213-keras-imagedatagenerator" title="Permanent link">&para;</a></h4>
+<p><a href="#top">back to top</a></p>
+<div class="codehilite"><pre><span></span><code><span class="o">%%</span><span class="n">time</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">build_model</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;/device:GPU:0&#39;</span><span class="p">):</span>
+  <span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_set_keras</span><span class="p">,</span>
+                      <span class="n">epochs</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+                      <span class="n">validation_data</span><span class="o">=</span><span class="n">val_set_keras</span><span class="p">,</span>
+                      <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">early_stop</span><span class="p">]</span>
+                      <span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>Model: &quot;sequential_5&quot;
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ conv2d_31 (Conv2D)          (None, 298, 298, 8)       224
+
+ max_pooling2d_9 (MaxPooling  (None, 149, 149, 8)      0         
+ 2D)
+
+ conv2d_32 (Conv2D)          (None, 147, 147, 16)      1168
+
+ max_pooling2d_10 (MaxPoolin  (None, 73, 73, 16)       0         
+ g2D)
+
+ conv2d_33 (Conv2D)          (None, 71, 71, 16)        2320
+
+ max_pooling2d_11 (MaxPoolin  (None, 35, 35, 16)       0         
+ g2D)
+
+ flatten_2 (Flatten)         (None, 19600)             0
+
+ dense_4 (Dense)             (None, 224)               4390624
+
+ activation_4 (Activation)   (None, 224)               0
+
+ dense_5 (Dense)             (None, 2)                 450
+
+=================================================================
+Total params: 4,394,786
+Trainable params: 4,394,786
+Non-trainable params: 0
+_________________________________________________________________
+None
+Epoch 1/30
+24/24 [==============================] - 6s 218ms/step - loss: 0.7728 - accuracy: 0.5667 - val_loss: 0.6439 - val_accuracy: 0.6747
+Epoch 2/30
+24/24 [==============================] - 4s 183ms/step - loss: 0.5682 - accuracy: 0.7133 - val_loss: 0.5502 - val_accuracy: 0.7349
+Epoch 3/30
+24/24 [==============================] - 4s 183ms/step - loss: 0.4538 - accuracy: 0.7860 - val_loss: 0.5121 - val_accuracy: 0.7470
+Epoch 4/30
+24/24 [==============================] - 4s 186ms/step - loss: 0.3994 - accuracy: 0.8177 - val_loss: 0.5352 - val_accuracy: 0.7108
+Epoch 5/30
+24/24 [==============================] - 4s 184ms/step - loss: 0.3441 - accuracy: 0.8507 - val_loss: 0.4172 - val_accuracy: 0.7952
+Epoch 6/30
+24/24 [==============================] - 4s 182ms/step - loss: 0.2397 - accuracy: 0.9075 - val_loss: 0.3036 - val_accuracy: 0.8675
+Epoch 7/30
+24/24 [==============================] - 4s 184ms/step - loss: 0.1906 - accuracy: 0.9366 - val_loss: 0.2806 - val_accuracy: 0.9157
+Epoch 8/30
+24/24 [==============================] - 4s 185ms/step - loss: 0.1218 - accuracy: 0.9789 - val_loss: 0.2270 - val_accuracy: 0.9277
+Epoch 9/30
+24/24 [==============================] - 5s 187ms/step - loss: 0.1146 - accuracy: 0.9683 - val_loss: 0.6334 - val_accuracy: 0.7590
+Epoch 10/30
+24/24 [==============================] - 4s 185ms/step - loss: 0.1193 - accuracy: 0.9696 - val_loss: 0.2541 - val_accuracy: 0.9157
+Epoch 11/30
+24/24 [==============================] - 5s 187ms/step - loss: 0.1129 - accuracy: 0.9538 - val_loss: 0.3443 - val_accuracy: 0.8675
+Epoch 12/30
+24/24 [==============================] - 5s 189ms/step - loss: 0.1410 - accuracy: 0.9445 - val_loss: 0.2417 - val_accuracy: 0.9036
+Epoch 13/30
+24/24 [==============================] - 4s 186ms/step - loss: 0.0431 - accuracy: 0.9921 - val_loss: 0.2299 - val_accuracy: 0.9277
+CPU times: user 53.5 s, sys: 4.18 s, total: 57.7 s
+Wall time: 1min
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="n">losses</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">history</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">losses</span><span class="p">[[</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span><span class="s1">&#39;val_loss&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">losses</span><span class="p">[[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">,</span><span class="s1">&#39;val_accuracy&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7ff37fdbe790&gt;
+</code></pre></div>
+
+<p><img alt="png" src="../S4_Computer_Vision_II_files/S4_Computer_Vision_II_51_1.png" /></p>
+<h5 id="42131-evaluate">4.2.1.3.1 Evaluate<a class="headerlink" href="#42131-evaluate" title="Permanent link">&para;</a></h5>
+<p><a href="#top">back to top</a></p>
+<div class="codehilite"><pre><span></span><code><span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_set_keras</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">test_set_keras</span><span class="o">.</span><span class="n">classes</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span><span class="n">predictions</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span><span class="n">predictions</span><span class="p">),</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>              precision    recall  f1-score   support
+
+           0       0.99      0.88      0.93       416
+           1       0.83      0.98      0.90       262
+
+    accuracy                           0.92       678
+   macro avg       0.91      0.93      0.92       678
+weighted avg       0.93      0.92      0.92       678
+
+
+
+
+
+
+&lt;matplotlib.axes._subplots.AxesSubplot at 0x7ff37fef4d10&gt;
 </code></pre></div>
 
 <p><img alt="png" src="../S4_Computer_Vision_II_files/S4_Computer_Vision_II_53_2.png" /></p>
@@ -1965,148 +2050,18 @@ ugly = [0,0,1]
 
 <ol>
 <li>Choose one of the datatset import methods from above</li>
-<li>Specify the labels as binar</li>
-<li>redefine the model using a single dense node as the final layer with a sigmoidal activation function</li>
-<li>and compile with the new loss set to 'binary_crossentropy',</li>
-<li>train </li>
-<li>evaluate (check the output of the model, old code will no longer work!</li>
+<li>Specify the labels as binary during the loading process</li>
+<li>Redefine the model using </li>
+<li>a single dense node as the final layer with</li>
+<li>a sigmoidal activation function</li>
+<li>Compile with the new loss set to 'binary_crossentropy',</li>
+<li>Train the model</li>
+<li>Evaluate the F1/Precision/Recall metrics and display the confusion matrix. </li>
+<li><em>note: our prior method of obtaining the classification using <code>argmax</code> will not work, as the output is now a probability score ranging 0-1</em></li>
 </ol>
-<div class="codehilite"><pre><span></span><code><span class="c1"># Load training and validation sets</span>
-<span class="n">label_mode</span> <span class="o">=</span> <span class="s2">&quot;binary&quot;</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;loading training set...&quot;</span><span class="p">)</span>
-<span class="n">ds_train_</span> <span class="o">=</span> <span class="n">image_dataset_from_directory</span><span class="p">(</span>
-    <span class="n">technocast_train_path</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="s2">&quot;inferred&quot;</span><span class="p">,</span>
-    <span class="n">label_mode</span><span class="o">=</span><span class="n">label_mode</span><span class="p">,</span>
-    <span class="n">color_mode</span><span class="o">=</span><span class="s2">&quot;rgb&quot;</span><span class="p">,</span>
-    <span class="n">image_size</span><span class="o">=</span><span class="n">image_shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span>
-    <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
-    <span class="n">validation_split</span><span class="o">=</span><span class="n">validation_split</span><span class="p">,</span>
-    <span class="n">subset</span><span class="o">=</span><span class="s2">&quot;training&quot;</span><span class="p">,</span>
-    <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;loading validation set...&quot;</span><span class="p">)</span>
-<span class="n">ds_val_</span> <span class="o">=</span> <span class="n">image_dataset_from_directory</span><span class="p">(</span>
-    <span class="n">technocast_train_path</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="s2">&quot;inferred&quot;</span><span class="p">,</span>
-    <span class="n">label_mode</span><span class="o">=</span><span class="n">label_mode</span><span class="p">,</span>
-    <span class="n">color_mode</span><span class="o">=</span><span class="s2">&quot;rgb&quot;</span><span class="p">,</span>
-    <span class="n">image_size</span><span class="o">=</span><span class="n">image_shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span>
-    <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
-    <span class="n">validation_split</span><span class="o">=</span><span class="n">validation_split</span><span class="p">,</span>
-    <span class="n">subset</span><span class="o">=</span><span class="s2">&quot;validation&quot;</span><span class="p">,</span>
-    <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;loading testing set...&quot;</span><span class="p">)</span>
-<span class="n">ds_test_</span> <span class="o">=</span> <span class="n">image_dataset_from_directory</span><span class="p">(</span>
-    <span class="n">technocast_test_path</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="s2">&quot;inferred&quot;</span><span class="p">,</span>
-    <span class="n">label_mode</span><span class="o">=</span><span class="n">label_mode</span><span class="p">,</span>
-    <span class="n">color_mode</span><span class="o">=</span><span class="s2">&quot;rgb&quot;</span><span class="p">,</span>
-    <span class="n">image_size</span><span class="o">=</span><span class="n">image_shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span>
-    <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
-    <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">train_set_tf_binary</span> <span class="o">=</span> <span class="n">ds_train_</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="n">AUTOTUNE</span><span class="p">)</span>
-<span class="n">val_set_tf_binary</span> <span class="o">=</span> <span class="n">ds_val_</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="n">AUTOTUNE</span><span class="p">)</span>
-<span class="n">test_set_tf_binary</span> <span class="o">=</span> <span class="n">ds_test_</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="n">AUTOTUNE</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Code cell for exercise 2</span>
 </code></pre></div>
 
-<div class="codehilite"><pre><span></span><code>loading training set...
-Found 840 files belonging to 2 classes.
-Using 756 files for training.
-loading validation set...
-Found 840 files belonging to 2 classes.
-Using 84 files for validation.
-loading testing set...
-Found 678 files belonging to 2 classes.
-</code></pre></div>
-
-<div class="codehilite"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
-
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">InputLayer</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="n">image_shape</span><span class="p">)))</span>
-
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,))</span>
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
-
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,))</span>
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
-
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,))</span>
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
-
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Flatten</span><span class="p">())</span>
-
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">224</span><span class="p">))</span>
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
-
-<span class="c1"># Last layer</span>
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">))</span>
-
-<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;binary_crossentropy&#39;</span><span class="p">,</span>
-              <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span>
-              <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;binary_accuracy&#39;</span><span class="p">])</span>
-
-<span class="n">early_stop</span> <span class="o">=</span> <span class="n">EarlyStopping</span><span class="p">(</span><span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;val_loss&#39;</span><span class="p">,</span>
-                           <span class="n">patience</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-                           <span class="n">restore_best_weights</span><span class="o">=</span><span class="kc">True</span><span class="p">,)</span>
-</code></pre></div>
-
-<div class="codehilite"><pre><span></span><code><span class="o">%%</span><span class="n">time</span>
-<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;/device:GPU:0&#39;</span><span class="p">):</span>
-  <span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_set_tf_binary</span><span class="p">,</span>
-                      <span class="n">epochs</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
-                      <span class="n">validation_data</span><span class="o">=</span><span class="n">val_set_tf_binary</span><span class="p">,</span>
-                      <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">early_stop</span><span class="p">]</span>
-                      <span class="p">)</span>
-</code></pre></div>
-
-<div class="codehilite"><pre><span></span><code>Epoch 1/5
-24/24 [==============================] - 4s 125ms/step - loss: 74.1488 - binary_accuracy: 0.5423 - val_loss: 0.6049 - val_binary_accuracy: 0.6667
-Epoch 2/5
-24/24 [==============================] - 4s 119ms/step - loss: 0.5216 - binary_accuracy: 0.7487 - val_loss: 0.5339 - val_binary_accuracy: 0.7381
-Epoch 3/5
-24/24 [==============================] - 4s 120ms/step - loss: 0.3575 - binary_accuracy: 0.8519 - val_loss: 0.4508 - val_binary_accuracy: 0.7738
-Epoch 4/5
-24/24 [==============================] - 4s 120ms/step - loss: 0.2066 - binary_accuracy: 0.9312 - val_loss: 0.4309 - val_binary_accuracy: 0.7857
-Epoch 5/5
-24/24 [==============================] - 4s 122ms/step - loss: 0.1224 - binary_accuracy: 0.9656 - val_loss: 0.3694 - val_binary_accuracy: 0.8333
-CPU times: user 17.1 s, sys: 1.76 s, total: 18.9 s
-Wall time: 21.7 s
-</code></pre></div>
-
-<div class="codehilite"><pre><span></span><code><span class="c1"># Keras/ImageDataGenerator results</span>
-<span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_set_tf_binary</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.5</span>
-<span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
-<span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">ds_test_</span><span class="p">:</span>
-  <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">labels</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span><span class="o">.</span><span class="n">numpy</span><span class="p">()])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span><span class="n">predictions</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span><span class="n">predictions</span><span class="p">),</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</code></pre></div>
-
-<div class="codehilite"><pre><span></span><code>              precision    recall  f1-score   support
-
-         0.0       0.96      0.84      0.90       416
-         1.0       0.79      0.95      0.86       262
-
-    accuracy                           0.88       678
-   macro avg       0.87      0.89      0.88       678
-weighted avg       0.90      0.88      0.88       678
-
-
-
-
-
-
-&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f2399ef4c90&gt;
-</code></pre></div>
-
-<p><img alt="png" src="../S4_Computer_Vision_II_files/S4_Computer_Vision_II_58_2.png" /></p>
 <p><a name='x.3'></a></p>
 <h2 id="43-data-augmentation">4.3 Data Augmentation<a class="headerlink" href="#43-data-augmentation" title="Permanent link">&para;</a></h2>
 <p><a href="#top">back to top</a></p>
@@ -2124,19 +2079,15 @@ weighted avg       0.90      0.88      0.88       678
 <p>by varying the images in this way, the model always sees slightly new data, and becomes a more robust model. Remember that the caveat is that we can't muddle the relevant classification of the image. Sometimes the best way to see if data augmentation will be helpful is to just try it and see!</p>
 <h3 id="431-define-architecture">4.3.1 Define Architecture<a class="headerlink" href="#431-define-architecture" title="Permanent link">&para;</a></h3>
 <p><a href="#top">back to top</a></p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">tensorflow.keras.layers.experimental</span> <span class="kn">import</span> <span class="n">preprocessing</span>
-<span class="n">seed</span> <span class="o">=</span> <span class="mi">42</span>
-
-<span class="c1">#Creating model</span>
-
+<div class="codehilite"><pre><span></span><code><span class="c1">#Creating model</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
 
 <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">InputLayer</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="n">image_shape</span><span class="p">)))</span>
 
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">RandomFlip</span><span class="p">(</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)),</span> <span class="c1"># flip left-to-right</span>
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">RandomFlip</span><span class="p">(</span><span class="s1">&#39;vertical&#39;</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)),</span> <span class="c1"># flip upside-down</span>
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">RandomContrast</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)),</span> <span class="c1"># contrast change by up to 50%</span>
-<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">RandomRotation</span><span class="p">(</span><span class="n">factor</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fill_mode</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">RandomFlip</span><span class="p">(</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed_value</span><span class="p">)),</span> <span class="c1"># flip left-to-right</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">RandomFlip</span><span class="p">(</span><span class="s1">&#39;vertical&#39;</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed_value</span><span class="p">)),</span> <span class="c1"># flip upside-down</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">RandomContrast</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed_value</span><span class="p">)),</span> <span class="c1"># contrast change by up to 50%</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">RandomRotation</span><span class="p">(</span><span class="n">factor</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fill_mode</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed_value</span><span class="p">))</span>
 
 <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span><span class="n">input_shape</span><span class="o">=</span><span class="n">image_shape</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,))</span>
 <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
@@ -2167,7 +2118,7 @@ weighted avg       0.90      0.88      0.88       678
 <span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
 </code></pre></div>
 
-<div class="codehilite"><pre><span></span><code>Model: &quot;sequential_4&quot;
+<div class="codehilite"><pre><span></span><code>Model: &quot;sequential_6&quot;
 _________________________________________________________________
  Layer (type)                Output Shape              Param #   
 =================================================================
@@ -2181,28 +2132,28 @@ _________________________________________________________________
  random_rotation (RandomRota  (None, 300, 300, 3)      0         
  tion)
 
- conv2d_28 (Conv2D)          (None, 298, 298, 8)       224
+ conv2d_34 (Conv2D)          (None, 298, 298, 8)       224
 
- max_pooling2d_6 (MaxPooling  (None, 149, 149, 8)      0         
- 2D)
+ max_pooling2d_12 (MaxPoolin  (None, 149, 149, 8)      0         
+ g2D)
 
- conv2d_29 (Conv2D)          (None, 147, 147, 16)      1168
+ conv2d_35 (Conv2D)          (None, 147, 147, 16)      1168
 
- max_pooling2d_7 (MaxPooling  (None, 73, 73, 16)       0         
- 2D)
+ max_pooling2d_13 (MaxPoolin  (None, 73, 73, 16)       0         
+ g2D)
 
- conv2d_30 (Conv2D)          (None, 71, 71, 16)        2320
+ conv2d_36 (Conv2D)          (None, 71, 71, 16)        2320
 
- max_pooling2d_8 (MaxPooling  (None, 35, 35, 16)       0         
- 2D)
+ max_pooling2d_14 (MaxPoolin  (None, 35, 35, 16)       0         
+ g2D)
 
- flatten_1 (Flatten)         (None, 19600)             0
+ flatten_3 (Flatten)         (None, 19600)             0
 
- dense_2 (Dense)             (None, 224)               4390624
+ dense_6 (Dense)             (None, 224)               4390624
 
- activation_3 (Activation)   (None, 224)               0
+ activation_5 (Activation)   (None, 224)               0
 
- dense_3 (Dense)             (None, 2)                 450
+ dense_7 (Dense)             (None, 2)                 450
 
 =================================================================
 Total params: 4,394,786
@@ -2211,76 +2162,82 @@ Non-trainable params: 0
 _________________________________________________________________
 </code></pre></div>
 
-<div class="codehilite"><pre><span></span><code><span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_dataset_batched</span><span class="p">,</span>
+<div class="codehilite"><pre><span></span><code><span class="o">%%</span><span class="n">time</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_set_tf</span><span class="p">,</span>
                     <span class="n">epochs</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
-                    <span class="n">validation_data</span><span class="o">=</span><span class="n">val_dataset_batched</span><span class="p">,</span>
+                    <span class="n">validation_data</span><span class="o">=</span><span class="n">val_set_tf</span><span class="p">,</span>
                     <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">early_stop</span><span class="p">])</span>
 </code></pre></div>
 
 <div class="codehilite"><pre><span></span><code>Epoch 1/30
-24/24 [==============================] - 5s 133ms/step - loss: 145.6850 - accuracy: 0.5225 - val_loss: 1.5232 - val_accuracy: 0.5595
+24/24 [==============================] - 4s 116ms/step - loss: 119.8577 - accuracy: 0.4960 - val_loss: 4.5860 - val_accuracy: 0.5952
 Epoch 2/30
-24/24 [==============================] - 4s 126ms/step - loss: 0.9802 - accuracy: 0.6058 - val_loss: 0.6403 - val_accuracy: 0.6667
+24/24 [==============================] - 3s 108ms/step - loss: 1.8653 - accuracy: 0.6561 - val_loss: 0.9853 - val_accuracy: 0.6310
 Epoch 3/30
-24/24 [==============================] - 4s 126ms/step - loss: 0.7388 - accuracy: 0.5754 - val_loss: 0.6368 - val_accuracy: 0.6667
+24/24 [==============================] - 3s 110ms/step - loss: 0.7695 - accuracy: 0.7143 - val_loss: 0.7379 - val_accuracy: 0.6548
 Epoch 4/30
-24/24 [==============================] - 4s 124ms/step - loss: 0.6138 - accuracy: 0.6601 - val_loss: 0.6346 - val_accuracy: 0.6310
+24/24 [==============================] - 3s 110ms/step - loss: 0.7312 - accuracy: 0.7196 - val_loss: 0.4667 - val_accuracy: 0.7500
 Epoch 5/30
-24/24 [==============================] - 4s 125ms/step - loss: 0.6232 - accuracy: 0.6442 - val_loss: 0.6470 - val_accuracy: 0.6429
+24/24 [==============================] - 3s 109ms/step - loss: 0.5811 - accuracy: 0.7513 - val_loss: 0.5543 - val_accuracy: 0.7262
 Epoch 6/30
-24/24 [==============================] - 4s 126ms/step - loss: 0.5683 - accuracy: 0.7077 - val_loss: 0.5956 - val_accuracy: 0.6905
+24/24 [==============================] - 3s 110ms/step - loss: 0.5251 - accuracy: 0.7619 - val_loss: 0.4778 - val_accuracy: 0.7976
 Epoch 7/30
-24/24 [==============================] - 4s 126ms/step - loss: 0.5701 - accuracy: 0.7143 - val_loss: 0.5657 - val_accuracy: 0.7857
+24/24 [==============================] - 3s 113ms/step - loss: 0.4472 - accuracy: 0.7950 - val_loss: 0.4601 - val_accuracy: 0.8214
 Epoch 8/30
-24/24 [==============================] - 4s 130ms/step - loss: 0.5474 - accuracy: 0.7249 - val_loss: 0.4587 - val_accuracy: 0.7976
+24/24 [==============================] - 3s 112ms/step - loss: 0.5250 - accuracy: 0.7765 - val_loss: 0.4135 - val_accuracy: 0.7976
 Epoch 9/30
-24/24 [==============================] - 4s 129ms/step - loss: 0.4564 - accuracy: 0.7976 - val_loss: 0.5166 - val_accuracy: 0.7143
+24/24 [==============================] - 3s 110ms/step - loss: 0.3857 - accuracy: 0.8241 - val_loss: 0.3998 - val_accuracy: 0.8333
 Epoch 10/30
-24/24 [==============================] - 4s 127ms/step - loss: 0.5312 - accuracy: 0.7553 - val_loss: 0.6146 - val_accuracy: 0.7262
+24/24 [==============================] - 3s 114ms/step - loss: 0.3940 - accuracy: 0.8241 - val_loss: 0.4778 - val_accuracy: 0.7976
 Epoch 11/30
-24/24 [==============================] - 4s 128ms/step - loss: 0.5307 - accuracy: 0.7553 - val_loss: 0.4577 - val_accuracy: 0.7976
+24/24 [==============================] - 3s 111ms/step - loss: 0.3229 - accuracy: 0.8505 - val_loss: 0.3675 - val_accuracy: 0.8095
 Epoch 12/30
-24/24 [==============================] - 4s 127ms/step - loss: 0.4135 - accuracy: 0.7937 - val_loss: 0.3433 - val_accuracy: 0.8810
+24/24 [==============================] - 3s 110ms/step - loss: 0.4138 - accuracy: 0.8280 - val_loss: 0.4310 - val_accuracy: 0.8214
 Epoch 13/30
-24/24 [==============================] - 4s 125ms/step - loss: 0.3664 - accuracy: 0.8426 - val_loss: 0.3004 - val_accuracy: 0.8929
+24/24 [==============================] - 3s 113ms/step - loss: 0.4179 - accuracy: 0.8280 - val_loss: 0.3730 - val_accuracy: 0.8690
 Epoch 14/30
-24/24 [==============================] - 4s 129ms/step - loss: 0.3254 - accuracy: 0.8571 - val_loss: 0.3183 - val_accuracy: 0.8810
+24/24 [==============================] - 3s 111ms/step - loss: 0.3174 - accuracy: 0.8704 - val_loss: 0.4226 - val_accuracy: 0.7976
 Epoch 15/30
-24/24 [==============================] - 4s 128ms/step - loss: 0.4240 - accuracy: 0.8214 - val_loss: 0.3149 - val_accuracy: 0.8690
+24/24 [==============================] - 3s 111ms/step - loss: 0.3104 - accuracy: 0.8704 - val_loss: 0.3007 - val_accuracy: 0.8929
 Epoch 16/30
-24/24 [==============================] - 4s 127ms/step - loss: 0.4369 - accuracy: 0.8188 - val_loss: 0.3069 - val_accuracy: 0.8810
+24/24 [==============================] - 3s 110ms/step - loss: 0.2717 - accuracy: 0.8915 - val_loss: 0.3191 - val_accuracy: 0.8929
 Epoch 17/30
-24/24 [==============================] - 4s 126ms/step - loss: 0.3945 - accuracy: 0.8267 - val_loss: 0.3270 - val_accuracy: 0.8214
+24/24 [==============================] - 3s 109ms/step - loss: 0.2499 - accuracy: 0.9008 - val_loss: 0.4745 - val_accuracy: 0.7857
 Epoch 18/30
-24/24 [==============================] - 4s 129ms/step - loss: 0.3162 - accuracy: 0.8479 - val_loss: 0.1927 - val_accuracy: 0.9167
+24/24 [==============================] - 3s 106ms/step - loss: 0.2226 - accuracy: 0.9008 - val_loss: 0.2697 - val_accuracy: 0.8929
 Epoch 19/30
-24/24 [==============================] - 4s 127ms/step - loss: 0.2813 - accuracy: 0.8862 - val_loss: 0.1998 - val_accuracy: 0.9048
+24/24 [==============================] - 3s 110ms/step - loss: 0.2619 - accuracy: 0.8876 - val_loss: 0.1840 - val_accuracy: 0.9167
 Epoch 20/30
-24/24 [==============================] - 4s 128ms/step - loss: 0.2125 - accuracy: 0.9074 - val_loss: 0.1843 - val_accuracy: 0.9167
+24/24 [==============================] - 3s 111ms/step - loss: 0.1931 - accuracy: 0.9061 - val_loss: 0.1650 - val_accuracy: 0.9048
 Epoch 21/30
-24/24 [==============================] - 4s 126ms/step - loss: 0.2999 - accuracy: 0.8876 - val_loss: 0.2909 - val_accuracy: 0.8810
+24/24 [==============================] - 3s 108ms/step - loss: 0.1871 - accuracy: 0.9259 - val_loss: 0.2051 - val_accuracy: 0.8929
 Epoch 22/30
-24/24 [==============================] - 4s 126ms/step - loss: 0.2403 - accuracy: 0.9061 - val_loss: 0.6055 - val_accuracy: 0.7619
+24/24 [==============================] - 3s 110ms/step - loss: 0.2252 - accuracy: 0.9153 - val_loss: 0.1596 - val_accuracy: 0.9167
 Epoch 23/30
-24/24 [==============================] - 4s 131ms/step - loss: 0.2892 - accuracy: 0.8796 - val_loss: 0.1297 - val_accuracy: 0.9524
+24/24 [==============================] - 3s 111ms/step - loss: 0.1519 - accuracy: 0.9431 - val_loss: 0.1245 - val_accuracy: 0.9643
 Epoch 24/30
-24/24 [==============================] - 4s 129ms/step - loss: 0.2871 - accuracy: 0.8849 - val_loss: 0.4373 - val_accuracy: 0.8810
+24/24 [==============================] - 3s 109ms/step - loss: 0.1538 - accuracy: 0.9405 - val_loss: 0.1161 - val_accuracy: 0.9524
 Epoch 25/30
-24/24 [==============================] - 4s 131ms/step - loss: 0.4933 - accuracy: 0.7923 - val_loss: 0.4418 - val_accuracy: 0.7500
+24/24 [==============================] - 3s 109ms/step - loss: 0.2514 - accuracy: 0.9127 - val_loss: 0.1773 - val_accuracy: 0.9167
 Epoch 26/30
-24/24 [==============================] - 4s 128ms/step - loss: 0.3957 - accuracy: 0.8333 - val_loss: 0.5857 - val_accuracy: 0.7738
+24/24 [==============================] - 3s 106ms/step - loss: 0.1651 - accuracy: 0.9339 - val_loss: 0.1341 - val_accuracy: 0.9643
 Epoch 27/30
-24/24 [==============================] - 4s 126ms/step - loss: 0.4295 - accuracy: 0.8082 - val_loss: 0.4596 - val_accuracy: 0.8214
+24/24 [==============================] - 3s 111ms/step - loss: 0.1599 - accuracy: 0.9418 - val_loss: 0.1689 - val_accuracy: 0.9167
 Epoch 28/30
-24/24 [==============================] - 4s 130ms/step - loss: 0.3859 - accuracy: 0.8228 - val_loss: 0.4276 - val_accuracy: 0.8214
+24/24 [==============================] - 3s 109ms/step - loss: 0.1578 - accuracy: 0.9471 - val_loss: 0.1424 - val_accuracy: 0.9286
+Epoch 29/30
+24/24 [==============================] - 3s 110ms/step - loss: 0.1286 - accuracy: 0.9524 - val_loss: 0.1622 - val_accuracy: 0.9286
+CPU times: user 1min 25s, sys: 9.96 s, total: 1min 35s
+Wall time: 2min 4s
 </code></pre></div>
 
 <p><a name='x.3.1'></a></p>
 <h3 id="432-evaluate-model">4.3.2 Evaluate Model<a class="headerlink" href="#432-evaluate-model" title="Permanent link">&para;</a></h3>
 <p><a href="#top">back to top</a></p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># Keras/ImageDataGenerator results</span>
-<span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_set_tf</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">labels</span> <span class="o">=</span> <span class="n">test_set_keras</span><span class="o">.</span><span class="n">classes</span>
+<div class="codehilite"><pre><span></span><code><span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_set_tf</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">ds_test_</span><span class="p">:</span>
+  <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">labels</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span><span class="o">.</span><span class="n">numpy</span><span class="p">()])</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span><span class="n">predictions</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span><span class="n">predictions</span><span class="p">),</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -2288,22 +2245,22 @@ Epoch 28/30
 
 <div class="codehilite"><pre><span></span><code>              precision    recall  f1-score   support
 
-           0       0.96      0.88      0.92       416
-           1       0.83      0.94      0.88       262
+         0.0       0.96      0.95      0.96       416
+         1.0       0.93      0.94      0.94       262
 
-    accuracy                           0.90       678
-   macro avg       0.89      0.91      0.90       678
-weighted avg       0.91      0.90      0.90       678
-
-
+    accuracy                           0.95       678
+   macro avg       0.95      0.95      0.95       678
+weighted avg       0.95      0.95      0.95       678
 
 
 
 
-&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f2131a84fd0&gt;
+
+
+&lt;matplotlib.axes._subplots.AxesSubplot at 0x7ff389e48f90&gt;
 </code></pre></div>
 
-<p><img alt="png" src="../S4_Computer_Vision_II_files/S4_Computer_Vision_II_64_2.png" /></p>
+<p><img alt="png" src="../S4_Computer_Vision_II_files/S4_Computer_Vision_II_61_2.png" /></p>
 <p><a name='x.3.2'></a></p>
 <h3 id="exercise-3-image-preprocessing-layers">🏋️ Exercise 3: Image Preprocessing Layers<a class="headerlink" href="#exercise-3-image-preprocessing-layers" title="Permanent link">&para;</a></h3>
 <p><a href="#top">back to top</a></p>
@@ -2318,7 +2275,7 @@ weighted avg       0.91      0.90      0.90       678
 <li><code>RandomWidth</code> layer</li>
 </ul>
 <p>Use any combination of random augmentation transforms and retrain your model. Can you get a higher val performance? you may need to increase your epochs.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># code cell for exercise 4.3.2</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Code cell for exercise 3</span>
 </code></pre></div>
 
 <p><a name='x.4'></a></p>
@@ -2337,6 +2294,11 @@ weighted avg       0.91      0.90      0.90       678
 <span class="n">base_model</span><span class="o">.</span><span class="n">trainable</span><span class="o">=</span><span class="kc">False</span>
 <span class="n">global_average_layer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">GlobalAveragePooling2D</span><span class="p">()</span>
 <span class="n">prediction_layer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">classes</span><span class="p">))</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>Downloading data from https://storage.googleapis.com/tensorflow/keras-applications/mobilenet_v2/mobilenet_v2_weights_tf_dim_ordering_tf_kernels_1.0_224_no_top.h5
+9412608/9406464 [==============================] - 0s 0us/step
+9420800/9406464 [==============================] - 0s 0us/step
 </code></pre></div>
 
 <div class="codehilite"><pre><span></span><code><span class="c1">### MODEL</span>
@@ -2366,7 +2328,7 @@ weighted avg       0.91      0.90      0.90       678
 _________________________________________________________________
  Layer (type)                Output Shape              Param #   
 =================================================================
- input_4 (InputLayer)        [(None, 300, 300, 3)]     0
+ input_6 (InputLayer)        [(None, 300, 300, 3)]     0
 
  resizing (Resizing)         (None, 224, 224, 3)       0
 
@@ -2384,7 +2346,7 @@ _________________________________________________________________
 
  dropout (Dropout)           (None, 1280)              0
 
- dense_4 (Dense)             (None, 2)                 2562
+ dense_8 (Dense)             (None, 2)                 2562
 
 =================================================================
 Total params: 2,260,546
@@ -2401,99 +2363,202 @@ _________________________________________________________________
 <p><a href="#top">back to top</a></p>
 <div class="codehilite"><pre><span></span><code><span class="o">%%</span><span class="n">time</span>
 <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;/device:GPU:0&#39;</span><span class="p">):</span>
-  <span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_dataset_batched</span><span class="p">,</span>
+  <span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_set_tf</span><span class="p">,</span>
                       <span class="n">epochs</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
-                      <span class="n">validation_data</span><span class="o">=</span><span class="n">val_dataset_batched</span><span class="p">,</span>
+                      <span class="n">validation_data</span><span class="o">=</span><span class="n">val_set_tf</span><span class="p">,</span>
                       <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">early_stop</span><span class="p">]</span>
                       <span class="p">)</span>
 </code></pre></div>
 
 <div class="codehilite"><pre><span></span><code>Epoch 1/50
-24/24 [==============================] - 9s 197ms/step - loss: 0.7603 - accuracy: 0.5278 - val_loss: 0.6178 - val_accuracy: 0.6429
+24/24 [==============================] - 9s 181ms/step - loss: 0.9359 - accuracy: 0.3955 - val_loss: 0.7577 - val_accuracy: 0.4881
 Epoch 2/50
-24/24 [==============================] - 3s 126ms/step - loss: 0.6936 - accuracy: 0.5767 - val_loss: 0.6763 - val_accuracy: 0.5595
+24/24 [==============================] - 4s 121ms/step - loss: 0.8204 - accuracy: 0.4802 - val_loss: 0.6900 - val_accuracy: 0.5238
 Epoch 3/50
-24/24 [==============================] - 3s 129ms/step - loss: 0.6354 - accuracy: 0.6376 - val_loss: 0.5695 - val_accuracy: 0.7262
+24/24 [==============================] - 4s 120ms/step - loss: 0.7541 - accuracy: 0.5423 - val_loss: 0.6381 - val_accuracy: 0.6071
 Epoch 4/50
-24/24 [==============================] - 3s 130ms/step - loss: 0.6002 - accuracy: 0.6746 - val_loss: 0.5598 - val_accuracy: 0.7024
+24/24 [==============================] - 4s 118ms/step - loss: 0.7042 - accuracy: 0.5913 - val_loss: 0.5892 - val_accuracy: 0.7143
 Epoch 5/50
-24/24 [==============================] - 3s 130ms/step - loss: 0.5704 - accuracy: 0.6878 - val_loss: 0.4713 - val_accuracy: 0.8810
+24/24 [==============================] - 4s 123ms/step - loss: 0.6486 - accuracy: 0.6389 - val_loss: 0.5492 - val_accuracy: 0.8214
 Epoch 6/50
-24/24 [==============================] - 3s 126ms/step - loss: 0.5374 - accuracy: 0.7183 - val_loss: 0.4817 - val_accuracy: 0.8214
+24/24 [==============================] - 4s 121ms/step - loss: 0.6115 - accuracy: 0.6614 - val_loss: 0.5149 - val_accuracy: 0.8452
 Epoch 7/50
-24/24 [==============================] - 3s 131ms/step - loss: 0.5126 - accuracy: 0.7447 - val_loss: 0.4212 - val_accuracy: 0.9048
+24/24 [==============================] - 4s 123ms/step - loss: 0.5769 - accuracy: 0.6905 - val_loss: 0.4887 - val_accuracy: 0.8929
 Epoch 8/50
-24/24 [==============================] - 3s 127ms/step - loss: 0.4967 - accuracy: 0.7513 - val_loss: 0.4438 - val_accuracy: 0.8571
+24/24 [==============================] - 3s 119ms/step - loss: 0.5645 - accuracy: 0.6997 - val_loss: 0.4639 - val_accuracy: 0.8929
 Epoch 9/50
-24/24 [==============================] - 3s 130ms/step - loss: 0.4822 - accuracy: 0.7778 - val_loss: 0.3902 - val_accuracy: 0.8571
+24/24 [==============================] - 3s 119ms/step - loss: 0.5212 - accuracy: 0.7500 - val_loss: 0.4404 - val_accuracy: 0.9048
 Epoch 10/50
-24/24 [==============================] - 3s 132ms/step - loss: 0.4794 - accuracy: 0.7646 - val_loss: 0.3613 - val_accuracy: 0.9048
+24/24 [==============================] - 4s 120ms/step - loss: 0.4703 - accuracy: 0.7844 - val_loss: 0.4205 - val_accuracy: 0.9048
 Epoch 11/50
-24/24 [==============================] - 3s 126ms/step - loss: 0.4238 - accuracy: 0.8122 - val_loss: 0.4080 - val_accuracy: 0.8571
+24/24 [==============================] - 4s 121ms/step - loss: 0.4738 - accuracy: 0.7857 - val_loss: 0.4020 - val_accuracy: 0.9167
 Epoch 12/50
-24/24 [==============================] - 3s 130ms/step - loss: 0.4047 - accuracy: 0.8399 - val_loss: 0.3566 - val_accuracy: 0.8690
+24/24 [==============================] - 3s 119ms/step - loss: 0.4544 - accuracy: 0.8069 - val_loss: 0.3888 - val_accuracy: 0.9048
 Epoch 13/50
-24/24 [==============================] - 3s 130ms/step - loss: 0.4086 - accuracy: 0.8188 - val_loss: 0.3560 - val_accuracy: 0.9167
+24/24 [==============================] - 4s 122ms/step - loss: 0.4313 - accuracy: 0.8148 - val_loss: 0.3707 - val_accuracy: 0.9405
 Epoch 14/50
-24/24 [==============================] - 3s 125ms/step - loss: 0.4009 - accuracy: 0.8188 - val_loss: 0.3987 - val_accuracy: 0.8095
+24/24 [==============================] - 4s 121ms/step - loss: 0.4249 - accuracy: 0.8161 - val_loss: 0.3597 - val_accuracy: 0.9405
 Epoch 15/50
-24/24 [==============================] - 3s 129ms/step - loss: 0.3818 - accuracy: 0.8452 - val_loss: 0.3182 - val_accuracy: 0.9286
+24/24 [==============================] - 4s 122ms/step - loss: 0.4151 - accuracy: 0.8320 - val_loss: 0.3483 - val_accuracy: 0.9405
 Epoch 16/50
-24/24 [==============================] - 3s 126ms/step - loss: 0.3616 - accuracy: 0.8638 - val_loss: 0.3620 - val_accuracy: 0.8810
+24/24 [==============================] - 4s 121ms/step - loss: 0.4108 - accuracy: 0.8214 - val_loss: 0.3373 - val_accuracy: 0.9405
 Epoch 17/50
-24/24 [==============================] - 3s 131ms/step - loss: 0.3691 - accuracy: 0.8452 - val_loss: 0.3111 - val_accuracy: 0.8810
+24/24 [==============================] - 4s 122ms/step - loss: 0.3905 - accuracy: 0.8373 - val_loss: 0.3260 - val_accuracy: 0.9524
 Epoch 18/50
-24/24 [==============================] - 3s 130ms/step - loss: 0.3590 - accuracy: 0.8598 - val_loss: 0.2612 - val_accuracy: 0.9167
+24/24 [==============================] - 4s 124ms/step - loss: 0.3772 - accuracy: 0.8439 - val_loss: 0.3169 - val_accuracy: 0.9524
 Epoch 19/50
-24/24 [==============================] - 3s 125ms/step - loss: 0.3449 - accuracy: 0.8585 - val_loss: 0.3057 - val_accuracy: 0.9286
+24/24 [==============================] - 4s 121ms/step - loss: 0.3610 - accuracy: 0.8651 - val_loss: 0.3086 - val_accuracy: 0.9524
 Epoch 20/50
-24/24 [==============================] - 3s 126ms/step - loss: 0.3637 - accuracy: 0.8333 - val_loss: 0.3290 - val_accuracy: 0.8810
+24/24 [==============================] - 4s 121ms/step - loss: 0.3484 - accuracy: 0.8611 - val_loss: 0.3014 - val_accuracy: 0.9524
 Epoch 21/50
-24/24 [==============================] - 3s 126ms/step - loss: 0.3451 - accuracy: 0.8651 - val_loss: 0.3110 - val_accuracy: 0.9048
+24/24 [==============================] - 4s 121ms/step - loss: 0.3475 - accuracy: 0.8571 - val_loss: 0.2932 - val_accuracy: 0.9524
 Epoch 22/50
-24/24 [==============================] - 3s 126ms/step - loss: 0.3394 - accuracy: 0.8624 - val_loss: 0.2913 - val_accuracy: 0.9048
+24/24 [==============================] - 4s 123ms/step - loss: 0.3524 - accuracy: 0.8413 - val_loss: 0.2856 - val_accuracy: 0.9524
 Epoch 23/50
-24/24 [==============================] - 3s 131ms/step - loss: 0.3231 - accuracy: 0.8730 - val_loss: 0.2771 - val_accuracy: 0.9524
-CPU times: user 37.3 s, sys: 2.87 s, total: 40.2 s
-Wall time: 1min 32s
+24/24 [==============================] - 4s 122ms/step - loss: 0.3252 - accuracy: 0.8690 - val_loss: 0.2809 - val_accuracy: 0.9524
+Epoch 24/50
+24/24 [==============================] - 4s 121ms/step - loss: 0.3215 - accuracy: 0.8862 - val_loss: 0.2728 - val_accuracy: 0.9524
+Epoch 25/50
+24/24 [==============================] - 4s 122ms/step - loss: 0.3094 - accuracy: 0.8915 - val_loss: 0.2671 - val_accuracy: 0.9524
+Epoch 26/50
+24/24 [==============================] - 4s 121ms/step - loss: 0.3063 - accuracy: 0.8902 - val_loss: 0.2622 - val_accuracy: 0.9524
+Epoch 27/50
+24/24 [==============================] - 4s 124ms/step - loss: 0.3060 - accuracy: 0.8810 - val_loss: 0.2553 - val_accuracy: 0.9524
+Epoch 28/50
+24/24 [==============================] - 4s 122ms/step - loss: 0.2958 - accuracy: 0.9008 - val_loss: 0.2532 - val_accuracy: 0.9524
+Epoch 29/50
+24/24 [==============================] - 4s 122ms/step - loss: 0.2996 - accuracy: 0.8889 - val_loss: 0.2460 - val_accuracy: 0.9524
+Epoch 30/50
+24/24 [==============================] - 4s 121ms/step - loss: 0.2908 - accuracy: 0.8955 - val_loss: 0.2403 - val_accuracy: 0.9524
+Epoch 31/50
+24/24 [==============================] - 4s 122ms/step - loss: 0.2956 - accuracy: 0.8981 - val_loss: 0.2371 - val_accuracy: 0.9524
+Epoch 32/50
+24/24 [==============================] - 4s 121ms/step - loss: 0.2861 - accuracy: 0.8981 - val_loss: 0.2352 - val_accuracy: 0.9524
+Epoch 33/50
+24/24 [==============================] - 4s 122ms/step - loss: 0.2808 - accuracy: 0.9101 - val_loss: 0.2278 - val_accuracy: 0.9643
+Epoch 34/50
+24/24 [==============================] - 4s 122ms/step - loss: 0.2705 - accuracy: 0.9114 - val_loss: 0.2237 - val_accuracy: 0.9643
+Epoch 35/50
+24/24 [==============================] - 3s 120ms/step - loss: 0.2751 - accuracy: 0.8955 - val_loss: 0.2195 - val_accuracy: 0.9524
+Epoch 36/50
+24/24 [==============================] - 4s 120ms/step - loss: 0.2596 - accuracy: 0.9114 - val_loss: 0.2168 - val_accuracy: 0.9643
+Epoch 37/50
+24/24 [==============================] - 4s 123ms/step - loss: 0.2610 - accuracy: 0.9114 - val_loss: 0.2140 - val_accuracy: 0.9643
+Epoch 38/50
+24/24 [==============================] - 4s 121ms/step - loss: 0.2568 - accuracy: 0.9074 - val_loss: 0.2097 - val_accuracy: 0.9524
+Epoch 39/50
+24/24 [==============================] - 4s 121ms/step - loss: 0.2489 - accuracy: 0.9114 - val_loss: 0.2080 - val_accuracy: 0.9643
+Epoch 40/50
+24/24 [==============================] - 4s 121ms/step - loss: 0.2451 - accuracy: 0.9193 - val_loss: 0.2040 - val_accuracy: 0.9643
+Epoch 41/50
+24/24 [==============================] - 4s 121ms/step - loss: 0.2434 - accuracy: 0.9153 - val_loss: 0.2011 - val_accuracy: 0.9643
+Epoch 42/50
+24/24 [==============================] - 4s 121ms/step - loss: 0.2393 - accuracy: 0.9206 - val_loss: 0.1984 - val_accuracy: 0.9643
+Epoch 43/50
+24/24 [==============================] - 3s 120ms/step - loss: 0.2363 - accuracy: 0.9193 - val_loss: 0.1948 - val_accuracy: 0.9643
+Epoch 44/50
+24/24 [==============================] - 4s 120ms/step - loss: 0.2455 - accuracy: 0.9167 - val_loss: 0.1926 - val_accuracy: 0.9643
+Epoch 45/50
+24/24 [==============================] - 4s 121ms/step - loss: 0.2252 - accuracy: 0.9206 - val_loss: 0.1899 - val_accuracy: 0.9643
+Epoch 46/50
+24/24 [==============================] - 4s 122ms/step - loss: 0.2296 - accuracy: 0.9312 - val_loss: 0.1869 - val_accuracy: 0.9643
+Epoch 47/50
+24/24 [==============================] - 4s 123ms/step - loss: 0.2369 - accuracy: 0.9140 - val_loss: 0.1844 - val_accuracy: 0.9643
+Epoch 48/50
+24/24 [==============================] - 4s 121ms/step - loss: 0.2199 - accuracy: 0.9259 - val_loss: 0.1822 - val_accuracy: 0.9643
+Epoch 49/50
+24/24 [==============================] - 4s 120ms/step - loss: 0.2202 - accuracy: 0.9246 - val_loss: 0.1800 - val_accuracy: 0.9643
+Epoch 50/50
+24/24 [==============================] - 3s 117ms/step - loss: 0.2098 - accuracy: 0.9325 - val_loss: 0.1803 - val_accuracy: 0.9643
+CPU times: user 2min 18s, sys: 17 s, total: 2min 35s
+Wall time: 3min 41s
 </code></pre></div>
 
 <h3 id="443-evaluate-model">4.4.3 Evaluate Model<a class="headerlink" href="#443-evaluate-model" title="Permanent link">&para;</a></h3>
 <p><a href="#top">back to top</a></p>
-<div class="codehilite"><pre><span></span><code><span class="n">pred</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">label</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dataset_batched</span><span class="p">)):</span>
-  <span class="n">image_batch</span><span class="p">,</span> <span class="n">label_batch</span> <span class="o">=</span> <span class="n">train_dataset_batched</span><span class="o">.</span><span class="n">as_numpy_iterator</span><span class="p">()</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-  <span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_on_batch</span><span class="p">(</span><span class="n">image_batch</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-  <span class="c1"># print(f&quot;Labels     : {label_batch}\nPredictions: {predictions.astype(float)}&quot;)</span>
-  <span class="n">pred</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
-  <span class="n">label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label_batch</span><span class="p">)</span>
-<span class="n">predictions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-<span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">label</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<div class="codehilite"><pre><span></span><code><span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_set_tf</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">ds_test_</span><span class="p">:</span>
+  <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">labels</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span><span class="o">.</span><span class="n">numpy</span><span class="p">()])</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span><span class="n">predictions</span><span class="p">))</span>
-
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span><span class="n">predictions</span><span class="p">),</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 
 <div class="codehilite"><pre><span></span><code>              precision    recall  f1-score   support
 
-         0.0       0.96      0.86      0.91       349
-         1.0       0.87      0.97      0.92       355
+         0.0       0.98      0.92      0.95       416
+         1.0       0.88      0.97      0.92       262
 
-    accuracy                           0.91       704
-   macro avg       0.92      0.91      0.91       704
-weighted avg       0.92      0.91      0.91       704
-
-
+    accuracy                           0.94       678
+   macro avg       0.93      0.94      0.93       678
+weighted avg       0.94      0.94      0.94       678
 
 
 
 
-&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f2132063910&gt;
+
+
+&lt;matplotlib.axes._subplots.AxesSubplot at 0x7ff380d62450&gt;
 </code></pre></div>
 
-<p><img alt="png" src="../S4_Computer_Vision_II_files/S4_Computer_Vision_II_75_2.png" /></p>
+<p><img alt="png" src="../S4_Computer_Vision_II_files/S4_Computer_Vision_II_72_2.png" /></p>
+<h3 id="exercise-4-transfer-learn-with-other-base-models">🏋️ Exercise 4: Transfer Learn with other Base Models<a class="headerlink" href="#exercise-4-transfer-learn-with-other-base-models" title="Permanent link">&para;</a></h3>
+<p>visit <a href="https://www.tensorflow.org/api_docs/python/tf/keras/applications">keras</a> and read about 2-3 of the available models. Choose one and reimplement our transfer learning procedure from above!</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Code cell for exercise 4</span>
+</code></pre></div>
+
+<h2 id="45-summary">4.5 Summary<a class="headerlink" href="#45-summary" title="Permanent link">&para;</a></h2>
+<p>If you ran this notebook as-is you should've gotten something similar to the following table</p>
+<table>
+<thead>
+<tr>
+<th>Data Handling</th>
+<th>Model</th>
+<th>Data Augmentation</th>
+<th>Weighted F1</th>
+<th>Training Time (min:sec)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Keras</td>
+<td>CNN</td>
+<td>No</td>
+<td>0.92</td>
+<td>1:00</td>
+</tr>
+<tr>
+<td>Tensorflow</td>
+<td>CNN</td>
+<td>No</td>
+<td>0.79</td>
+<td>0:39</td>
+</tr>
+<tr>
+<td>Scikit-Image</td>
+<td>CNN</td>
+<td>No</td>
+<td>1.00</td>
+<td>0:47</td>
+</tr>
+<tr>
+<td>Tensorflow</td>
+<td>CNN</td>
+<td>Yes</td>
+<td>0.95</td>
+<td>2:04</td>
+</tr>
+<tr>
+<td>Tensorflow</td>
+<td>MobileNetV2</td>
+<td>No</td>
+<td>0.94</td>
+<td>3:41</td>
+</tr>
+</tbody>
+</table>
+<p>In conclusion, we can see an appreciable difference in speed when we decide to transfer learn or augment the original dataset. Curiously, Loading our data with scikit-image gives us the best performance in our custom CNN model.</p>
 
               
             </article>
