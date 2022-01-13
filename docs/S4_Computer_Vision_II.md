@@ -12,12 +12,12 @@
 
 In this session we will continue with our exploration of CNNs. In the previous session we discussed three flagship layers for the CNN: convolution ReLU and maximum pooling. Here we'll discuss the sliding window, how to build your custom CNN, and data augmentation for images.
 
-<br>
 
 _images in this notebook borrowed from [Ryan Holbrook](https://mathformachines.com/)_
 
 For more information on the dataset we are using today watch this [video](https://www.youtube.com/watch?v=4sDfwS48p0A)
 
+<br>
 
 ---
 
@@ -111,10 +111,10 @@ print('GPU speedup over CPU: {}x'.format(int(cpu_time/gpu_time)))
 
     Time (s) to convolve 32x7x7x3 filter over random 100x100x100x3 images (batch x height x width x channel). Sum of ten runs.
     CPU (s):
-    3.7607866190000436
+    3.005574539999543
     GPU (s):
-    0.04739101299998083
-    GPU speedup over CPU: 79x
+    0.03898585099977936
+    GPU speedup over CPU: 77x
 
 
 <a name='x.0.3'></a>
@@ -133,7 +133,7 @@ gc.collect()
 
 
 
-    61
+    1984
 
 
 
@@ -158,16 +158,13 @@ from tensorflow.keras.preprocessing import image_dataset_from_directory
 from tensorflow.keras.preprocessing.image import ImageDataGenerator, load_img, img_to_array
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.callbacks import EarlyStopping
-```
 
-
-```python
 # Sync your google drive folder
 from google.colab import drive
 drive.mount("/content/drive")
 ```
 
-    Mounted at /content/drive
+    Drive already mounted at /content/drive; to attempt to forcibly remount, call drive.mount("/content/drive", force_remount=True).
 
 
 <a name='x.0.4'></a>
@@ -195,16 +192,16 @@ batch_size = 32
 validation_split = 0.1
 seed_value = 42
 
-path_to_casting_data = '/content/drive/MyDrive/courses/tech_fundamentals/TECH_FUNDAMENTALS/data/casting_data_class_practice'
-technocast_train_path = path_to_casting_data + '/train/'
-technocast_test_path = path_to_casting_data + '/test/'
+folder = '/content/drive/MyDrive/courses/tech_fundamentals/TECH_FUNDAMENTALS/data/casting_data_class_practice'
+train_path = folder + '/train/'
+test_path = folder + '/test/'
 
 from numpy.random import seed
 seed(seed_value)
 tf.random.set_seed(seed_value)
 ```
 
-#### 4.0.4.1 Loading data with skimage
+#### 4.0.4.1 Loading data with from_tensor_slices
 
 [back to top](#top)
 
@@ -213,42 +210,44 @@ tf.random.set_seed(seed_value)
 class MyImageLoader: 
     def __init__(self):
         self.classifer = None
-        self.folder = path_to_casting_data
+        self.folder = folder
 
     def imread_convert(self, f):
         return io.imread(f).astype(np.uint8)
 
     def load_data_from_folder(self, dir):
-        # read all images into an image 
-        if type(dir) != list:
-          ic = io.ImageCollection(self.folder + dir + "*.bmp",
-                                  load_func=self.imread_convert)
-        else:
-          dir1 = dir[0]
-          dir2 = dir[1]
-          ic = io.ImageCollection(self.folder + dir1 + "*.jpeg:" + self.folder + dir2 + "*.jpeg",
-                                load_func=self.imread_convert)
-        
+        # type(dir) for plane/ticket/truck/etc dataset
+        # else for impellar dataset
+        filetype = set([i.split('.')[-1] for i in [x[2] for x in os.walk(folder + dir)][1:][0]])
+        if len(filetype) != 1:
+          raise Exception('Multiple filetypes in directory, will cause error')
+        suffix = filetype.pop()
+
+        dirs = [x[0] + f'/*.{suffix}' for x in os.walk(self.folder + dir) if x[0].split('/')[-1] != '']
+        dirs = ':'.join(dirs)
+        ic = io.ImageCollection(dirs, load_func=self.imread_convert)
+
+        # infer labels from directory structure
+        label_names = [x[1] for x in os.walk(folder + dir)][0]
+        img_amounts = [len(y) for y in [x[2] for x in os.walk(folder + dir)][1:]]
+        labels = [item for sublist in [[i]*j for i,j in zip(label_names, img_amounts)] for item in sublist]
+        labels = np.array(labels)
+
         #create one large array of image data
         data = io.concatenate_images(ic)
 
-        #resize to target shape
+        #resize to target shape (memory intensive)
         # data = resize(data, (data.shape[0], *image_shape[:2])) #uncomment if you need to resize images
-        
-        #extract labels from image names
-        labels = np.array(ic.files)
-        for i, f in enumerate(labels):
-            labels[i] = '_'.join(f.split('/')[-1].split('_')[:2])
-            # print(f, labels[i])
         return(data,labels)
 
 # Create an object of the class `MyImageLoader`
 img_clf = MyImageLoader()
 
 # load images
-(train_val_raw, train_val_labels) = img_clf.load_data_from_folder(['/train/ok_front/', '/train/def_front/'])
-(test_raw, test_labels) = img_clf.load_data_from_folder(['/test/ok_front/', '/test/def_front/'])
-
+(train_val_raw, train_val_labels) = img_clf.load_data_from_folder('/train/')
+(test_raw, test_labels) = img_clf.load_data_from_folder('/test/')
+train_val_raw = train_val_raw.astype(np.float32)
+test_raw = test_raw.astype(np.float32)
 classes = list(np.unique(train_val_labels))
 print(f"Classes: {classes}")
 print("train and validation labels: {}".format(len(train_val_labels)))
@@ -264,17 +263,16 @@ test_labels = test_labels.astype(float)
 
 # create train/val/test and shuffle
 train_val_dataset = tf.data.Dataset.from_tensor_slices((train_val_raw, train_val_labels)) 
-# shuffling the `train+val` dataset before separating them
+test_dataset = tf.data.Dataset.from_tensor_slices((test_raw, test_labels)) 
+
 train_val_dataset = train_val_dataset.shuffle(buffer_size=len(train_val_dataset), seed=seed_value)
+test_dataset = test_dataset.shuffle(buffer_size=len(test_dataset), seed=seed_value)     
+
 
 # use validation_split
 val_len = int(validation_split * len(train_val_raw))
 val_dataset = train_val_dataset.take(val_len)
 train_dataset = train_val_dataset.skip(val_len)
-
-test_dataset = tf.data.Dataset.from_tensor_slices((test_raw, test_labels)) 
-# test_dataset = test_dataset.shuffle(buffer_size=len(test_dataset), seed=seed_value)        
-
 print(f"Train size: {len(train_dataset)}\nVal size: {len(val_dataset)}\nTest size: {len(test_dataset)}")
 
 # batch the data
@@ -285,7 +283,7 @@ test_dataset_batched = test_dataset.batch(batch_size)
 print(f"Train batches: {len(train_dataset_batched)}\nVal batches: {len(val_dataset_batched)}\nTest batches: {len(test_dataset_batched)}")
 ```
 
-    Classes: ['cast_def', 'cast_ok']
+    Classes: ['def_front', 'ok_front']
     train and validation labels: 840
     test labels: 678
     Train size: 756
@@ -310,7 +308,7 @@ image_gen = ImageDataGenerator(rescale=1/255,
 #we're using keras inbuilt function to ImageDataGenerator so we 
 # dont need to label all images into 0 and 1 
 print("loading training set...")
-train_set_keras = image_gen.flow_from_directory(technocast_train_path,
+train_set_keras = image_gen.flow_from_directory(train_path,
                                           target_size=image_shape[:2],
                                           color_mode="rgb",
                                           batch_size=batch_size,
@@ -319,7 +317,7 @@ train_set_keras = image_gen.flow_from_directory(technocast_train_path,
                                           shuffle=True,
                                           seed=seed_value)
 print("loading validation set...")
-val_set_keras = image_gen.flow_from_directory(technocast_train_path,
+val_set_keras = image_gen.flow_from_directory(train_path,
                                           target_size=image_shape[:2],
                                           color_mode="rgb",
                                           batch_size=batch_size,
@@ -328,7 +326,7 @@ val_set_keras = image_gen.flow_from_directory(technocast_train_path,
                                           shuffle=True,
                                           seed=seed_value)
 print("loading testing set...")
-test_set_keras = image_gen.flow_from_directory(technocast_test_path,
+test_set_keras = image_gen.flow_from_directory(test_path,
                                           target_size=image_shape[:2],
                                           color_mode="rgb",
                                           batch_size=batch_size,
@@ -357,7 +355,7 @@ This method should be approx 2x faster than `ImageDataGenerator`
 # Load training and validation sets
 print("loading training set...")
 ds_train_ = image_dataset_from_directory(
-    technocast_train_path,
+    train_path,
     labels="inferred",
     label_mode="int",
     color_mode="rgb",
@@ -370,7 +368,7 @@ ds_train_ = image_dataset_from_directory(
 )
 print("loading validation set...")
 ds_val_ = image_dataset_from_directory(
-    technocast_train_path,
+    train_path,
     labels="inferred",
     label_mode="int",
     color_mode="rgb",
@@ -383,7 +381,7 @@ ds_val_ = image_dataset_from_directory(
 )
 print("loading testing set...")
 ds_test_ = image_dataset_from_directory(
-    technocast_test_path,
+    test_path,
     labels="inferred",
     label_mode="int",
     color_mode="rgb",
@@ -416,7 +414,7 @@ test_set_tf = ds_test_.prefetch(buffer_size=AUTOTUNE)
 # view some images
 def_path = '/def_front/cast_def_0_1001.jpeg'
 ok_path = '/ok_front/cast_ok_0_1.jpeg'
-image_path = technocast_train_path + ok_path
+image_path = train_path + ok_path
 image = tf.io.read_file(image_path)
 image = tf.io.decode_jpeg(image)
 image = resize(image, (256, 256),
@@ -430,7 +428,7 @@ plt.show();
 
 
     
-![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_21_0.png)
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_20_0.png)
     
 
 
@@ -640,7 +638,7 @@ show_kernel(kernel)
 
 
     
-![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_29_0.png)
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_28_0.png)
     
 
 
@@ -665,7 +663,7 @@ show_extraction(
 
 
     
-![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_31_0.png)
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_30_0.png)
     
 
 
@@ -688,7 +686,7 @@ show_extraction(
 
 
     
-![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_33_0.png)
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_32_0.png)
     
 
 
@@ -773,7 +771,7 @@ To save/load weights and training history:
 # losses.to_csv('history_simple_model.csv', index=False)
 ```
 
-#### 4.2.1.1 Skimage
+#### 4.2.1.1 from_tensor_slices
 
 [back to top](#top)
 
@@ -789,32 +787,32 @@ with tf.device('/device:GPU:0'):
                       )
 ```
 
-    Model: "sequential_3"
+    Model: "sequential_6"
     _________________________________________________________________
      Layer (type)                Output Shape              Param #   
     =================================================================
-     conv2d_25 (Conv2D)          (None, 298, 298, 8)       224       
+     conv2d_76 (Conv2D)          (None, 298, 298, 8)       224       
                                                                      
-     max_pooling2d_3 (MaxPooling  (None, 149, 149, 8)      0         
-     2D)                                                             
+     max_pooling2d_10 (MaxPoolin  (None, 149, 149, 8)      0         
+     g2D)                                                            
                                                                      
-     conv2d_26 (Conv2D)          (None, 147, 147, 16)      1168      
+     conv2d_77 (Conv2D)          (None, 147, 147, 16)      1168      
                                                                      
-     max_pooling2d_4 (MaxPooling  (None, 73, 73, 16)       0         
-     2D)                                                             
+     max_pooling2d_11 (MaxPoolin  (None, 73, 73, 16)       0         
+     g2D)                                                            
                                                                      
-     conv2d_27 (Conv2D)          (None, 71, 71, 16)        2320      
+     conv2d_78 (Conv2D)          (None, 71, 71, 16)        2320      
                                                                      
-     max_pooling2d_5 (MaxPooling  (None, 35, 35, 16)       0         
-     2D)                                                             
+     max_pooling2d_12 (MaxPoolin  (None, 35, 35, 16)       0         
+     g2D)                                                            
                                                                      
-     flatten (Flatten)           (None, 19600)             0         
+     flatten_2 (Flatten)         (None, 19600)             0         
                                                                      
-     dense (Dense)               (None, 224)               4390624   
+     dense_4 (Dense)             (None, 224)               4390624   
                                                                      
-     activation_2 (Activation)   (None, 224)               0         
+     activation_4 (Activation)   (None, 224)               0         
                                                                      
-     dense_1 (Dense)             (None, 2)                 450       
+     dense_5 (Dense)             (None, 2)                 450       
                                                                      
     =================================================================
     Total params: 4,394,786
@@ -823,47 +821,67 @@ with tf.device('/device:GPU:0'):
     _________________________________________________________________
     None
     Epoch 1/30
-    24/24 [==============================] - 4s 95ms/step - loss: 83.8552 - accuracy: 0.5423 - val_loss: 1.2317 - val_accuracy: 0.6548
+    24/24 [==============================] - 3s 115ms/step - loss: 132.9765 - accuracy: 0.5291 - val_loss: 0.6248 - val_accuracy: 0.6548
     Epoch 2/30
-    24/24 [==============================] - 2s 72ms/step - loss: 0.6356 - accuracy: 0.7011 - val_loss: 0.3245 - val_accuracy: 0.8571
+    24/24 [==============================] - 3s 109ms/step - loss: 0.6060 - accuracy: 0.6825 - val_loss: 0.3222 - val_accuracy: 0.8810
     Epoch 3/30
-    24/24 [==============================] - 2s 71ms/step - loss: 0.3996 - accuracy: 0.7976 - val_loss: 0.3156 - val_accuracy: 0.8452
+    24/24 [==============================] - 3s 108ms/step - loss: 0.4163 - accuracy: 0.8056 - val_loss: 0.3163 - val_accuracy: 0.8452
     Epoch 4/30
-    24/24 [==============================] - 2s 72ms/step - loss: 0.2368 - accuracy: 0.8995 - val_loss: 0.1321 - val_accuracy: 0.9643
+    24/24 [==============================] - 3s 110ms/step - loss: 0.2827 - accuracy: 0.8942 - val_loss: 0.2194 - val_accuracy: 0.8810
     Epoch 5/30
-    24/24 [==============================] - 2s 72ms/step - loss: 0.1764 - accuracy: 0.9325 - val_loss: 0.1329 - val_accuracy: 0.9524
+    24/24 [==============================] - 3s 115ms/step - loss: 0.2101 - accuracy: 0.9206 - val_loss: 0.1556 - val_accuracy: 0.9286
     Epoch 6/30
-    24/24 [==============================] - 2s 71ms/step - loss: 0.1729 - accuracy: 0.9352 - val_loss: 0.1492 - val_accuracy: 0.9524
+    24/24 [==============================] - 3s 109ms/step - loss: 0.1378 - accuracy: 0.9563 - val_loss: 0.0854 - val_accuracy: 0.9881
     Epoch 7/30
-    24/24 [==============================] - 2s 72ms/step - loss: 0.0984 - accuracy: 0.9616 - val_loss: 0.0482 - val_accuracy: 0.9881
+    24/24 [==============================] - 3s 112ms/step - loss: 0.0996 - accuracy: 0.9749 - val_loss: 0.0737 - val_accuracy: 0.9881
     Epoch 8/30
-    24/24 [==============================] - 2s 71ms/step - loss: 0.0494 - accuracy: 0.9868 - val_loss: 0.0247 - val_accuracy: 1.0000
+    24/24 [==============================] - 3s 113ms/step - loss: 0.0779 - accuracy: 0.9762 - val_loss: 0.0268 - val_accuracy: 1.0000
     Epoch 9/30
-    24/24 [==============================] - 2s 71ms/step - loss: 0.0632 - accuracy: 0.9828 - val_loss: 0.0292 - val_accuracy: 1.0000
+    24/24 [==============================] - 3s 111ms/step - loss: 0.0687 - accuracy: 0.9802 - val_loss: 0.0684 - val_accuracy: 0.9762
     Epoch 10/30
-    24/24 [==============================] - 2s 71ms/step - loss: 0.0411 - accuracy: 0.9868 - val_loss: 0.0139 - val_accuracy: 1.0000
+    24/24 [==============================] - 3s 110ms/step - loss: 0.0456 - accuracy: 0.9881 - val_loss: 0.0276 - val_accuracy: 0.9762
     Epoch 11/30
-    24/24 [==============================] - 2s 71ms/step - loss: 0.0183 - accuracy: 0.9974 - val_loss: 0.0096 - val_accuracy: 1.0000
+    24/24 [==============================] - 3s 112ms/step - loss: 0.0420 - accuracy: 0.9881 - val_loss: 0.0177 - val_accuracy: 1.0000
     Epoch 12/30
-    24/24 [==============================] - 2s 72ms/step - loss: 0.0077 - accuracy: 1.0000 - val_loss: 0.0048 - val_accuracy: 1.0000
+    24/24 [==============================] - 3s 110ms/step - loss: 0.0611 - accuracy: 0.9788 - val_loss: 0.0179 - val_accuracy: 1.0000
     Epoch 13/30
-    24/24 [==============================] - 2s 71ms/step - loss: 0.0083 - accuracy: 0.9987 - val_loss: 0.0050 - val_accuracy: 1.0000
+    24/24 [==============================] - 3s 110ms/step - loss: 0.0161 - accuracy: 0.9987 - val_loss: 0.0047 - val_accuracy: 1.0000
     Epoch 14/30
-    24/24 [==============================] - 2s 72ms/step - loss: 0.0047 - accuracy: 1.0000 - val_loss: 0.0054 - val_accuracy: 1.0000
+    24/24 [==============================] - 3s 110ms/step - loss: 0.0139 - accuracy: 0.9987 - val_loss: 0.0069 - val_accuracy: 1.0000
     Epoch 15/30
-    24/24 [==============================] - 2s 73ms/step - loss: 0.0048 - accuracy: 0.9987 - val_loss: 0.0033 - val_accuracy: 1.0000
+    24/24 [==============================] - 3s 109ms/step - loss: 0.0083 - accuracy: 0.9974 - val_loss: 0.0082 - val_accuracy: 1.0000
     Epoch 16/30
-    24/24 [==============================] - 2s 72ms/step - loss: 0.0692 - accuracy: 0.9841 - val_loss: 0.1683 - val_accuracy: 0.9286
+    24/24 [==============================] - 2s 105ms/step - loss: 0.0069 - accuracy: 1.0000 - val_loss: 0.0165 - val_accuracy: 0.9881
     Epoch 17/30
-    24/24 [==============================] - 2s 71ms/step - loss: 0.2085 - accuracy: 0.9378 - val_loss: 0.1657 - val_accuracy: 0.9405
+    24/24 [==============================] - 3s 109ms/step - loss: 0.0038 - accuracy: 1.0000 - val_loss: 0.0022 - val_accuracy: 1.0000
     Epoch 18/30
-    24/24 [==============================] - 2s 71ms/step - loss: 0.1278 - accuracy: 0.9537 - val_loss: 0.0475 - val_accuracy: 0.9762
+    24/24 [==============================] - 2s 106ms/step - loss: 0.0018 - accuracy: 1.0000 - val_loss: 0.0020 - val_accuracy: 1.0000
     Epoch 19/30
-    24/24 [==============================] - 2s 73ms/step - loss: 0.1368 - accuracy: 0.9471 - val_loss: 0.0586 - val_accuracy: 0.9762
+    24/24 [==============================] - 3s 107ms/step - loss: 0.0013 - accuracy: 1.0000 - val_loss: 0.0013 - val_accuracy: 1.0000
     Epoch 20/30
-    24/24 [==============================] - 2s 72ms/step - loss: 0.0445 - accuracy: 0.9854 - val_loss: 0.0144 - val_accuracy: 1.0000
-    CPU times: user 34.5 s, sys: 1.8 s, total: 36.3 s
-    Wall time: 47.6 s
+    24/24 [==============================] - 3s 109ms/step - loss: 0.0011 - accuracy: 1.0000 - val_loss: 9.6427e-04 - val_accuracy: 1.0000
+    Epoch 21/30
+    24/24 [==============================] - 3s 109ms/step - loss: 9.7981e-04 - accuracy: 1.0000 - val_loss: 5.6754e-04 - val_accuracy: 1.0000
+    Epoch 22/30
+    24/24 [==============================] - 3s 109ms/step - loss: 8.0048e-04 - accuracy: 1.0000 - val_loss: 7.3450e-04 - val_accuracy: 1.0000
+    Epoch 23/30
+    24/24 [==============================] - 3s 108ms/step - loss: 7.3568e-04 - accuracy: 1.0000 - val_loss: 7.3688e-04 - val_accuracy: 1.0000
+    Epoch 24/30
+    24/24 [==============================] - 3s 109ms/step - loss: 6.8541e-04 - accuracy: 1.0000 - val_loss: 7.2755e-04 - val_accuracy: 1.0000
+    Epoch 25/30
+    24/24 [==============================] - 3s 108ms/step - loss: 5.7163e-04 - accuracy: 1.0000 - val_loss: 5.1711e-04 - val_accuracy: 1.0000
+    Epoch 26/30
+    24/24 [==============================] - 3s 107ms/step - loss: 5.5725e-04 - accuracy: 1.0000 - val_loss: 7.9680e-04 - val_accuracy: 1.0000
+    Epoch 27/30
+    24/24 [==============================] - 3s 111ms/step - loss: 4.6501e-04 - accuracy: 1.0000 - val_loss: 4.5257e-04 - val_accuracy: 1.0000
+    Epoch 28/30
+    24/24 [==============================] - 3s 107ms/step - loss: 4.8340e-04 - accuracy: 1.0000 - val_loss: 5.4358e-04 - val_accuracy: 1.0000
+    Epoch 29/30
+    24/24 [==============================] - 3s 107ms/step - loss: 4.5438e-04 - accuracy: 1.0000 - val_loss: 4.8173e-04 - val_accuracy: 1.0000
+    Epoch 30/30
+    24/24 [==============================] - 3s 106ms/step - loss: 3.7990e-04 - accuracy: 1.0000 - val_loss: 5.9811e-04 - val_accuracy: 1.0000
+    CPU times: user 1min 51s, sys: 3.35 s, total: 1min 54s
+    Wall time: 2min 3s
 
 
 
@@ -877,13 +895,13 @@ losses[['accuracy','val_accuracy']].plot(ax=ax[1])
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x7ff3801d4ad0>
+    <matplotlib.axes._subplots.AxesSubplot at 0x7f5f78fa81d0>
 
 
 
 
     
-![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_41_1.png)
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_40_1.png)
     
 
 
@@ -896,7 +914,7 @@ losses[['accuracy','val_accuracy']].plot(ax=ax[1])
 pred = []
 label = []
 for batch in range(len(test_dataset_batched)):
-  image_batch, label_batch = train_dataset_batched.as_numpy_iterator().next()
+  image_batch, label_batch = test_dataset_batched.as_numpy_iterator().next()
   predictions = model.predict_on_batch(image_batch).argmax(axis=1)
   # print(f"Labels     : {label_batch}\nPredictions: {predictions.astype(float)}")
   pred.append(predictions)
@@ -911,25 +929,25 @@ sns.heatmap(confusion_matrix(labels,predictions), annot=True)
 
                   precision    recall  f1-score   support
     
-             0.0       1.00      1.00      1.00       331
-             1.0       1.00      1.00      1.00       373
+             0.0       0.87      0.73      0.79       439
+             1.0       0.65      0.83      0.73       265
     
-        accuracy                           1.00       704
-       macro avg       1.00      1.00      1.00       704
-    weighted avg       1.00      1.00      1.00       704
+        accuracy                           0.76       704
+       macro avg       0.76      0.78      0.76       704
+    weighted avg       0.79      0.76      0.77       704
     
 
 
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x7ff3800f0350>
+    <matplotlib.axes._subplots.AxesSubplot at 0x7f5f78eeb710>
 
 
 
 
     
-![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_43_2.png)
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_42_2.png)
     
 
 
@@ -949,32 +967,32 @@ with tf.device('/device:GPU:0'):
                       )
 ```
 
-    Model: "sequential_4"
+    Model: "sequential_7"
     _________________________________________________________________
      Layer (type)                Output Shape              Param #   
     =================================================================
-     conv2d_28 (Conv2D)          (None, 298, 298, 8)       224       
+     conv2d_79 (Conv2D)          (None, 298, 298, 8)       224       
                                                                      
-     max_pooling2d_6 (MaxPooling  (None, 149, 149, 8)      0         
-     2D)                                                             
+     max_pooling2d_13 (MaxPoolin  (None, 149, 149, 8)      0         
+     g2D)                                                            
                                                                      
-     conv2d_29 (Conv2D)          (None, 147, 147, 16)      1168      
+     conv2d_80 (Conv2D)          (None, 147, 147, 16)      1168      
                                                                      
-     max_pooling2d_7 (MaxPooling  (None, 73, 73, 16)       0         
-     2D)                                                             
+     max_pooling2d_14 (MaxPoolin  (None, 73, 73, 16)       0         
+     g2D)                                                            
                                                                      
-     conv2d_30 (Conv2D)          (None, 71, 71, 16)        2320      
+     conv2d_81 (Conv2D)          (None, 71, 71, 16)        2320      
                                                                      
-     max_pooling2d_8 (MaxPooling  (None, 35, 35, 16)       0         
-     2D)                                                             
+     max_pooling2d_15 (MaxPoolin  (None, 35, 35, 16)       0         
+     g2D)                                                            
                                                                      
-     flatten_1 (Flatten)         (None, 19600)             0         
+     flatten_3 (Flatten)         (None, 19600)             0         
                                                                      
-     dense_2 (Dense)             (None, 224)               4390624   
+     dense_6 (Dense)             (None, 224)               4390624   
                                                                      
-     activation_3 (Activation)   (None, 224)               0         
+     activation_5 (Activation)   (None, 224)               0         
                                                                      
-     dense_3 (Dense)             (None, 2)                 450       
+     dense_7 (Dense)             (None, 2)                 450       
                                                                      
     =================================================================
     Total params: 4,394,786
@@ -983,25 +1001,29 @@ with tf.device('/device:GPU:0'):
     _________________________________________________________________
     None
     Epoch 1/30
-    24/24 [==============================] - 4s 110ms/step - loss: 134.4262 - accuracy: 0.4907 - val_loss: 1.5430 - val_accuracy: 0.4643
+    24/24 [==============================] - 3s 84ms/step - loss: 134.4261 - accuracy: 0.4907 - val_loss: 1.5429 - val_accuracy: 0.4643
     Epoch 2/30
-    24/24 [==============================] - 3s 104ms/step - loss: 0.8062 - accuracy: 0.6323 - val_loss: 0.5887 - val_accuracy: 0.7262
+    24/24 [==============================] - 2s 78ms/step - loss: 0.8067 - accuracy: 0.6310 - val_loss: 0.5859 - val_accuracy: 0.7262
     Epoch 3/30
-    24/24 [==============================] - 3s 104ms/step - loss: 0.5298 - accuracy: 0.7526 - val_loss: 0.4983 - val_accuracy: 0.7857
+    24/24 [==============================] - 2s 83ms/step - loss: 0.5311 - accuracy: 0.7526 - val_loss: 0.5008 - val_accuracy: 0.7976
     Epoch 4/30
-    24/24 [==============================] - 3s 102ms/step - loss: 0.3654 - accuracy: 0.8452 - val_loss: 0.4701 - val_accuracy: 0.7738
+    24/24 [==============================] - 2s 79ms/step - loss: 0.4654 - accuracy: 0.7804 - val_loss: 0.4791 - val_accuracy: 0.7976
     Epoch 5/30
-    24/24 [==============================] - 3s 102ms/step - loss: 0.3978 - accuracy: 0.8082 - val_loss: 0.4899 - val_accuracy: 0.7738
+    24/24 [==============================] - 2s 79ms/step - loss: 0.3286 - accuracy: 0.8505 - val_loss: 0.5123 - val_accuracy: 0.7262
     Epoch 6/30
-    24/24 [==============================] - 3s 102ms/step - loss: 0.2814 - accuracy: 0.8796 - val_loss: 0.6540 - val_accuracy: 0.7262
+    24/24 [==============================] - 2s 80ms/step - loss: 0.2423 - accuracy: 0.9087 - val_loss: 0.4219 - val_accuracy: 0.8452
     Epoch 7/30
-    24/24 [==============================] - 3s 105ms/step - loss: 0.8786 - accuracy: 0.7817 - val_loss: 0.8129 - val_accuracy: 0.6429
+    24/24 [==============================] - 2s 79ms/step - loss: 0.1751 - accuracy: 0.9458 - val_loss: 0.4531 - val_accuracy: 0.7857
     Epoch 8/30
-    24/24 [==============================] - 3s 103ms/step - loss: 0.3586 - accuracy: 0.8320 - val_loss: 0.5316 - val_accuracy: 0.8333
+    24/24 [==============================] - 2s 79ms/step - loss: 0.1511 - accuracy: 0.9656 - val_loss: 0.4535 - val_accuracy: 0.7976
     Epoch 9/30
-    24/24 [==============================] - 3s 104ms/step - loss: 0.2162 - accuracy: 0.9180 - val_loss: 0.5447 - val_accuracy: 0.8095
-    CPU times: user 26 s, sys: 2.77 s, total: 28.8 s
-    Wall time: 39.1 s
+    24/24 [==============================] - 2s 77ms/step - loss: 0.1301 - accuracy: 0.9590 - val_loss: 0.5098 - val_accuracy: 0.7857
+    Epoch 10/30
+    24/24 [==============================] - 2s 81ms/step - loss: 0.2029 - accuracy: 0.9087 - val_loss: 2.2267 - val_accuracy: 0.6310
+    Epoch 11/30
+    24/24 [==============================] - 2s 80ms/step - loss: 1.1712 - accuracy: 0.7262 - val_loss: 0.5656 - val_accuracy: 0.8333
+    CPU times: user 26.7 s, sys: 2.53 s, total: 29.2 s
+    Wall time: 27.3 s
 
 
 
@@ -1015,13 +1037,13 @@ losses[['accuracy','val_accuracy']].plot(ax=ax[1])
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x7ff389cf4050>
+    <matplotlib.axes._subplots.AxesSubplot at 0x7f5f78c45690>
 
 
 
 
     
-![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_46_1.png)
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_45_1.png)
     
 
 
@@ -1042,25 +1064,25 @@ sns.heatmap(confusion_matrix(labels,predictions), annot=True)
 
                   precision    recall  f1-score   support
     
-             0.0       0.95      0.69      0.80       416
-             1.0       0.66      0.94      0.78       262
+             0.0       0.96      0.80      0.87       416
+             1.0       0.75      0.94      0.83       262
     
-        accuracy                           0.79       678
-       macro avg       0.80      0.82      0.79       678
-    weighted avg       0.84      0.79      0.79       678
+        accuracy                           0.85       678
+       macro avg       0.85      0.87      0.85       678
+    weighted avg       0.88      0.85      0.86       678
     
 
 
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x7ff381bb5710>
+    <matplotlib.axes._subplots.AxesSubplot at 0x7f5dab15c910>
 
 
 
 
     
-![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_48_2.png)
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_47_2.png)
     
 
 
@@ -1080,32 +1102,32 @@ with tf.device('/device:GPU:0'):
                       )
 ```
 
-    Model: "sequential_5"
+    Model: "sequential_8"
     _________________________________________________________________
      Layer (type)                Output Shape              Param #   
     =================================================================
-     conv2d_31 (Conv2D)          (None, 298, 298, 8)       224       
+     conv2d_82 (Conv2D)          (None, 298, 298, 8)       224       
                                                                      
-     max_pooling2d_9 (MaxPooling  (None, 149, 149, 8)      0         
-     2D)                                                             
-                                                                     
-     conv2d_32 (Conv2D)          (None, 147, 147, 16)      1168      
-                                                                     
-     max_pooling2d_10 (MaxPoolin  (None, 73, 73, 16)       0         
+     max_pooling2d_16 (MaxPoolin  (None, 149, 149, 8)      0         
      g2D)                                                            
                                                                      
-     conv2d_33 (Conv2D)          (None, 71, 71, 16)        2320      
+     conv2d_83 (Conv2D)          (None, 147, 147, 16)      1168      
                                                                      
-     max_pooling2d_11 (MaxPoolin  (None, 35, 35, 16)       0         
+     max_pooling2d_17 (MaxPoolin  (None, 73, 73, 16)       0         
      g2D)                                                            
                                                                      
-     flatten_2 (Flatten)         (None, 19600)             0         
+     conv2d_84 (Conv2D)          (None, 71, 71, 16)        2320      
                                                                      
-     dense_4 (Dense)             (None, 224)               4390624   
+     max_pooling2d_18 (MaxPoolin  (None, 35, 35, 16)       0         
+     g2D)                                                            
                                                                      
-     activation_4 (Activation)   (None, 224)               0         
+     flatten_4 (Flatten)         (None, 19600)             0         
                                                                      
-     dense_5 (Dense)             (None, 2)                 450       
+     dense_8 (Dense)             (None, 224)               4390624   
+                                                                     
+     activation_6 (Activation)   (None, 224)               0         
+                                                                     
+     dense_9 (Dense)             (None, 2)                 450       
                                                                      
     =================================================================
     Total params: 4,394,786
@@ -1114,33 +1136,45 @@ with tf.device('/device:GPU:0'):
     _________________________________________________________________
     None
     Epoch 1/30
-    24/24 [==============================] - 6s 218ms/step - loss: 0.7728 - accuracy: 0.5667 - val_loss: 0.6439 - val_accuracy: 0.6747
+    24/24 [==============================] - 5s 174ms/step - loss: 0.7278 - accuracy: 0.5561 - val_loss: 0.6366 - val_accuracy: 0.6747
     Epoch 2/30
-    24/24 [==============================] - 4s 183ms/step - loss: 0.5682 - accuracy: 0.7133 - val_loss: 0.5502 - val_accuracy: 0.7349
+    24/24 [==============================] - 4s 150ms/step - loss: 0.5721 - accuracy: 0.7028 - val_loss: 0.5733 - val_accuracy: 0.6386
     Epoch 3/30
-    24/24 [==============================] - 4s 183ms/step - loss: 0.4538 - accuracy: 0.7860 - val_loss: 0.5121 - val_accuracy: 0.7470
+    24/24 [==============================] - 4s 151ms/step - loss: 0.4539 - accuracy: 0.7900 - val_loss: 0.4812 - val_accuracy: 0.7711
     Epoch 4/30
-    24/24 [==============================] - 4s 186ms/step - loss: 0.3994 - accuracy: 0.8177 - val_loss: 0.5352 - val_accuracy: 0.7108
+    24/24 [==============================] - 4s 151ms/step - loss: 0.4377 - accuracy: 0.7794 - val_loss: 0.4864 - val_accuracy: 0.7711
     Epoch 5/30
-    24/24 [==============================] - 4s 184ms/step - loss: 0.3441 - accuracy: 0.8507 - val_loss: 0.4172 - val_accuracy: 0.7952
+    24/24 [==============================] - 4s 148ms/step - loss: 0.3481 - accuracy: 0.8468 - val_loss: 0.4426 - val_accuracy: 0.7831
     Epoch 6/30
-    24/24 [==============================] - 4s 182ms/step - loss: 0.2397 - accuracy: 0.9075 - val_loss: 0.3036 - val_accuracy: 0.8675
+    24/24 [==============================] - 4s 150ms/step - loss: 0.2842 - accuracy: 0.8838 - val_loss: 0.3726 - val_accuracy: 0.8916
     Epoch 7/30
-    24/24 [==============================] - 4s 184ms/step - loss: 0.1906 - accuracy: 0.9366 - val_loss: 0.2806 - val_accuracy: 0.9157
+    24/24 [==============================] - 4s 149ms/step - loss: 0.1982 - accuracy: 0.9379 - val_loss: 0.3101 - val_accuracy: 0.8916
     Epoch 8/30
-    24/24 [==============================] - 4s 185ms/step - loss: 0.1218 - accuracy: 0.9789 - val_loss: 0.2270 - val_accuracy: 0.9277
+    24/24 [==============================] - 4s 150ms/step - loss: 0.1527 - accuracy: 0.9564 - val_loss: 0.2488 - val_accuracy: 0.9036
     Epoch 9/30
-    24/24 [==============================] - 5s 187ms/step - loss: 0.1146 - accuracy: 0.9683 - val_loss: 0.6334 - val_accuracy: 0.7590
+    24/24 [==============================] - 4s 150ms/step - loss: 0.0921 - accuracy: 0.9802 - val_loss: 0.2471 - val_accuracy: 0.9036
     Epoch 10/30
-    24/24 [==============================] - 4s 185ms/step - loss: 0.1193 - accuracy: 0.9696 - val_loss: 0.2541 - val_accuracy: 0.9157
+    24/24 [==============================] - 4s 150ms/step - loss: 0.0782 - accuracy: 0.9775 - val_loss: 0.2200 - val_accuracy: 0.9277
     Epoch 11/30
-    24/24 [==============================] - 5s 187ms/step - loss: 0.1129 - accuracy: 0.9538 - val_loss: 0.3443 - val_accuracy: 0.8675
+    24/24 [==============================] - 4s 148ms/step - loss: 0.0493 - accuracy: 0.9934 - val_loss: 0.1825 - val_accuracy: 0.9518
     Epoch 12/30
-    24/24 [==============================] - 5s 189ms/step - loss: 0.1410 - accuracy: 0.9445 - val_loss: 0.2417 - val_accuracy: 0.9036
+    24/24 [==============================] - 4s 150ms/step - loss: 0.0319 - accuracy: 0.9947 - val_loss: 0.2291 - val_accuracy: 0.9518
     Epoch 13/30
-    24/24 [==============================] - 4s 186ms/step - loss: 0.0431 - accuracy: 0.9921 - val_loss: 0.2299 - val_accuracy: 0.9277
-    CPU times: user 53.5 s, sys: 4.18 s, total: 57.7 s
-    Wall time: 1min
+    24/24 [==============================] - 4s 149ms/step - loss: 0.0205 - accuracy: 1.0000 - val_loss: 0.1718 - val_accuracy: 0.9639
+    Epoch 14/30
+    24/24 [==============================] - 4s 146ms/step - loss: 0.0146 - accuracy: 1.0000 - val_loss: 0.1609 - val_accuracy: 0.9398
+    Epoch 15/30
+    24/24 [==============================] - 4s 149ms/step - loss: 0.0159 - accuracy: 0.9987 - val_loss: 0.2507 - val_accuracy: 0.9157
+    Epoch 16/30
+    24/24 [==============================] - 4s 149ms/step - loss: 0.0288 - accuracy: 0.9921 - val_loss: 0.2198 - val_accuracy: 0.9398
+    Epoch 17/30
+    24/24 [==============================] - 4s 150ms/step - loss: 0.0166 - accuracy: 0.9987 - val_loss: 0.2413 - val_accuracy: 0.9398
+    Epoch 18/30
+    24/24 [==============================] - 4s 162ms/step - loss: 0.0113 - accuracy: 1.0000 - val_loss: 0.1890 - val_accuracy: 0.9398
+    Epoch 19/30
+    24/24 [==============================] - 4s 149ms/step - loss: 0.0047 - accuracy: 1.0000 - val_loss: 0.2061 - val_accuracy: 0.9518
+    CPU times: user 1min 9s, sys: 3.85 s, total: 1min 13s
+    Wall time: 1min 10s
 
 
 
@@ -1154,13 +1188,13 @@ losses[['accuracy','val_accuracy']].plot(ax=ax[1])
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x7ff37fdbe790>
+    <matplotlib.axes._subplots.AxesSubplot at 0x7f5db3ca5710>
 
 
 
 
     
-![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_51_1.png)
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_50_1.png)
     
 
 
@@ -1179,25 +1213,25 @@ sns.heatmap(confusion_matrix(labels,predictions), annot=True)
 
                   precision    recall  f1-score   support
     
-               0       0.99      0.88      0.93       416
-               1       0.83      0.98      0.90       262
+               0       0.98      0.95      0.96       416
+               1       0.92      0.97      0.95       262
     
-        accuracy                           0.92       678
-       macro avg       0.91      0.93      0.92       678
-    weighted avg       0.93      0.92      0.92       678
+        accuracy                           0.96       678
+       macro avg       0.95      0.96      0.96       678
+    weighted avg       0.96      0.96      0.96       678
     
 
 
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x7ff37fef4d10>
+    <matplotlib.axes._subplots.AxesSubplot at 0x7f5db3ba4dd0>
 
 
 
 
     
-![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_53_2.png)
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_52_2.png)
     
 
 
@@ -1303,7 +1337,7 @@ model.compile(loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=Tru
 model.summary()
 ```
 
-    Model: "sequential_6"
+    Model: "sequential_9"
     _________________________________________________________________
      Layer (type)                Output Shape              Param #   
     =================================================================
@@ -1317,28 +1351,28 @@ model.summary()
      random_rotation (RandomRota  (None, 300, 300, 3)      0         
      tion)                                                           
                                                                      
-     conv2d_34 (Conv2D)          (None, 298, 298, 8)       224       
+     conv2d_85 (Conv2D)          (None, 298, 298, 8)       224       
                                                                      
-     max_pooling2d_12 (MaxPoolin  (None, 149, 149, 8)      0         
+     max_pooling2d_19 (MaxPoolin  (None, 149, 149, 8)      0         
      g2D)                                                            
                                                                      
-     conv2d_35 (Conv2D)          (None, 147, 147, 16)      1168      
+     conv2d_86 (Conv2D)          (None, 147, 147, 16)      1168      
                                                                      
-     max_pooling2d_13 (MaxPoolin  (None, 73, 73, 16)       0         
+     max_pooling2d_20 (MaxPoolin  (None, 73, 73, 16)       0         
      g2D)                                                            
                                                                      
-     conv2d_36 (Conv2D)          (None, 71, 71, 16)        2320      
+     conv2d_87 (Conv2D)          (None, 71, 71, 16)        2320      
                                                                      
-     max_pooling2d_14 (MaxPoolin  (None, 35, 35, 16)       0         
+     max_pooling2d_21 (MaxPoolin  (None, 35, 35, 16)       0         
      g2D)                                                            
                                                                      
-     flatten_3 (Flatten)         (None, 19600)             0         
+     flatten_5 (Flatten)         (None, 19600)             0         
                                                                      
-     dense_6 (Dense)             (None, 224)               4390624   
+     dense_10 (Dense)            (None, 224)               4390624   
                                                                      
-     activation_5 (Activation)   (None, 224)               0         
+     activation_7 (Activation)   (None, 224)               0         
                                                                      
-     dense_7 (Dense)             (None, 2)                 450       
+     dense_11 (Dense)            (None, 2)                 450       
                                                                      
     =================================================================
     Total params: 4,394,786
@@ -1357,65 +1391,53 @@ results = model.fit(train_set_tf,
 ```
 
     Epoch 1/30
-    24/24 [==============================] - 4s 116ms/step - loss: 119.8577 - accuracy: 0.4960 - val_loss: 4.5860 - val_accuracy: 0.5952
+    24/24 [==============================] - 4s 91ms/step - loss: 93.7654 - accuracy: 0.5503 - val_loss: 1.5286 - val_accuracy: 0.6190
     Epoch 2/30
-    24/24 [==============================] - 3s 108ms/step - loss: 1.8653 - accuracy: 0.6561 - val_loss: 0.9853 - val_accuracy: 0.6310
+    24/24 [==============================] - 2s 83ms/step - loss: 1.0640 - accuracy: 0.6508 - val_loss: 0.6292 - val_accuracy: 0.7024
     Epoch 3/30
-    24/24 [==============================] - 3s 110ms/step - loss: 0.7695 - accuracy: 0.7143 - val_loss: 0.7379 - val_accuracy: 0.6548
+    24/24 [==============================] - 2s 84ms/step - loss: 0.6656 - accuracy: 0.6944 - val_loss: 0.5734 - val_accuracy: 0.7143
     Epoch 4/30
-    24/24 [==============================] - 3s 110ms/step - loss: 0.7312 - accuracy: 0.7196 - val_loss: 0.4667 - val_accuracy: 0.7500
+    24/24 [==============================] - 2s 83ms/step - loss: 0.5832 - accuracy: 0.7037 - val_loss: 0.5793 - val_accuracy: 0.7143
     Epoch 5/30
-    24/24 [==============================] - 3s 109ms/step - loss: 0.5811 - accuracy: 0.7513 - val_loss: 0.5543 - val_accuracy: 0.7262
+    24/24 [==============================] - 3s 86ms/step - loss: 0.5902 - accuracy: 0.7235 - val_loss: 0.5230 - val_accuracy: 0.7500
     Epoch 6/30
-    24/24 [==============================] - 3s 110ms/step - loss: 0.5251 - accuracy: 0.7619 - val_loss: 0.4778 - val_accuracy: 0.7976
+    24/24 [==============================] - 2s 83ms/step - loss: 0.5396 - accuracy: 0.7447 - val_loss: 0.5276 - val_accuracy: 0.7738
     Epoch 7/30
-    24/24 [==============================] - 3s 113ms/step - loss: 0.4472 - accuracy: 0.7950 - val_loss: 0.4601 - val_accuracy: 0.8214
+    24/24 [==============================] - 2s 84ms/step - loss: 0.4809 - accuracy: 0.7672 - val_loss: 0.4934 - val_accuracy: 0.8095
     Epoch 8/30
-    24/24 [==============================] - 3s 112ms/step - loss: 0.5250 - accuracy: 0.7765 - val_loss: 0.4135 - val_accuracy: 0.7976
+    24/24 [==============================] - 2s 85ms/step - loss: 0.4144 - accuracy: 0.8108 - val_loss: 0.4401 - val_accuracy: 0.8095
     Epoch 9/30
-    24/24 [==============================] - 3s 110ms/step - loss: 0.3857 - accuracy: 0.8241 - val_loss: 0.3998 - val_accuracy: 0.8333
+    24/24 [==============================] - 2s 84ms/step - loss: 0.3664 - accuracy: 0.8585 - val_loss: 0.3677 - val_accuracy: 0.8690
     Epoch 10/30
-    24/24 [==============================] - 3s 114ms/step - loss: 0.3940 - accuracy: 0.8241 - val_loss: 0.4778 - val_accuracy: 0.7976
+    24/24 [==============================] - 2s 83ms/step - loss: 0.4642 - accuracy: 0.7844 - val_loss: 0.4574 - val_accuracy: 0.8095
     Epoch 11/30
-    24/24 [==============================] - 3s 111ms/step - loss: 0.3229 - accuracy: 0.8505 - val_loss: 0.3675 - val_accuracy: 0.8095
+    24/24 [==============================] - 2s 84ms/step - loss: 0.3724 - accuracy: 0.8135 - val_loss: 0.3456 - val_accuracy: 0.8333
     Epoch 12/30
-    24/24 [==============================] - 3s 110ms/step - loss: 0.4138 - accuracy: 0.8280 - val_loss: 0.4310 - val_accuracy: 0.8214
+    24/24 [==============================] - 2s 83ms/step - loss: 0.2774 - accuracy: 0.8783 - val_loss: 0.3460 - val_accuracy: 0.8571
     Epoch 13/30
-    24/24 [==============================] - 3s 113ms/step - loss: 0.4179 - accuracy: 0.8280 - val_loss: 0.3730 - val_accuracy: 0.8690
+    24/24 [==============================] - 3s 86ms/step - loss: 0.2786 - accuracy: 0.8902 - val_loss: 0.2961 - val_accuracy: 0.8929
     Epoch 14/30
-    24/24 [==============================] - 3s 111ms/step - loss: 0.3174 - accuracy: 0.8704 - val_loss: 0.4226 - val_accuracy: 0.7976
+    24/24 [==============================] - 2s 83ms/step - loss: 0.2955 - accuracy: 0.8730 - val_loss: 0.3577 - val_accuracy: 0.8214
     Epoch 15/30
-    24/24 [==============================] - 3s 111ms/step - loss: 0.3104 - accuracy: 0.8704 - val_loss: 0.3007 - val_accuracy: 0.8929
+    24/24 [==============================] - 2s 83ms/step - loss: 0.3145 - accuracy: 0.8651 - val_loss: 0.2971 - val_accuracy: 0.8929
     Epoch 16/30
-    24/24 [==============================] - 3s 110ms/step - loss: 0.2717 - accuracy: 0.8915 - val_loss: 0.3191 - val_accuracy: 0.8929
+    24/24 [==============================] - 2s 84ms/step - loss: 0.2414 - accuracy: 0.9021 - val_loss: 0.2544 - val_accuracy: 0.9167
     Epoch 17/30
-    24/24 [==============================] - 3s 109ms/step - loss: 0.2499 - accuracy: 0.9008 - val_loss: 0.4745 - val_accuracy: 0.7857
+    24/24 [==============================] - 2s 81ms/step - loss: 0.2229 - accuracy: 0.9127 - val_loss: 0.2901 - val_accuracy: 0.8571
     Epoch 18/30
-    24/24 [==============================] - 3s 106ms/step - loss: 0.2226 - accuracy: 0.9008 - val_loss: 0.2697 - val_accuracy: 0.8929
+    24/24 [==============================] - 2s 82ms/step - loss: 0.2601 - accuracy: 0.9061 - val_loss: 0.1960 - val_accuracy: 0.9405
     Epoch 19/30
-    24/24 [==============================] - 3s 110ms/step - loss: 0.2619 - accuracy: 0.8876 - val_loss: 0.1840 - val_accuracy: 0.9167
+    24/24 [==============================] - 2s 84ms/step - loss: 0.2167 - accuracy: 0.9206 - val_loss: 0.2081 - val_accuracy: 0.9286
     Epoch 20/30
-    24/24 [==============================] - 3s 111ms/step - loss: 0.1931 - accuracy: 0.9061 - val_loss: 0.1650 - val_accuracy: 0.9048
+    24/24 [==============================] - 2s 83ms/step - loss: 0.2397 - accuracy: 0.8929 - val_loss: 0.2204 - val_accuracy: 0.9167
     Epoch 21/30
-    24/24 [==============================] - 3s 108ms/step - loss: 0.1871 - accuracy: 0.9259 - val_loss: 0.2051 - val_accuracy: 0.8929
+    24/24 [==============================] - 2s 84ms/step - loss: 0.2110 - accuracy: 0.9140 - val_loss: 0.2115 - val_accuracy: 0.9405
     Epoch 22/30
-    24/24 [==============================] - 3s 110ms/step - loss: 0.2252 - accuracy: 0.9153 - val_loss: 0.1596 - val_accuracy: 0.9167
+    24/24 [==============================] - 2s 83ms/step - loss: 0.1644 - accuracy: 0.9365 - val_loss: 0.2254 - val_accuracy: 0.9286
     Epoch 23/30
-    24/24 [==============================] - 3s 111ms/step - loss: 0.1519 - accuracy: 0.9431 - val_loss: 0.1245 - val_accuracy: 0.9643
-    Epoch 24/30
-    24/24 [==============================] - 3s 109ms/step - loss: 0.1538 - accuracy: 0.9405 - val_loss: 0.1161 - val_accuracy: 0.9524
-    Epoch 25/30
-    24/24 [==============================] - 3s 109ms/step - loss: 0.2514 - accuracy: 0.9127 - val_loss: 0.1773 - val_accuracy: 0.9167
-    Epoch 26/30
-    24/24 [==============================] - 3s 106ms/step - loss: 0.1651 - accuracy: 0.9339 - val_loss: 0.1341 - val_accuracy: 0.9643
-    Epoch 27/30
-    24/24 [==============================] - 3s 111ms/step - loss: 0.1599 - accuracy: 0.9418 - val_loss: 0.1689 - val_accuracy: 0.9167
-    Epoch 28/30
-    24/24 [==============================] - 3s 109ms/step - loss: 0.1578 - accuracy: 0.9471 - val_loss: 0.1424 - val_accuracy: 0.9286
-    Epoch 29/30
-    24/24 [==============================] - 3s 110ms/step - loss: 0.1286 - accuracy: 0.9524 - val_loss: 0.1622 - val_accuracy: 0.9286
-    CPU times: user 1min 25s, sys: 9.96 s, total: 1min 35s
-    Wall time: 2min 4s
+    24/24 [==============================] - 2s 84ms/step - loss: 0.1505 - accuracy: 0.9431 - val_loss: 0.2011 - val_accuracy: 0.9167
+    CPU times: user 57.8 s, sys: 5.24 s, total: 1min 3s
+    Wall time: 58.7 s
 
 
 <a name='x.3.1'></a>
@@ -1437,25 +1459,25 @@ sns.heatmap(confusion_matrix(labels,predictions), annot=True)
 
                   precision    recall  f1-score   support
     
-             0.0       0.96      0.95      0.96       416
-             1.0       0.93      0.94      0.94       262
+             0.0       0.99      0.90      0.94       416
+             1.0       0.86      0.98      0.91       262
     
-        accuracy                           0.95       678
-       macro avg       0.95      0.95      0.95       678
-    weighted avg       0.95      0.95      0.95       678
+        accuracy                           0.93       678
+       macro avg       0.92      0.94      0.93       678
+    weighted avg       0.94      0.93      0.93       678
     
 
 
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x7ff389e48f90>
+    <matplotlib.axes._subplots.AxesSubplot at 0x7f5db3f9a3d0>
 
 
 
 
     
-![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_61_2.png)
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_60_2.png)
     
 
 
@@ -1545,7 +1567,7 @@ model.summary()
     _________________________________________________________________
      Layer (type)                Output Shape              Param #   
     =================================================================
-     input_6 (InputLayer)        [(None, 300, 300, 3)]     0         
+     input_8 (InputLayer)        [(None, 300, 300, 3)]     0         
                                                                      
      resizing (Resizing)         (None, 224, 224, 3)       0         
                                                                      
@@ -1563,7 +1585,7 @@ model.summary()
                                                                      
      dropout (Dropout)           (None, 1280)              0         
                                                                      
-     dense_8 (Dense)             (None, 2)                 2562      
+     dense_12 (Dense)            (None, 2)                 2562      
                                                                      
     =================================================================
     Total params: 2,260,546
@@ -1585,114 +1607,114 @@ model.summary()
 %%time
 with tf.device('/device:GPU:0'):
   results = model.fit(train_set_tf,
-                      epochs=50,
+                      epochs=60,
                       validation_data=val_set_tf,
                       callbacks=[early_stop]
                       )
 ```
 
     Epoch 1/50
-    24/24 [==============================] - 9s 181ms/step - loss: 0.9359 - accuracy: 0.3955 - val_loss: 0.7577 - val_accuracy: 0.4881
+    24/24 [==============================] - 6s 130ms/step - loss: 0.8879 - accuracy: 0.4431 - val_loss: 0.7634 - val_accuracy: 0.4643
     Epoch 2/50
-    24/24 [==============================] - 4s 121ms/step - loss: 0.8204 - accuracy: 0.4802 - val_loss: 0.6900 - val_accuracy: 0.5238
+    24/24 [==============================] - 3s 86ms/step - loss: 0.8257 - accuracy: 0.4815 - val_loss: 0.6939 - val_accuracy: 0.5238
     Epoch 3/50
-    24/24 [==============================] - 4s 120ms/step - loss: 0.7541 - accuracy: 0.5423 - val_loss: 0.6381 - val_accuracy: 0.6071
+    24/24 [==============================] - 2s 85ms/step - loss: 0.7602 - accuracy: 0.5278 - val_loss: 0.6392 - val_accuracy: 0.6071
     Epoch 4/50
-    24/24 [==============================] - 4s 118ms/step - loss: 0.7042 - accuracy: 0.5913 - val_loss: 0.5892 - val_accuracy: 0.7143
+    24/24 [==============================] - 3s 87ms/step - loss: 0.6970 - accuracy: 0.5847 - val_loss: 0.5912 - val_accuracy: 0.6905
     Epoch 5/50
-    24/24 [==============================] - 4s 123ms/step - loss: 0.6486 - accuracy: 0.6389 - val_loss: 0.5492 - val_accuracy: 0.8214
+    24/24 [==============================] - 3s 86ms/step - loss: 0.6381 - accuracy: 0.6336 - val_loss: 0.5536 - val_accuracy: 0.7857
     Epoch 6/50
-    24/24 [==============================] - 4s 121ms/step - loss: 0.6115 - accuracy: 0.6614 - val_loss: 0.5149 - val_accuracy: 0.8452
+    24/24 [==============================] - 3s 88ms/step - loss: 0.6212 - accuracy: 0.6521 - val_loss: 0.5171 - val_accuracy: 0.8571
     Epoch 7/50
-    24/24 [==============================] - 4s 123ms/step - loss: 0.5769 - accuracy: 0.6905 - val_loss: 0.4887 - val_accuracy: 0.8929
+    24/24 [==============================] - 3s 87ms/step - loss: 0.5816 - accuracy: 0.6905 - val_loss: 0.4897 - val_accuracy: 0.8929
     Epoch 8/50
-    24/24 [==============================] - 3s 119ms/step - loss: 0.5645 - accuracy: 0.6997 - val_loss: 0.4639 - val_accuracy: 0.8929
+    24/24 [==============================] - 3s 87ms/step - loss: 0.5254 - accuracy: 0.7407 - val_loss: 0.4642 - val_accuracy: 0.8929
     Epoch 9/50
-    24/24 [==============================] - 3s 119ms/step - loss: 0.5212 - accuracy: 0.7500 - val_loss: 0.4404 - val_accuracy: 0.9048
+    24/24 [==============================] - 3s 86ms/step - loss: 0.5293 - accuracy: 0.7209 - val_loss: 0.4405 - val_accuracy: 0.8929
     Epoch 10/50
-    24/24 [==============================] - 4s 120ms/step - loss: 0.4703 - accuracy: 0.7844 - val_loss: 0.4205 - val_accuracy: 0.9048
+    24/24 [==============================] - 2s 86ms/step - loss: 0.4834 - accuracy: 0.7857 - val_loss: 0.4216 - val_accuracy: 0.9048
     Epoch 11/50
-    24/24 [==============================] - 4s 121ms/step - loss: 0.4738 - accuracy: 0.7857 - val_loss: 0.4020 - val_accuracy: 0.9167
+    24/24 [==============================] - 2s 85ms/step - loss: 0.5037 - accuracy: 0.7698 - val_loss: 0.4046 - val_accuracy: 0.9167
     Epoch 12/50
-    24/24 [==============================] - 3s 119ms/step - loss: 0.4544 - accuracy: 0.8069 - val_loss: 0.3888 - val_accuracy: 0.9048
+    24/24 [==============================] - 3s 86ms/step - loss: 0.4370 - accuracy: 0.8214 - val_loss: 0.3900 - val_accuracy: 0.9167
     Epoch 13/50
-    24/24 [==============================] - 4s 122ms/step - loss: 0.4313 - accuracy: 0.8148 - val_loss: 0.3707 - val_accuracy: 0.9405
+    24/24 [==============================] - 3s 87ms/step - loss: 0.4188 - accuracy: 0.8320 - val_loss: 0.3737 - val_accuracy: 0.9286
     Epoch 14/50
-    24/24 [==============================] - 4s 121ms/step - loss: 0.4249 - accuracy: 0.8161 - val_loss: 0.3597 - val_accuracy: 0.9405
+    24/24 [==============================] - 3s 87ms/step - loss: 0.4236 - accuracy: 0.8108 - val_loss: 0.3610 - val_accuracy: 0.9405
     Epoch 15/50
-    24/24 [==============================] - 4s 122ms/step - loss: 0.4151 - accuracy: 0.8320 - val_loss: 0.3483 - val_accuracy: 0.9405
+    24/24 [==============================] - 3s 86ms/step - loss: 0.4260 - accuracy: 0.8360 - val_loss: 0.3494 - val_accuracy: 0.9405
     Epoch 16/50
-    24/24 [==============================] - 4s 121ms/step - loss: 0.4108 - accuracy: 0.8214 - val_loss: 0.3373 - val_accuracy: 0.9405
+    24/24 [==============================] - 2s 86ms/step - loss: 0.3880 - accuracy: 0.8320 - val_loss: 0.3381 - val_accuracy: 0.9405
     Epoch 17/50
-    24/24 [==============================] - 4s 122ms/step - loss: 0.3905 - accuracy: 0.8373 - val_loss: 0.3260 - val_accuracy: 0.9524
+    24/24 [==============================] - 3s 87ms/step - loss: 0.3906 - accuracy: 0.8347 - val_loss: 0.3272 - val_accuracy: 0.9524
     Epoch 18/50
-    24/24 [==============================] - 4s 124ms/step - loss: 0.3772 - accuracy: 0.8439 - val_loss: 0.3169 - val_accuracy: 0.9524
+    24/24 [==============================] - 2s 86ms/step - loss: 0.3680 - accuracy: 0.8558 - val_loss: 0.3192 - val_accuracy: 0.9524
     Epoch 19/50
-    24/24 [==============================] - 4s 121ms/step - loss: 0.3610 - accuracy: 0.8651 - val_loss: 0.3086 - val_accuracy: 0.9524
+    24/24 [==============================] - 3s 85ms/step - loss: 0.3721 - accuracy: 0.8439 - val_loss: 0.3104 - val_accuracy: 0.9524
     Epoch 20/50
-    24/24 [==============================] - 4s 121ms/step - loss: 0.3484 - accuracy: 0.8611 - val_loss: 0.3014 - val_accuracy: 0.9524
+    24/24 [==============================] - 2s 85ms/step - loss: 0.3665 - accuracy: 0.8399 - val_loss: 0.3047 - val_accuracy: 0.9405
     Epoch 21/50
-    24/24 [==============================] - 4s 121ms/step - loss: 0.3475 - accuracy: 0.8571 - val_loss: 0.2932 - val_accuracy: 0.9524
+    24/24 [==============================] - 3s 86ms/step - loss: 0.3405 - accuracy: 0.8730 - val_loss: 0.2952 - val_accuracy: 0.9524
     Epoch 22/50
-    24/24 [==============================] - 4s 123ms/step - loss: 0.3524 - accuracy: 0.8413 - val_loss: 0.2856 - val_accuracy: 0.9524
+    24/24 [==============================] - 3s 86ms/step - loss: 0.3359 - accuracy: 0.8757 - val_loss: 0.2867 - val_accuracy: 0.9524
     Epoch 23/50
-    24/24 [==============================] - 4s 122ms/step - loss: 0.3252 - accuracy: 0.8690 - val_loss: 0.2809 - val_accuracy: 0.9524
+    24/24 [==============================] - 3s 87ms/step - loss: 0.3314 - accuracy: 0.8690 - val_loss: 0.2822 - val_accuracy: 0.9524
     Epoch 24/50
-    24/24 [==============================] - 4s 121ms/step - loss: 0.3215 - accuracy: 0.8862 - val_loss: 0.2728 - val_accuracy: 0.9524
+    24/24 [==============================] - 3s 86ms/step - loss: 0.3229 - accuracy: 0.8849 - val_loss: 0.2734 - val_accuracy: 0.9524
     Epoch 25/50
-    24/24 [==============================] - 4s 122ms/step - loss: 0.3094 - accuracy: 0.8915 - val_loss: 0.2671 - val_accuracy: 0.9524
+    24/24 [==============================] - 3s 87ms/step - loss: 0.3309 - accuracy: 0.8704 - val_loss: 0.2673 - val_accuracy: 0.9524
     Epoch 26/50
-    24/24 [==============================] - 4s 121ms/step - loss: 0.3063 - accuracy: 0.8902 - val_loss: 0.2622 - val_accuracy: 0.9524
+    24/24 [==============================] - 3s 87ms/step - loss: 0.3115 - accuracy: 0.8862 - val_loss: 0.2613 - val_accuracy: 0.9524
     Epoch 27/50
-    24/24 [==============================] - 4s 124ms/step - loss: 0.3060 - accuracy: 0.8810 - val_loss: 0.2553 - val_accuracy: 0.9524
+    24/24 [==============================] - 2s 85ms/step - loss: 0.2988 - accuracy: 0.8889 - val_loss: 0.2565 - val_accuracy: 0.9524
     Epoch 28/50
-    24/24 [==============================] - 4s 122ms/step - loss: 0.2958 - accuracy: 0.9008 - val_loss: 0.2532 - val_accuracy: 0.9524
+    24/24 [==============================] - 3s 87ms/step - loss: 0.3061 - accuracy: 0.8796 - val_loss: 0.2517 - val_accuracy: 0.9524
     Epoch 29/50
-    24/24 [==============================] - 4s 122ms/step - loss: 0.2996 - accuracy: 0.8889 - val_loss: 0.2460 - val_accuracy: 0.9524
+    24/24 [==============================] - 2s 86ms/step - loss: 0.2783 - accuracy: 0.9034 - val_loss: 0.2489 - val_accuracy: 0.9524
     Epoch 30/50
-    24/24 [==============================] - 4s 121ms/step - loss: 0.2908 - accuracy: 0.8955 - val_loss: 0.2403 - val_accuracy: 0.9524
+    24/24 [==============================] - 2s 85ms/step - loss: 0.2839 - accuracy: 0.9048 - val_loss: 0.2417 - val_accuracy: 0.9643
     Epoch 31/50
-    24/24 [==============================] - 4s 122ms/step - loss: 0.2956 - accuracy: 0.8981 - val_loss: 0.2371 - val_accuracy: 0.9524
+    24/24 [==============================] - 2s 83ms/step - loss: 0.2800 - accuracy: 0.9034 - val_loss: 0.2371 - val_accuracy: 0.9643
     Epoch 32/50
-    24/24 [==============================] - 4s 121ms/step - loss: 0.2861 - accuracy: 0.8981 - val_loss: 0.2352 - val_accuracy: 0.9524
+    24/24 [==============================] - 2s 85ms/step - loss: 0.2740 - accuracy: 0.9048 - val_loss: 0.2366 - val_accuracy: 0.9524
     Epoch 33/50
-    24/24 [==============================] - 4s 122ms/step - loss: 0.2808 - accuracy: 0.9101 - val_loss: 0.2278 - val_accuracy: 0.9643
+    24/24 [==============================] - 2s 85ms/step - loss: 0.2806 - accuracy: 0.9021 - val_loss: 0.2292 - val_accuracy: 0.9643
     Epoch 34/50
-    24/24 [==============================] - 4s 122ms/step - loss: 0.2705 - accuracy: 0.9114 - val_loss: 0.2237 - val_accuracy: 0.9643
+    24/24 [==============================] - 2s 85ms/step - loss: 0.2686 - accuracy: 0.8981 - val_loss: 0.2245 - val_accuracy: 0.9643
     Epoch 35/50
-    24/24 [==============================] - 3s 120ms/step - loss: 0.2751 - accuracy: 0.8955 - val_loss: 0.2195 - val_accuracy: 0.9524
+    24/24 [==============================] - 2s 84ms/step - loss: 0.2658 - accuracy: 0.9180 - val_loss: 0.2210 - val_accuracy: 0.9643
     Epoch 36/50
-    24/24 [==============================] - 4s 120ms/step - loss: 0.2596 - accuracy: 0.9114 - val_loss: 0.2168 - val_accuracy: 0.9643
+    24/24 [==============================] - 2s 85ms/step - loss: 0.2574 - accuracy: 0.9021 - val_loss: 0.2190 - val_accuracy: 0.9643
     Epoch 37/50
-    24/24 [==============================] - 4s 123ms/step - loss: 0.2610 - accuracy: 0.9114 - val_loss: 0.2140 - val_accuracy: 0.9643
+    24/24 [==============================] - 3s 85ms/step - loss: 0.2702 - accuracy: 0.9114 - val_loss: 0.2137 - val_accuracy: 0.9643
     Epoch 38/50
-    24/24 [==============================] - 4s 121ms/step - loss: 0.2568 - accuracy: 0.9074 - val_loss: 0.2097 - val_accuracy: 0.9524
+    24/24 [==============================] - 3s 87ms/step - loss: 0.2567 - accuracy: 0.9127 - val_loss: 0.2103 - val_accuracy: 0.9643
     Epoch 39/50
-    24/24 [==============================] - 4s 121ms/step - loss: 0.2489 - accuracy: 0.9114 - val_loss: 0.2080 - val_accuracy: 0.9643
+    24/24 [==============================] - 2s 84ms/step - loss: 0.2477 - accuracy: 0.9206 - val_loss: 0.2075 - val_accuracy: 0.9643
     Epoch 40/50
-    24/24 [==============================] - 4s 121ms/step - loss: 0.2451 - accuracy: 0.9193 - val_loss: 0.2040 - val_accuracy: 0.9643
+    24/24 [==============================] - 3s 86ms/step - loss: 0.2518 - accuracy: 0.9061 - val_loss: 0.2042 - val_accuracy: 0.9643
     Epoch 41/50
-    24/24 [==============================] - 4s 121ms/step - loss: 0.2434 - accuracy: 0.9153 - val_loss: 0.2011 - val_accuracy: 0.9643
+    24/24 [==============================] - 3s 87ms/step - loss: 0.2446 - accuracy: 0.9206 - val_loss: 0.2013 - val_accuracy: 0.9643
     Epoch 42/50
-    24/24 [==============================] - 4s 121ms/step - loss: 0.2393 - accuracy: 0.9206 - val_loss: 0.1984 - val_accuracy: 0.9643
+    24/24 [==============================] - 2s 86ms/step - loss: 0.2342 - accuracy: 0.9127 - val_loss: 0.1979 - val_accuracy: 0.9643
     Epoch 43/50
-    24/24 [==============================] - 3s 120ms/step - loss: 0.2363 - accuracy: 0.9193 - val_loss: 0.1948 - val_accuracy: 0.9643
+    24/24 [==============================] - 2s 82ms/step - loss: 0.2334 - accuracy: 0.9180 - val_loss: 0.1953 - val_accuracy: 0.9643
     Epoch 44/50
-    24/24 [==============================] - 4s 120ms/step - loss: 0.2455 - accuracy: 0.9167 - val_loss: 0.1926 - val_accuracy: 0.9643
+    24/24 [==============================] - 2s 85ms/step - loss: 0.2363 - accuracy: 0.9140 - val_loss: 0.1932 - val_accuracy: 0.9643
     Epoch 45/50
-    24/24 [==============================] - 4s 121ms/step - loss: 0.2252 - accuracy: 0.9206 - val_loss: 0.1899 - val_accuracy: 0.9643
+    24/24 [==============================] - 3s 87ms/step - loss: 0.2370 - accuracy: 0.9101 - val_loss: 0.1911 - val_accuracy: 0.9643
     Epoch 46/50
-    24/24 [==============================] - 4s 122ms/step - loss: 0.2296 - accuracy: 0.9312 - val_loss: 0.1869 - val_accuracy: 0.9643
+    24/24 [==============================] - 3s 87ms/step - loss: 0.2178 - accuracy: 0.9312 - val_loss: 0.1877 - val_accuracy: 0.9643
     Epoch 47/50
-    24/24 [==============================] - 4s 123ms/step - loss: 0.2369 - accuracy: 0.9140 - val_loss: 0.1844 - val_accuracy: 0.9643
+    24/24 [==============================] - 2s 84ms/step - loss: 0.2287 - accuracy: 0.9206 - val_loss: 0.1855 - val_accuracy: 0.9643
     Epoch 48/50
-    24/24 [==============================] - 4s 121ms/step - loss: 0.2199 - accuracy: 0.9259 - val_loss: 0.1822 - val_accuracy: 0.9643
+    24/24 [==============================] - 2s 84ms/step - loss: 0.2263 - accuracy: 0.9193 - val_loss: 0.1835 - val_accuracy: 0.9643
     Epoch 49/50
-    24/24 [==============================] - 4s 120ms/step - loss: 0.2202 - accuracy: 0.9246 - val_loss: 0.1800 - val_accuracy: 0.9643
+    24/24 [==============================] - 3s 87ms/step - loss: 0.2288 - accuracy: 0.9259 - val_loss: 0.1806 - val_accuracy: 0.9643
     Epoch 50/50
-    24/24 [==============================] - 3s 117ms/step - loss: 0.2098 - accuracy: 0.9325 - val_loss: 0.1803 - val_accuracy: 0.9643
-    CPU times: user 2min 18s, sys: 17 s, total: 2min 35s
-    Wall time: 3min 41s
+    24/24 [==============================] - 3s 86ms/step - loss: 0.2129 - accuracy: 0.9312 - val_loss: 0.1787 - val_accuracy: 0.9643
+    CPU times: user 1min 56s, sys: 11.7 s, total: 2min 8s
+    Wall time: 2min 12s
 
 
 ### 4.4.3 Evaluate Model
@@ -1712,8 +1734,8 @@ sns.heatmap(confusion_matrix(labels,predictions), annot=True)
 
                   precision    recall  f1-score   support
     
-             0.0       0.98      0.92      0.95       416
-             1.0       0.88      0.97      0.92       262
+             0.0       0.97      0.92      0.95       416
+             1.0       0.89      0.95      0.92       262
     
         accuracy                           0.94       678
        macro avg       0.93      0.94      0.93       678
@@ -1724,13 +1746,13 @@ sns.heatmap(confusion_matrix(labels,predictions), annot=True)
 
 
 
-    <matplotlib.axes._subplots.AxesSubplot at 0x7ff380d62450>
+    <matplotlib.axes._subplots.AxesSubplot at 0x7f5da2e393d0>
 
 
 
 
     
-![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_72_2.png)
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_71_2.png)
     
 
 
@@ -1743,16 +1765,247 @@ visit [keras](https://www.tensorflow.org/api_docs/python/tf/keras/applications) 
 # Code cell for exercise 4
 ```
 
-## 4.5 Summary
+## 4.5 Augmentation + Transfer Learning
+
+[back to top](#top)
+
+
+```python
+### COMPONENTS (IN ORDER)
+resize = layers.experimental.preprocessing.Resizing(224,224)
+preprocess_input_fn = tf.keras.applications.mobilenet_v2.preprocess_input 
+base_model = tf.keras.applications.MobileNetV2(input_shape=(224,224,3),
+                                               include_top=False,
+                                               weights='imagenet')
+base_model.trainable=False
+global_average_layer = tf.keras.layers.GlobalAveragePooling2D()
+prediction_layer = tf.keras.layers.Dense(len(classes))
+
+aug1 = preprocessing.RandomFlip('horizontal', seed=seed_value) # flip left-to-right
+aug2 = preprocessing.RandomFlip('vertical', seed=seed_value)
+aug3 = preprocessing.RandomContrast(0.2, seed=seed_value)
+aug4 = preprocessing.RandomRotation(factor=0.25, fill_mode='constant', seed=seed_value)
+
+### MODEL
+inputs = tf.keras.Input(shape=image_shape)
+x = aug1(inputs)
+x = aug2(x)
+x = aug3(x)
+x = aug4(x)
+x = resize(x)
+x = preprocess_input_fn(x)
+x = base_model(x, training=False)
+x = global_average_layer(x)
+x = tf.keras.layers.Dropout(0.2)(x)
+outputs = prediction_layer(x)
+
+model = tf.keras.Model(inputs, outputs)
+```
+
+
+```python
+base_learning_rate = 0.0001
+model.compile(optimizer=tf.keras.optimizers.Adam(lr=base_learning_rate),
+              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+              metrics=['accuracy'])
+
+early_stop = EarlyStopping(monitor='val_loss',
+                           patience=5,
+                           restore_best_weights=True,)
+model.summary()
+```
+
+    Model: "model_2"
+    _________________________________________________________________
+     Layer (type)                Output Shape              Param #   
+    =================================================================
+     input_12 (InputLayer)       [(None, 300, 300, 3)]     0         
+                                                                     
+     random_flip_4 (RandomFlip)  (None, 300, 300, 3)       0         
+                                                                     
+     random_flip_5 (RandomFlip)  (None, 300, 300, 3)       0         
+                                                                     
+     random_contrast_2 (RandomCo  (None, 300, 300, 3)      0         
+     ntrast)                                                         
+                                                                     
+     random_rotation_2 (RandomRo  (None, 300, 300, 3)      0         
+     tation)                                                         
+                                                                     
+     resizing_2 (Resizing)       (None, 224, 224, 3)       0         
+                                                                     
+     tf.math.truediv_2 (TFOpLamb  (None, 224, 224, 3)      0         
+     da)                                                             
+                                                                     
+     tf.math.subtract_2 (TFOpLam  (None, 224, 224, 3)      0         
+     bda)                                                            
+                                                                     
+     mobilenetv2_1.00_224 (Funct  (None, 7, 7, 1280)       2257984   
+     ional)                                                          
+                                                                     
+     global_average_pooling2d_2   (None, 1280)             0         
+     (GlobalAveragePooling2D)                                        
+                                                                     
+     dropout_2 (Dropout)         (None, 1280)              0         
+                                                                     
+     dense_14 (Dense)            (None, 2)                 2562      
+                                                                     
+    =================================================================
+    Total params: 2,260,546
+    Trainable params: 2,562
+    Non-trainable params: 2,257,984
+    _________________________________________________________________
+
+
+    /usr/local/lib/python3.7/dist-packages/keras/optimizer_v2/adam.py:105: UserWarning: The `lr` argument is deprecated, use `learning_rate` instead.
+      super(Adam, self).__init__(name, **kwargs)
+
+
+
+```python
+%%time
+with tf.device('/device:GPU:0'):
+  results = model.fit(train_set_tf,
+                      epochs=60,
+                      validation_data=val_set_tf,
+                      callbacks=[early_stop]
+                      )
+```
+
+    Epoch 1/60
+    24/24 [==============================] - 6s 121ms/step - loss: 1.1031 - accuracy: 0.4749 - val_loss: 0.7784 - val_accuracy: 0.4405
+    Epoch 2/60
+    24/24 [==============================] - 3s 91ms/step - loss: 0.9019 - accuracy: 0.4272 - val_loss: 0.7770 - val_accuracy: 0.5000
+    Epoch 3/60
+    24/24 [==============================] - 3s 91ms/step - loss: 0.8208 - accuracy: 0.4828 - val_loss: 0.7223 - val_accuracy: 0.5238
+    Epoch 4/60
+    24/24 [==============================] - 3s 91ms/step - loss: 0.7530 - accuracy: 0.5397 - val_loss: 0.6936 - val_accuracy: 0.5476
+    Epoch 5/60
+    24/24 [==============================] - 3s 92ms/step - loss: 0.7356 - accuracy: 0.5331 - val_loss: 0.6617 - val_accuracy: 0.5595
+    Epoch 6/60
+    24/24 [==============================] - 3s 91ms/step - loss: 0.6974 - accuracy: 0.5714 - val_loss: 0.6388 - val_accuracy: 0.5595
+    Epoch 7/60
+    24/24 [==============================] - 3s 88ms/step - loss: 0.6557 - accuracy: 0.5992 - val_loss: 0.6129 - val_accuracy: 0.5833
+    Epoch 8/60
+    24/24 [==============================] - 3s 90ms/step - loss: 0.6464 - accuracy: 0.6204 - val_loss: 0.5881 - val_accuracy: 0.6071
+    Epoch 9/60
+    24/24 [==============================] - 3s 91ms/step - loss: 0.6505 - accuracy: 0.6270 - val_loss: 0.5684 - val_accuracy: 0.6190
+    Epoch 10/60
+    24/24 [==============================] - 3s 88ms/step - loss: 0.5987 - accuracy: 0.6825 - val_loss: 0.5476 - val_accuracy: 0.6429
+    Epoch 11/60
+    24/24 [==============================] - 3s 90ms/step - loss: 0.5892 - accuracy: 0.6799 - val_loss: 0.5371 - val_accuracy: 0.6667
+    Epoch 12/60
+    24/24 [==============================] - 3s 91ms/step - loss: 0.5802 - accuracy: 0.6878 - val_loss: 0.5172 - val_accuracy: 0.6786
+    Epoch 13/60
+    24/24 [==============================] - 3s 88ms/step - loss: 0.5232 - accuracy: 0.7368 - val_loss: 0.5266 - val_accuracy: 0.6429
+    Epoch 14/60
+    24/24 [==============================] - 3s 92ms/step - loss: 0.5486 - accuracy: 0.7209 - val_loss: 0.4909 - val_accuracy: 0.6905
+    Epoch 15/60
+    24/24 [==============================] - 3s 91ms/step - loss: 0.5099 - accuracy: 0.7646 - val_loss: 0.4740 - val_accuracy: 0.7143
+    Epoch 16/60
+    24/24 [==============================] - 3s 88ms/step - loss: 0.5121 - accuracy: 0.7646 - val_loss: 0.4817 - val_accuracy: 0.6786
+    Epoch 17/60
+    24/24 [==============================] - 3s 90ms/step - loss: 0.4991 - accuracy: 0.7474 - val_loss: 0.4570 - val_accuracy: 0.7143
+    Epoch 18/60
+    24/24 [==============================] - 3s 87ms/step - loss: 0.4878 - accuracy: 0.7672 - val_loss: 0.4622 - val_accuracy: 0.7024
+    Epoch 19/60
+    24/24 [==============================] - 3s 89ms/step - loss: 0.4743 - accuracy: 0.7765 - val_loss: 0.4435 - val_accuracy: 0.7262
+    Epoch 20/60
+    24/24 [==============================] - 3s 88ms/step - loss: 0.4661 - accuracy: 0.7817 - val_loss: 0.4437 - val_accuracy: 0.7024
+    Epoch 21/60
+    24/24 [==============================] - 3s 91ms/step - loss: 0.4671 - accuracy: 0.7778 - val_loss: 0.4418 - val_accuracy: 0.7024
+    Epoch 22/60
+    24/24 [==============================] - 3s 89ms/step - loss: 0.4482 - accuracy: 0.7923 - val_loss: 0.4256 - val_accuracy: 0.7143
+    Epoch 23/60
+    24/24 [==============================] - 3s 89ms/step - loss: 0.4478 - accuracy: 0.7870 - val_loss: 0.4289 - val_accuracy: 0.7143
+    Epoch 24/60
+    24/24 [==============================] - 3s 89ms/step - loss: 0.4124 - accuracy: 0.8214 - val_loss: 0.4237 - val_accuracy: 0.7143
+    Epoch 25/60
+    24/24 [==============================] - 3s 88ms/step - loss: 0.4250 - accuracy: 0.8108 - val_loss: 0.4386 - val_accuracy: 0.7024
+    Epoch 26/60
+    24/24 [==============================] - 3s 87ms/step - loss: 0.4200 - accuracy: 0.8135 - val_loss: 0.4328 - val_accuracy: 0.7024
+    Epoch 27/60
+    24/24 [==============================] - 3s 89ms/step - loss: 0.4195 - accuracy: 0.8122 - val_loss: 0.4139 - val_accuracy: 0.7381
+    Epoch 28/60
+    24/24 [==============================] - 3s 91ms/step - loss: 0.4117 - accuracy: 0.8095 - val_loss: 0.4071 - val_accuracy: 0.7500
+    Epoch 29/60
+    24/24 [==============================] - 3s 90ms/step - loss: 0.3885 - accuracy: 0.8148 - val_loss: 0.3953 - val_accuracy: 0.7857
+    Epoch 30/60
+    24/24 [==============================] - 3s 87ms/step - loss: 0.3774 - accuracy: 0.8452 - val_loss: 0.4010 - val_accuracy: 0.7619
+    Epoch 31/60
+    24/24 [==============================] - 3s 88ms/step - loss: 0.3639 - accuracy: 0.8505 - val_loss: 0.4008 - val_accuracy: 0.7500
+    Epoch 32/60
+    24/24 [==============================] - 3s 88ms/step - loss: 0.3964 - accuracy: 0.8228 - val_loss: 0.3962 - val_accuracy: 0.7500
+    Epoch 33/60
+    24/24 [==============================] - 3s 88ms/step - loss: 0.3644 - accuracy: 0.8320 - val_loss: 0.4159 - val_accuracy: 0.7381
+    Epoch 34/60
+    24/24 [==============================] - 3s 90ms/step - loss: 0.3711 - accuracy: 0.8466 - val_loss: 0.3758 - val_accuracy: 0.8095
+    Epoch 35/60
+    24/24 [==============================] - 3s 86ms/step - loss: 0.3525 - accuracy: 0.8664 - val_loss: 0.3887 - val_accuracy: 0.7857
+    Epoch 36/60
+    24/24 [==============================] - 3s 88ms/step - loss: 0.3470 - accuracy: 0.8571 - val_loss: 0.3953 - val_accuracy: 0.7500
+    Epoch 37/60
+    24/24 [==============================] - 3s 88ms/step - loss: 0.3574 - accuracy: 0.8664 - val_loss: 0.3570 - val_accuracy: 0.8214
+    Epoch 38/60
+    24/24 [==============================] - 3s 87ms/step - loss: 0.3385 - accuracy: 0.8558 - val_loss: 0.3633 - val_accuracy: 0.8214
+    Epoch 39/60
+    24/24 [==============================] - 3s 88ms/step - loss: 0.3500 - accuracy: 0.8532 - val_loss: 0.3698 - val_accuracy: 0.8214
+    Epoch 40/60
+    24/24 [==============================] - 3s 85ms/step - loss: 0.3328 - accuracy: 0.8704 - val_loss: 0.3601 - val_accuracy: 0.8214
+    Epoch 41/60
+    24/24 [==============================] - 3s 87ms/step - loss: 0.3434 - accuracy: 0.8611 - val_loss: 0.3646 - val_accuracy: 0.8214
+    Epoch 42/60
+    24/24 [==============================] - 3s 90ms/step - loss: 0.3339 - accuracy: 0.8690 - val_loss: 0.3656 - val_accuracy: 0.8095
+    CPU times: user 1min 40s, sys: 10.3 s, total: 1min 50s
+    Wall time: 2min 38s
+
+
+
+```python
+predictions = model.predict(test_set_tf).argmax(axis=1)
+labels = np.array([])
+for x, y in ds_test_:
+  labels = np.concatenate([labels, tf.squeeze(y.numpy()).numpy()])
+print(classification_report(labels,predictions))
+plt.figure(figsize=(10,6))
+sns.heatmap(confusion_matrix(labels,predictions), annot=True)
+```
+
+                  precision    recall  f1-score   support
+    
+             0.0       0.78      1.00      0.88       416
+             1.0       0.99      0.56      0.72       262
+    
+        accuracy                           0.83       678
+       macro avg       0.88      0.78      0.80       678
+    weighted avg       0.86      0.83      0.81       678
+    
+
+
+
+
+
+    <matplotlib.axes._subplots.AxesSubplot at 0x7f5eb6a05a10>
+
+
+
+
+    
+![png](S4_Computer_Vision_II_files/S4_Computer_Vision_II_78_2.png)
+    
+
+
+## 4.6 Summary
+
+[back to top](#top)
 
 If you ran this notebook as-is you should've gotten something similar to the following table
 
 | Data Handling | Model       | Data Augmentation | Weighted F1 | Training Time (min:sec) |
 |---------------|-------------|-------------------|-------------|-------------------------|
-| Keras         | CNN         | No                | 0.92        | 1:00                    |
-| Tensorflow    | CNN         | No                | 0.79        | 0:39                    |
-| Scikit-Image  | CNN         | No                | 1.00        | 0:47                    |
-| Tensorflow    | CNN         | Yes               | 0.95        | 2:04                    |
-| Tensorflow    | MobileNetV2 | No                | 0.94        | 3:41                    |
+| ImageDataGenerator         | CNN         | No                | 0.96        | 1:00                    |
+| from_directory    | CNN         | No                | 0.86        | 0:39                    |
+| from_tensor  | CNN         | No                | 0.77        | 0:47                    |
+| from_directory    | CNN         | Yes               | 0.93        | 2:04                    |
+| from_directory    | MobileNetV2 | No                | 0.94        | 3:41                    |
 
 In conclusion, we can see an appreciable difference in speed when we decide to transfer learn or augment the original dataset. Curiously, Loading our data with scikit-image gives us the best performance in our custom CNN model.

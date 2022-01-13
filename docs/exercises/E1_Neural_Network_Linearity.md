@@ -6,13 +6,11 @@
 
 **Contact**: wesleybeckner@gmail.com
 
-<br>
-
 ---
 
 <br>
 
-In this lab we will compare the FFNN to the classification algorithms we created in Course 2.
+In this lab we will compare the FFNNs to simple linear models
 
 <br>
 
