@@ -273,7 +273,7 @@ plot_boundaries(X, model)
 
 
     
-![png](E1_Neural_Network_Linearity_files/E1_Neural_Network_Linearity_7_0.png)
+![png](L1_Neural_Network_Linearity_files/L1_Neural_Network_Linearity_7_0.png)
     
 
 
@@ -422,7 +422,7 @@ plot_boundaries(X, model)
 
 
     
-![png](E1_Neural_Network_Linearity_files/E1_Neural_Network_Linearity_10_0.png)
+![png](L1_Neural_Network_Linearity_files/L1_Neural_Network_Linearity_10_0.png)
     
 
 
@@ -570,7 +570,7 @@ plot_boundaries(X, model)
 
 
     
-![png](E1_Neural_Network_Linearity_files/E1_Neural_Network_Linearity_13_0.png)
+![png](L1_Neural_Network_Linearity_files/L1_Neural_Network_Linearity_13_0.png)
     
 
 

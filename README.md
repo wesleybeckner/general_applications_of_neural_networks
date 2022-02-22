@@ -8,6 +8,8 @@ The breakdown for this course is as follows:
 
 *	Data Topics
     * Neural networks: the perceptron, feed forward neural networks; computer vision: convolutional neural networks, importing and manipulating images, generating images; time series analysis: long short term memory networks, autocorrelation
+*   Software Topics
+    * Flask Applications
 *	Sessions
     * S1: Multilayer Perceptron
     * S2: Feed Forward Neural Networks
@@ -16,14 +18,14 @@ The breakdown for this course is as follows:
     * S5: Time Series Analysis
     * S6: Natural Language Processing I
     * S7: Natural Language Processing II
-*	Exercises
-    * E1: Neural Network Linearity
-    * E2: Wine Quality Prediction
-    * E3: Object Classification
-    * E4: Customer Forecasting 
-    * E5: TBD
+*	Labs
+    * L1: Neural Network Linearity
+    * L2: Wine Quality Prediction
+    * L3: Motor Impellar Quality Prediction
+    * L4: Customer Forecasting 
+    * L5: Motor Impellar Flask Application
 *	Project
-    * P1: Object Detection I
-    * P2: Object Detection II
-    * P3: TBD
-    * P4: TBD
+    * P1: The Flask Application Factory
+    * P2: Monolithic Application: Tic-Tac-Toe
+    * P3: Microservices Application: Tic-Tac-Toe
+    * P4: Unit Tests and Continuous Integration for Python Applications
