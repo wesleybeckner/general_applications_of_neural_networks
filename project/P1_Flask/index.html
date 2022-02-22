@@ -1,0 +1,1352 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.4">
+    
+    
+      
+        <title>The Flask Application Factory - General Applications of Neural Networks</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bb3983ee.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#2094f3">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../extra.css">
+    
+      <link rel="stylesheet" href="../../styles.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-114664473-1","auto"),ga("set","anonymizeIp",!0),ga("send","pageview"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){var e;this.value&&(e=document.location.pathname,ga("send","pageview",e+"?q="+this.value))}),"undefined"!=typeof location$&&location$.subscribe(function(e){ga("send","pageview",e.pathname)})})</script>
+  <script async src="https://www.google-analytics.com/analytics.js"></script>
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="blue" data-md-color-accent="indigo">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#general-applications-of-neural-networks-p1-the-flask-application-factory" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="General Applications of Neural Networks" class="md-header__button md-logo" aria-label="General Applications of Neural Networks" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            General Applications of Neural Networks
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              The Flask Application Factory
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="General Applications of Neural Networks" class="md-nav__button md-logo" aria-label="General Applications of Neural Networks" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    General Applications of Neural Networks
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../introduction/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Sessions
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Sessions" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Sessions
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../S1_Multilayer_Perceptron/" class="md-nav__link">
+        The Multilayer Perceptron
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../S2_Feed_Forward_Neural_Networks/" class="md-nav__link">
+        Feed Forward Neural Networks
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../S3_Computer_Vision_I/" class="md-nav__link">
+        Computer Vision I
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../S4_Computer_Vision_II/" class="md-nav__link">
+        Computer Vision II
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../S5_Time_Series_Analysis/" class="md-nav__link">
+        Time Series Analysis
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Labs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Labs" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Labs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../labs/L1_Neural_Network_Linearity/" class="md-nav__link">
+        Neural Network Linearity
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Project
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Project" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Project
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          The Flask Application Factory
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        The Flask Application Factory
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    Setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-technologies" class="md-nav__link">
+    Core Technologies
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Technologies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-web-framework" class="md-nav__link">
+    What is Web Framework?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-flask" class="md-nav__link">
+    What is Flask?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wsgi" class="md-nav__link">
+    WSGI
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#werkzeug" class="md-nav__link">
+    Werkzeug
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jinja2" class="md-nav__link">
+    Jinja2
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-application-factory" class="md-nav__link">
+    The Application Factory
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-apppy" class="md-nav__link">
+    Create app.py
+  </a>
+  
+    <nav class="md-nav" aria-label="Create app.py">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-1" class="md-nav__link">
+    💪 Exercise 1
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#routing" class="md-nav__link">
+    Routing
+  </a>
+  
+    <nav class="md-nav" aria-label="Routing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-2" class="md-nav__link">
+    💪 Exercise 2:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variable-rules" class="md-nav__link">
+    Variable Rules
+  </a>
+  
+    <nav class="md-nav" aria-label="Variable Rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-3" class="md-nav__link">
+    💪 Exercise 3:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-4" class="md-nav__link">
+    💪 Exercise 4:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dynamic-url-building" class="md-nav__link">
+    Dynamic URL Building
+  </a>
+  
+    <nav class="md-nav" aria-label="Dynamic URL Building">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-5" class="md-nav__link">
+    💪 Exercise 5:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http-methods" class="md-nav__link">
+    HTTP Methods
+  </a>
+  
+    <nav class="md-nav" aria-label="HTTP Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-6" class="md-nav__link">
+    📝 💪 Exercise 6:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#templates" class="md-nav__link">
+    Templates
+  </a>
+  
+    <nav class="md-nav" aria-label="Templates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jinja2-and-where-html-lives" class="md-nav__link">
+    (jinja2 and where html lives)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-7" class="md-nav__link">
+    💪 Exercise 7:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#static-files" class="md-nav__link">
+    Static Files
+  </a>
+  
+    <nav class="md-nav" aria-label="Static Files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-css-and-js-live" class="md-nav__link">
+    (where CSS and JS live)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-8" class="md-nav__link">
+    📝 💪  Exercise 8:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    Setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-technologies" class="md-nav__link">
+    Core Technologies
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Technologies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-web-framework" class="md-nav__link">
+    What is Web Framework?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-is-flask" class="md-nav__link">
+    What is Flask?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wsgi" class="md-nav__link">
+    WSGI
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#werkzeug" class="md-nav__link">
+    Werkzeug
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jinja2" class="md-nav__link">
+    Jinja2
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-application-factory" class="md-nav__link">
+    The Application Factory
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-apppy" class="md-nav__link">
+    Create app.py
+  </a>
+  
+    <nav class="md-nav" aria-label="Create app.py">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-1" class="md-nav__link">
+    💪 Exercise 1
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#routing" class="md-nav__link">
+    Routing
+  </a>
+  
+    <nav class="md-nav" aria-label="Routing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-2" class="md-nav__link">
+    💪 Exercise 2:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variable-rules" class="md-nav__link">
+    Variable Rules
+  </a>
+  
+    <nav class="md-nav" aria-label="Variable Rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-3" class="md-nav__link">
+    💪 Exercise 3:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-4" class="md-nav__link">
+    💪 Exercise 4:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dynamic-url-building" class="md-nav__link">
+    Dynamic URL Building
+  </a>
+  
+    <nav class="md-nav" aria-label="Dynamic URL Building">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-5" class="md-nav__link">
+    💪 Exercise 5:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http-methods" class="md-nav__link">
+    HTTP Methods
+  </a>
+  
+    <nav class="md-nav" aria-label="HTTP Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-6" class="md-nav__link">
+    📝 💪 Exercise 6:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#templates" class="md-nav__link">
+    Templates
+  </a>
+  
+    <nav class="md-nav" aria-label="Templates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jinja2-and-where-html-lives" class="md-nav__link">
+    (jinja2 and where html lives)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-7" class="md-nav__link">
+    💪 Exercise 7:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#static-files" class="md-nav__link">
+    Static Files
+  </a>
+  
+    <nav class="md-nav" aria-label="Static Files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-css-and-js-live" class="md-nav__link">
+    (where CSS and JS live)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-8" class="md-nav__link">
+    📝 💪  Exercise 8:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+<p><a href="https://colab.research.google.com/github/wesleybeckner/general_applications_of_neural_networks/blob/main/notebooks/project/P1_Flask.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<h1 id="general-applications-of-neural-networks-p1-the-flask-application-factory">General Applications of Neural Networks <br> P1: The Flask Application Factory<a class="headerlink" href="#general-applications-of-neural-networks-p1-the-flask-application-factory" title="Permanent link">&para;</a></h1>
+<p><strong>Instructor</strong>: Wesley Beckner</p>
+<p><strong>Contact</strong>: <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#119;&#101;&#115;&#108;&#101;&#121;&#98;&#101;&#99;&#107;&#110;&#101;&#114;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#119;&#101;&#115;&#108;&#101;&#121;&#98;&#101;&#99;&#107;&#110;&#101;&#114;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></p>
+<p><br></p>
+<hr />
+<p><br></p>
+<p>In this session we'll borrow heavily from <a href="https://hackersandslackers.com/flask-application-factory/">hackers and slackers</a>!</p>
+<p align="center">
+<img src="https://raw.githubusercontent.com/wesleybeckner/oonii/main/assets/flask_factory.jpg" width=700px></img>
+</p>
+
+<p><br></p>
+<hr />
+<p><br></p>
+<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h2>
+<p>Before we start...</p>
+<ol>
+<li>Download and install Anaconda</li>
+<li>Download and install VS Code</li>
+<li>Clone this repository</li>
+</ol>
+<h2 id="core-technologies">Core Technologies<a class="headerlink" href="#core-technologies" title="Permanent link">&para;</a></h2>
+<p><a href="https://www.tutorialspoint.com/flask/flask_quick_guide.htm">original post</a></p>
+<h3 id="what-is-web-framework">What is Web Framework?<a class="headerlink" href="#what-is-web-framework" title="Permanent link">&para;</a></h3>
+<p>Web Application Framework or simply Web Framework represents a collection of libraries and modules that enables a web application developer to write applications without having to bother about low-level details such as protocols, thread management etc.</p>
+<h3 id="what-is-flask">What is Flask?<a class="headerlink" href="#what-is-flask" title="Permanent link">&para;</a></h3>
+<p>Flask is a web application framework written in Python. It is developed by Armin Ronacher, who leads an international group of Python enthusiasts named Pocco. Flask is based on the Werkzeug WSGI toolkit and Jinja2 template engine. Both are Pocco projects.</p>
+<h3 id="wsgi">WSGI<a class="headerlink" href="#wsgi" title="Permanent link">&para;</a></h3>
+<p>Web Server Gateway Interface (WSGI) has been adopted as a standard for Python web application development. WSGI is a specification for a universal interface between the web server and the web applications.</p>
+<h3 id="werkzeug">Werkzeug<a class="headerlink" href="#werkzeug" title="Permanent link">&para;</a></h3>
+<p>It is a WSGI toolkit, which implements requests, response objects, and other utility functions. This enables building a web framework on top of it. The Flask framework uses Werkzeug as one of its bases.</p>
+<h3 id="jinja2">Jinja2<a class="headerlink" href="#jinja2" title="Permanent link">&para;</a></h3>
+<p>Jinja2 is a popular templating engine for Python. A web templating system combines a template with a certain data source to render dynamic web pages.</p>
+<p>Flask is often referred to as a micro framework. It aims to keep the core of an application simple yet extensible. Flask does not have built-in abstraction layer for database handling, nor does it have form a validation support. Instead, Flask supports the extensions to add such functionality to the application. Some of the popular Flask extensions are discussed later in the tutorial.</p>
+<h2 id="the-application-factory">The Application Factory<a class="headerlink" href="#the-application-factory" title="Permanent link">&para;</a></h2>
+<p>Eventually we will want to structure our application as follows:</p>
+<div class="codehilite"><pre><span></span><code>/app
+├── /application
+│   ├── __init__.py
+│   ├── auth.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── routes.py
+│   ├── /static
+│   └── /templates
+├── config.py
+└── wsgi.py
+</code></pre></div>
+
+<p>This is our directory structure for creating an <a href="https://flask.palletsprojects.com/en/1.0.x/patterns/appfactories/">application factory</a> in Flask. 
+But for now, we are going to take a much simpler approach at the expense of creating something well-structured.</p>
+<blockquote>
+<p>Notice how there isn't even a file called <code>app.py</code>!</p>
+</blockquote>
+<h2 id="create-apppy">Create app.py<a class="headerlink" href="#create-apppy" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code><span class="c1">## btw, we can run flask right in our jupyter notebook:</span>
+
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s2">&quot;Hello World!&quot;</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code> * Serving Flask app &#39;__main__&#39; (lazy loading)
+ * Environment: production
+[31m   WARNING: This is a development server. Do not use it in a production deployment.[0m
+[2m   Use a production WSGI server instead.[0m
+ * Debug mode: off
+
+
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+</code></pre></div>
+
+<h3 id="exercise-1">💪 Exercise 1<a class="headerlink" href="#exercise-1" title="Permanent link">&para;</a></h3>
+<p>Create a file called <code>app.py</code> and paste in the following:</p>
+<div class="codehilite"><pre><span></span><code>from flask import Flask
+app = Flask(__name__)
+
+@app.route(&#39;/&#39;)
+def hello_world():
+   return &quot;Hello World!&quot;
+
+if __name__ == &#39;__main__&#39;:
+   app.run()
+</code></pre></div>
+
+<p>What are we doing here? Let's break it down piecewise. </p>
+<ul>
+<li><code>from flask import Flask</code></li>
+</ul>
+<p>The Flask blueprint is going to contain the bones of our WSGI application. Let's see how we envoke the object:</p>
+<ul>
+<li><code>app = Flask(__name__)</code></li>
+</ul>
+<p>Prototypical flask styling is to use <code>app</code> as the namespace for the Flask object. The class blueprint take the current module name, <code>__name__</code> as argument. </p>
+<ul>
+<li><code>@app.route('/')</code></li>
+</ul>
+<p>The <code>@</code> operates as a decorator, meaning we are going to be altering something predefined in the Flask class. In this case, we are telling our application what to execute when the server is accessed at a specific url. In this case, the base,<code>/</code>, url</p>
+<ul>
+<li><code>def hello_world():</code></li>
+<li><code>return "Hello World!"</code></li>
+</ul>
+<p>Our function for handling the route appears directly below <code>app.route('/')</code>, this will be the case for any route we wish to define (<code>@</code> decorator followed by function definition). In our simple, starting app, we pass the obligatory phrase, "Hello World!"</p>
+<ul>
+<li><code>if __name__ == '__main__':</code></li>
+</ul>
+<p>Only run our application if it is not imported into the python interpreter by a previously running script</p>
+<ul>
+<li><code>app.run()</code></li>
+</ul>
+<p>Finally, we run our application. A full description of the parameters we can pass to <code>app.run()</code>, all are optional:</p>
+<table>
+<thead>
+<tr>
+<th>Location</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>host</td>
+<td>Hostname to listen on. Defaults to 127.0.0.1 (localhost). Set to '0.0.0.0' to have server available externally</td>
+</tr>
+<tr>
+<td>2</td>
+<td>port</td>
+<td>Defaults to 5000</td>
+</tr>
+<tr>
+<td>3</td>
+<td>debug</td>
+<td>Defaults to False. If set to True, provides debug info and causes application to restart with code changes</td>
+</tr>
+<tr>
+<td>4</td>
+<td>options</td>
+<td>To be forwarded to WSGI server</td>
+</tr>
+</tbody>
+</table>
+<h2 id="routing">Routing<a class="headerlink" href="#routing" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code>@app.route(&#39;/&#39;)
+def hello_world():
+   return &quot;Hello World!&quot;
+</code></pre></div>
+
+<p>Routing handles what is generated to the web browser (or returned in an API request) when the user accesses a specific url. The <code>@</code> decorator is what is typically envoked but we can also use the function <code>add_url_rule</code>. </p>
+<div class="codehilite"><pre><span></span><code><span class="n">app</span><span class="o">.</span><span class="n">add_url_rule</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>&lt;bound method Flask.add_url_rule of &lt;Flask &#39;__main__&#39;&gt;&gt;
+</code></pre></div>
+
+<h3 id="exercise-2">💪 Exercise 2:<a class="headerlink" href="#exercise-2" title="Permanent link">&para;</a></h3>
+<p>Let's try changing the <code>app.py</code> file to this instead:</p>
+<div class="codehilite"><pre><span></span><code>def hello_world():
+   return &quot;hello world&quot;
+app.add_url_rule(&quot;/&quot;, view_func=hello_world)
+</code></pre></div>
+
+<h2 id="variable-rules">Variable Rules<a class="headerlink" href="#variable-rules" title="Permanent link">&para;</a></h2>
+<p>Frequently, especially when we get into build flask-based APIs, we will want to include variable parameters in the url path. we can do this by designating <code>&lt;variable-name&gt;</code> in the url.</p>
+<h3 id="exercise-3">💪 Exercise 3:<a class="headerlink" href="#exercise-3" title="Permanent link">&para;</a></h3>
+<p>extend your url path to include a new variable, i.e. <code>/&lt;msg&gt;</code> and return the message from the path to the screen. Ex:</p>
+<div class="codehilite"><pre><span></span><code>def hello_world(msg):
+   return &quot;{}!&quot;.format(msg)
+app.add_url_rule(&quot;/&lt;msg&gt;&quot;, view_func=hello_world)
+</code></pre></div>
+
+<p>Note that when you type the url in the browser the carrot brackets should be omitted. </p>
+<p>We can also specify the datatype passed for the variable</p>
+<ul>
+<li>integer: <code>&lt;int:var-name&gt;</code></li>
+<li>float: <code>&lt;float:var-name&gt;</code></li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">hello_world</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">add_url_rule</span><span class="p">(</span><span class="s2">&quot;/&lt;msg&gt;&quot;</span><span class="p">,</span> <span class="n">view_func</span><span class="o">=</span><span class="n">hello_world</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="exercise-4">💪 Exercise 4:<a class="headerlink" href="#exercise-4" title="Permanent link">&para;</a></h3>
+<p>experiment with datatype enforcement by making a new url path called <code>/type/&lt;string:var&gt;</code> and passing to it in 3 different cases: int, string, and float, and return the type to the browser, i.e:</p>
+<p><code>return "the type is: {}".format(type(var).__name__)</code></p>
+<p>what happens when you try to pass an <em>int</em> to <em>float</em> or a <em>float</em> to <em>int</em>?</p>
+<p>Ex:</p>
+<div class="codehilite"><pre><span></span><code>@app.route(&#39;/type/&lt;int:var&gt;&#39;)
+def check_type(var):
+   print(type(var))
+   return &quot;the type is: {}&quot;.format(type(var).__name__)
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/type/&lt;int:var&gt;&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">check_type</span><span class="p">(</span><span class="n">var</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">var</span><span class="p">))</span>
+    <span class="k">return</span> <span class="s2">&quot;the type is: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">var</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>&quot;&lt;class &#39;float&#39;&gt;&quot;
+</code></pre></div>
+
+<h2 id="dynamic-url-building">Dynamic URL Building<a class="headerlink" href="#dynamic-url-building" title="Permanent link">&para;</a></h2>
+<p>url redirects can be initiated depending on input variables. For example, imagine you have a <code>/user/&lt;name&gt;</code> url that redirects to <code>/guest/&lt;name&gt;</code> or <code>/admin/</code> depending on if the <code>&lt;name&gt;</code> variable is set to <code>admin</code> or not. You would invoke this like so:</p>
+<div class="codehilite"><pre><span></span><code>@app.route(&#39;/user/&lt;name&gt;&#39;)
+def hello_user(name):
+   if name == &#39;admin&#39;:
+      return redirect(url_for(&#39;hello_admin&#39;))
+   else:
+      return redirect(url_for(&#39;hello_guest&#39;, name=name))
+
+@app.route(&#39;/admin/&#39;)
+def hello_admin():
+   return &quot;Hello Admin!&quot;
+
+@app.route(&#39;/guest/&lt;name&gt;&#39;)
+def hello_guest(name):
+   return &quot;Hello {}!&quot;.format(name)
+</code></pre></div>
+
+<h3 id="exercise-5">💪 Exercise 5:<a class="headerlink" href="#exercise-5" title="Permanent link">&para;</a></h3>
+<p>paste the above code into <code>app.py</code> and test out the functionality by visiting <code>/user/&lt;yourname&gt;</code> and <code>user/admin</code>. Notice how the url is redirected in the web address bar!</p>
+<h2 id="http-methods">HTTP Methods<a class="headerlink" href="#http-methods" title="Permanent link">&para;</a></h2>
+<p>So far, we have been defaulting to the http method, GET. But there are other http methods we can envoke:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>Sends data in unencrypted form to the server</td>
+</tr>
+<tr>
+<td>HEAD</td>
+<td>Same as GET but without response body</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>Used to send HTML form data to server. Data received by POST method is not cached by server</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>Replaces all current representations of the target resource with the uploaded content</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>Removes all current representations of the target resource given by a URL</td>
+</tr>
+</tbody>
+</table>
+<h3 id="exercise-6">📝 💪 Exercise 6:<a class="headerlink" href="#exercise-6" title="Permanent link">&para;</a></h3>
+<p>Under <code>/templates/</code> create a new file called <code>/index.html</code>/ and paste in the following:</p>
+<div class="codehilite"><pre><span></span><code>&lt;html&gt;
+   &lt;body&gt;
+      &lt;form action = &quot;http://localhost:5000/login&quot; method = &quot;post&quot;&gt;
+         &lt;p&gt;Enter Name:&lt;/p&gt;
+         &lt;p&gt;&lt;input type = &quot;text&quot; name = &quot;nm&quot; /&gt;&lt;/p&gt;
+         &lt;p&gt;&lt;input type = &quot;submit&quot; value = &quot;submit&quot; /&gt;&lt;/p&gt;
+      &lt;/form&gt;
+   &lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div>
+
+<p>Import <code>request</code> from <code>flask</code> at the top of <code>app.py</code>.</p>
+<p>Now paste the following into your <code>app.py</code> file:</p>
+<div class="codehilite"><pre><span></span><code>@app.route(&#39;/success/&lt;name&gt;&#39;)
+def success(name):
+   return &#39;welcome %s&#39; % name
+
+@app.route(&#39;/login&#39;,methods = [&#39;POST&#39;, &#39;GET&#39;])
+def login():
+   if request.method == &#39;POST&#39;:
+      user = request.form[&#39;nm&#39;]
+      return redirect(url_for(&#39;success&#39;,name = user))
+   else:
+      user = request.args.get(&#39;nm&#39;)
+      return redirect(url_for(&#39;success&#39;,name = user))
+</code></pre></div>
+
+<p>the two lines we'll inspect are <code>user = request.form['nm']</code> and <code>user = request.args.get('nm')</code>. In <code>index.html</code> the method is set to <code>post</code>. In this case, when we open <code>index.html</code> in the web browser and fill the input object who's name is <code>nm</code> and click submit, it sends a post request to localhost:5000/login. The variable <code>user</code> in the flask application is then set according to <code>request.form['nm']</code>. Go ahead and try this out yourself.</p>
+<p>After verifying that this works, change method to <code>"get"</code> in <code>index.html</code>. Now the user variable will be set with <code>request.args.get('nm')</code> in the flask application.</p>
+<h2 id="templates">Templates<a class="headerlink" href="#templates" title="Permanent link">&para;</a></h2>
+<h3 id="jinja2-and-where-html-lives">(jinja2 and where html lives)<a class="headerlink" href="#jinja2-and-where-html-lives" title="Permanent link">&para;</a></h3>
+<p>We can insert html styling directly in our python code, but that gets clunky real fast. Instead, we typically leverage the <a href="https://jinja.palletsprojects.com/en/3.0.x/">jinja templating engine</a> to render html files according to routes specified in the flask application. Let's take an example</p>
+<h3 id="exercise-7">💪 Exercise 7:<a class="headerlink" href="#exercise-7" title="Permanent link">&para;</a></h3>
+<p>import <code>render_template</code> from <code>flask</code> at the top of <code>app.py</code>. Then add an url rule at <code>/form/</code> that returns <code>render_template("login.html")</code></p>
+<p>Ex:</p>
+<div class="codehilite"><pre><span></span><code>@app.route(&#39;/form/&#39;)
+def index():
+   return render_template(&quot;login.html&quot;)
+</code></pre></div>
+
+<p>When you visit <code>localhost:5000/form/</code> you should see the page rendered by <code>index.html</code> that we opened previously! In this way, you can build a python website that still utilizes any html/css/js you would like in a traditional static build.</p>
+<blockquote>
+<p>Note: Flask will always try to find your html files called via render_template in your templates/ folder sitting in the same directory as your python script</p>
+</blockquote>
+<h2 id="static-files">Static Files<a class="headerlink" href="#static-files" title="Permanent link">&para;</a></h2>
+<h3 id="where-css-and-js-live">(where CSS and JS live)<a class="headerlink" href="#where-css-and-js-live" title="Permanent link">&para;</a></h3>
+<p>For this next piece, we're going to include 3 new files in our application and show how traditional html/css/js websites can be rendered in the Flask framework.</p>
+<h3 id="exercise-8">📝 💪  Exercise 8:<a class="headerlink" href="#exercise-8" title="Permanent link">&para;</a></h3>
+<p>Copy the following into the respect files and locations.</p>
+<p>In <code>templates/static.html</code>:</p>
+<div class="codehilite"><pre><span></span><code>&lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;../static/static.css&quot;&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div class=&quot;flex-container&quot;&gt;
+        &lt;div id=&quot;thumbnails&quot;&gt;
+            &lt;h1&gt;💪&lt;/h1&gt;
+            &lt;h1&gt;🍫&lt;/h1&gt;
+            &lt;h1&gt;⛱️&lt;/h1&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;script src=&quot;../static/static.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+</code></pre></div>
+
+<p>In <code>static/static.css</code>:</p>
+<div class="codehilite"><pre><span></span><code>.flex-container {
+    text-align:center;
+  }
+</code></pre></div>
+
+<p>In <code>static/static.js</code>:</p>
+<div class="codehilite"><pre><span></span><code>var thumbnails = document.getElementById(&quot;thumbnails&quot;)
+var emoji = thumbnails.innerHTML.split(&quot;\n&quot;)
+console.log(emoji)
+
+emoji.sort(() =&gt; Math.random() - 0.5);
+
+var str = &quot;&quot;
+for (let i=0; i&lt;emoji.length;i++){
+  str += emoji[i] + &quot;\n&quot;
+}
+console.log(str)
+document.getElementById(&quot;thumbnails&quot;).innerHTML = str
+</code></pre></div>
+
+<p>In our JS file we are randomly swapping the innerHTML settings of the different emojis (effectively randomizing the order of the emojis on the webpage) open <code>static.html</code> in the web browser and inspect to see the effect our of JS code, you can also look at the console to view the output of the randomization process. </p>
+<p>Now, using the same methodology as we did in exercise 7, add the route to <code>app.py</code> so that users will see <code>static.html</code> when they visit the url extension <code>emoji</code>.</p>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../../labs/L1_Neural_Network_Linearity/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Neural Network Linearity" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Neural Network Linearity
+            </div>
+          </div>
+        </a>
+      
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.361d90f1.min.js"}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.289a2a4b.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      
+    
+  </body>
+</html>
