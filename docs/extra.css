@@ -6,3 +6,8 @@ table {
     overflow-x: scroll;
     white-space: nowrap;
   }
+:root {
+  --md-primary-fg-color:        #59A14F;
+  --md-primary-fg-color--light: #87a084;
+  --md-primary-fg-color--dark:  #13a300;
+}
