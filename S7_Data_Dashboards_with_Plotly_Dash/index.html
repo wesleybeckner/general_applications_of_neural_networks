@@ -1,0 +1,2117 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.4">
+    
+    
+      
+        <title>Data Dashboards with Plotly Dash - General Applications of Neural Networks</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bb3983ee.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.e6a45f82.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+      <link rel="stylesheet" href="../styles.css">
+    
+    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-114664473-1","auto"),ga("set","anonymizeIp",!0),ga("send","pageview"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){var e;this.value&&(e=document.location.pathname,ga("send","pageview",e+"?q="+this.value))}),"undefined"!=typeof location$&&location$.subscribe(function(e){ga("send","pageview",e.pathname)})})</script>
+  <script async src="https://www.google-analytics.com/analytics.js"></script>
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#general-applications-of-neural-networks-session-7-data-dashboards-with-plotly-dash" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="General Applications of Neural Networks" class="md-header__button md-logo" aria-label="General Applications of Neural Networks" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            General Applications of Neural Networks
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Data Dashboards with Plotly Dash
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="General Applications of Neural Networks" class="md-nav__button md-logo" aria-label="General Applications of Neural Networks" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    General Applications of Neural Networks
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../introduction/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Sessions
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Sessions" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Sessions
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S1_Multilayer_Perceptron/" class="md-nav__link">
+        The Multilayer Perceptron
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S2_Feed_Forward_Neural_Networks/" class="md-nav__link">
+        Feed Forward Neural Networks
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S3_Computer_Vision_I/" class="md-nav__link">
+        Computer Vision I
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S4_Computer_Vision_II/" class="md-nav__link">
+        Computer Vision II
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S5_Flask/" class="md-nav__link">
+        Building Applications with Flask
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S6_Time_Series_Analysis/" class="md-nav__link">
+        Time Series Analysis
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Data Dashboards with Plotly Dash
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Data Dashboards with Plotly Dash
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#70-preparing-environment-and-importing-data" class="md-nav__link">
+    7.0 Preparing Environment and Importing Data
+  </a>
+  
+    <nav class="md-nav" aria-label="7.0 Preparing Environment and Importing Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#701-import-packages" class="md-nav__link">
+    7.0.1 Import Packages
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#702-load-dataset" class="md-nav__link">
+    7.0.2 Load Dataset
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#71-layout" class="md-nav__link">
+    7.1 Layout
+  </a>
+  
+    <nav class="md-nav" aria-label="7.1 Layout">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#711-applayout" class="md-nav__link">
+    7.1.1 app.layout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#712-components" class="md-nav__link">
+    7.1.2 components
+  </a>
+  
+    <nav class="md-nav" aria-label="7.1.2 components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#7121-dash_html_components-html" class="md-nav__link">
+    7.1.2.1 dash_html_components (html)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7122-dash_core_components-dcc" class="md-nav__link">
+    7.1.2.2 dash_core_components (dcc)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-1-create-your-first-dashboard" class="md-nav__link">
+    🏋️ Exercise 1: Create your first Dashboard!!!
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#713-style-sheets" class="md-nav__link">
+    7.1.3 Style Sheets
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#714-reusable-components" class="md-nav__link">
+    7.1.4 Reusable Components
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#715-markdown" class="md-nav__link">
+    7.1.5 Markdown
+  </a>
+  
+    <nav class="md-nav" aria-label="7.1.5 Markdown">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-2-play-with-markdown" class="md-nav__link">
+    🏋️ Exercise 2: Play with Markdown
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#716-more-on-dash_core_components" class="md-nav__link">
+    7.1.6 More on dash_core_components
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#72-basic-callbacks" class="md-nav__link">
+    7.2 Basic Callbacks
+  </a>
+  
+    <nav class="md-nav" aria-label="7.2 Basic Callbacks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#721-simple-interactive-dash-app" class="md-nav__link">
+    7.2.1 Simple Interactive Dash App
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#722-multiple-inputs" class="md-nav__link">
+    7.2.2 Multiple Inputs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#723-multiple-outputs" class="md-nav__link">
+    7.2.3 Multiple Outputs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-3-changing-graph-elements-with-callbacks-and-dash-core-components" class="md-nav__link">
+    🏋️ Exercise 3: Changing Graph Elements with Callbacks and Dash Core Components
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enrichment-chained-callbacks" class="md-nav__link">
+    🍒 Enrichment: Chained Callbacks
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#73-interactive-graphing-and-crossfiltering" class="md-nav__link">
+    7.3 Interactive Graphing and Crossfiltering
+  </a>
+  
+    <nav class="md-nav" aria-label="7.3 Interactive Graphing and Crossfiltering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-4-interactive-filtering-to-display-aggregate-stats" class="md-nav__link">
+    🏋️ Exercise 4: Interactive Filtering to Display Aggregate Stats
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enrichment-deploy-to-heroku" class="md-nav__link">
+    🍒 Enrichment: Deploy to Heroku
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Labs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Labs" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Labs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../labs/L1_Neural_Network_Linearity/" class="md-nav__link">
+        Neural Network Linearity
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Project
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Project" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Project
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project/P1_Monolithic/" class="md-nav__link">
+        Monolithic Tic-Tac-Toe App
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#70-preparing-environment-and-importing-data" class="md-nav__link">
+    7.0 Preparing Environment and Importing Data
+  </a>
+  
+    <nav class="md-nav" aria-label="7.0 Preparing Environment and Importing Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#701-import-packages" class="md-nav__link">
+    7.0.1 Import Packages
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#702-load-dataset" class="md-nav__link">
+    7.0.2 Load Dataset
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#71-layout" class="md-nav__link">
+    7.1 Layout
+  </a>
+  
+    <nav class="md-nav" aria-label="7.1 Layout">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#711-applayout" class="md-nav__link">
+    7.1.1 app.layout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#712-components" class="md-nav__link">
+    7.1.2 components
+  </a>
+  
+    <nav class="md-nav" aria-label="7.1.2 components">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#7121-dash_html_components-html" class="md-nav__link">
+    7.1.2.1 dash_html_components (html)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7122-dash_core_components-dcc" class="md-nav__link">
+    7.1.2.2 dash_core_components (dcc)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-1-create-your-first-dashboard" class="md-nav__link">
+    🏋️ Exercise 1: Create your first Dashboard!!!
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#713-style-sheets" class="md-nav__link">
+    7.1.3 Style Sheets
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#714-reusable-components" class="md-nav__link">
+    7.1.4 Reusable Components
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#715-markdown" class="md-nav__link">
+    7.1.5 Markdown
+  </a>
+  
+    <nav class="md-nav" aria-label="7.1.5 Markdown">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-2-play-with-markdown" class="md-nav__link">
+    🏋️ Exercise 2: Play with Markdown
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#716-more-on-dash_core_components" class="md-nav__link">
+    7.1.6 More on dash_core_components
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#72-basic-callbacks" class="md-nav__link">
+    7.2 Basic Callbacks
+  </a>
+  
+    <nav class="md-nav" aria-label="7.2 Basic Callbacks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#721-simple-interactive-dash-app" class="md-nav__link">
+    7.2.1 Simple Interactive Dash App
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#722-multiple-inputs" class="md-nav__link">
+    7.2.2 Multiple Inputs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#723-multiple-outputs" class="md-nav__link">
+    7.2.3 Multiple Outputs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exercise-3-changing-graph-elements-with-callbacks-and-dash-core-components" class="md-nav__link">
+    🏋️ Exercise 3: Changing Graph Elements with Callbacks and Dash Core Components
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enrichment-chained-callbacks" class="md-nav__link">
+    🍒 Enrichment: Chained Callbacks
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#73-interactive-graphing-and-crossfiltering" class="md-nav__link">
+    7.3 Interactive Graphing and Crossfiltering
+  </a>
+  
+    <nav class="md-nav" aria-label="7.3 Interactive Graphing and Crossfiltering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exercise-4-interactive-filtering-to-display-aggregate-stats" class="md-nav__link">
+    🏋️ Exercise 4: Interactive Filtering to Display Aggregate Stats
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enrichment-deploy-to-heroku" class="md-nav__link">
+    🍒 Enrichment: Deploy to Heroku
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+<h1 id="general-applications-of-neural-networks-session-7-data-dashboards-with-plotly-dash">General Applications of Neural Networks <br> Session 7: Data Dashboards with Plotly Dash<a class="headerlink" href="#general-applications-of-neural-networks-session-7-data-dashboards-with-plotly-dash" title="Permanent link">&para;</a></h1>
+<p><strong>Instructor</strong>: Wesley Beckner</p>
+<p><strong>Contact</strong>: <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#119;&#101;&#115;&#108;&#101;&#121;&#98;&#101;&#99;&#107;&#110;&#101;&#114;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#119;&#101;&#115;&#108;&#101;&#121;&#98;&#101;&#99;&#107;&#110;&#101;&#114;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></p>
+<hr />
+<p><br></p>
+<p>In this session we will turn our attention back to visualization! Specifically, we will use Plotly and Dash to put our visualizations into an interactive web format.</p>
+<p align=center>
+<img src="https://images.prismic.io/plotly-marketing-website/db073c29-5cee-4f13-9adf-46dd136f45f4_ezgif.com-video-to-gif+%2811%29.gif?auto=compress,format" width=600></img>
+</p>
+<p><br></p>
+<hr />
+<p><a name='x.0'></a></p>
+<h2 id="70-preparing-environment-and-importing-data">7.0 Preparing Environment and Importing Data<a class="headerlink" href="#70-preparing-environment-and-importing-data" title="Permanent link">&para;</a></h2>
+<p><a href="#top">back to top</a></p>
+<p><a name='x.0.1'></a></p>
+<h3 id="701-import-packages">7.0.1 Import Packages<a class="headerlink" href="#701-import-packages" title="Permanent link">&para;</a></h3>
+<p><a href="#top">back to top</a></p>
+<div class="codehilite"><pre><span></span><code><span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">jupyter</span><span class="o">-</span><span class="n">dash</span>
+
+<span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="n">dash_daq</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>Collecting jupyter-dash
+  Downloading https://files.pythonhosted.org/packages/46/21/d3893ad0b7a7061115938d6c38f5862522d45c4199fb7e8fde0765781e13/jupyter_dash-0.4.0-py3-none-any.whl
+Requirement already satisfied: ipython in /usr/local/lib/python3.7/dist-packages (from jupyter-dash) (5.5.0)
+Requirement already satisfied: requests in /usr/local/lib/python3.7/dist-packages (from jupyter-dash) (2.23.0)
+Requirement already satisfied: flask in /usr/local/lib/python3.7/dist-packages (from jupyter-dash) (1.1.4)
+Collecting dash
+[?25l  Downloading https://files.pythonhosted.org/packages/d4/50/e7c2830168db186f84b7de2988543e974433a6cdb0a0b23d51c781e2b2ab/dash-1.20.0.tar.gz (77kB)
+[K     |████████████████████████████████| 81kB 3.6MB/s 
+[?25hRequirement already satisfied: retrying in /usr/local/lib/python3.7/dist-packages (from jupyter-dash) (1.3.3)
+Requirement already satisfied: ipykernel in /usr/local/lib/python3.7/dist-packages (from jupyter-dash) (4.10.1)
+Collecting ansi2html
+  Downloading https://files.pythonhosted.org/packages/c6/85/3a46be84afbb16b392a138cd396117f438c7b2e91d8dc327621d1ae1b5dc/ansi2html-1.6.0-py3-none-any.whl
+Requirement already satisfied: setuptools&gt;=18.5 in /usr/local/lib/python3.7/dist-packages (from ipython-&gt;jupyter-dash) (57.0.0)
+Requirement already satisfied: simplegeneric&gt;0.8 in /usr/local/lib/python3.7/dist-packages (from ipython-&gt;jupyter-dash) (0.8.1)
+Requirement already satisfied: pygments in /usr/local/lib/python3.7/dist-packages (from ipython-&gt;jupyter-dash) (2.6.1)
+Requirement already satisfied: decorator in /usr/local/lib/python3.7/dist-packages (from ipython-&gt;jupyter-dash) (4.4.2)
+Requirement already satisfied: pickleshare in /usr/local/lib/python3.7/dist-packages (from ipython-&gt;jupyter-dash) (0.7.5)
+Requirement already satisfied: pexpect; sys_platform != &quot;win32&quot; in /usr/local/lib/python3.7/dist-packages (from ipython-&gt;jupyter-dash) (4.8.0)
+Requirement already satisfied: prompt-toolkit&lt;2.0.0,&gt;=1.0.4 in /usr/local/lib/python3.7/dist-packages (from ipython-&gt;jupyter-dash) (1.0.18)
+Requirement already satisfied: traitlets&gt;=4.2 in /usr/local/lib/python3.7/dist-packages (from ipython-&gt;jupyter-dash) (5.0.5)
+Requirement already satisfied: idna&lt;3,&gt;=2.5 in /usr/local/lib/python3.7/dist-packages (from requests-&gt;jupyter-dash) (2.10)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/local/lib/python3.7/dist-packages (from requests-&gt;jupyter-dash) (2020.12.5)
+Requirement already satisfied: chardet&lt;4,&gt;=3.0.2 in /usr/local/lib/python3.7/dist-packages (from requests-&gt;jupyter-dash) (3.0.4)
+Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,&lt;1.26,&gt;=1.21.1 in /usr/local/lib/python3.7/dist-packages (from requests-&gt;jupyter-dash) (1.24.3)
+Requirement already satisfied: Jinja2&lt;3.0,&gt;=2.10.1 in /usr/local/lib/python3.7/dist-packages (from flask-&gt;jupyter-dash) (2.11.3)
+Requirement already satisfied: itsdangerous&lt;2.0,&gt;=0.24 in /usr/local/lib/python3.7/dist-packages (from flask-&gt;jupyter-dash) (1.1.0)
+Requirement already satisfied: click&lt;8.0,&gt;=5.1 in /usr/local/lib/python3.7/dist-packages (from flask-&gt;jupyter-dash) (7.1.2)
+Requirement already satisfied: Werkzeug&lt;2.0,&gt;=0.15 in /usr/local/lib/python3.7/dist-packages (from flask-&gt;jupyter-dash) (1.0.1)
+Collecting flask-compress
+  Downloading https://files.pythonhosted.org/packages/c6/d5/69b13600230d24310b98a52da561113fc01a5c17acf77152761eef3e50f1/Flask_Compress-1.9.0-py3-none-any.whl
+Requirement already satisfied: plotly in /usr/local/lib/python3.7/dist-packages (from dash-&gt;jupyter-dash) (4.4.1)
+Collecting dash_renderer==1.9.1
+[?25l  Downloading https://files.pythonhosted.org/packages/5f/d3/d661a68b4ce71498d5c0c79617bce3d5fc884d4448c698f77c2247cd1b46/dash_renderer-1.9.1.tar.gz (1.0MB)
+[K     |████████████████████████████████| 1.0MB 7.4MB/s 
+[?25hCollecting dash-core-components==1.16.0
+[?25l  Downloading https://files.pythonhosted.org/packages/f4/79/434e14d77dbf82b27f98df077936a424de254059d47152b0445b7116e97e/dash_core_components-1.16.0.tar.gz (3.5MB)
+[K     |████████████████████████████████| 3.5MB 13.2MB/s 
+[?25hCollecting dash-html-components==1.1.3
+[?25l  Downloading https://files.pythonhosted.org/packages/8f/ca/7eeca4cae4e15cc6f7d0bc41a46368dd3fcdddc72aaa5bac61a8b92d541c/dash_html_components-1.1.3.tar.gz (82kB)
+[K     |████████████████████████████████| 92kB 9.1MB/s 
+[?25hCollecting dash-table==4.11.3
+[?25l  Downloading https://files.pythonhosted.org/packages/97/f7/f4969a926f20a55d3e5970d01b85ff9ad510dba32de189e72dd8f4992740/dash_table-4.11.3.tar.gz (1.8MB)
+[K     |████████████████████████████████| 1.8MB 38.1MB/s 
+[?25hRequirement already satisfied: future in /usr/local/lib/python3.7/dist-packages (from dash-&gt;jupyter-dash) (0.16.0)
+Requirement already satisfied: six&gt;=1.7.0 in /usr/local/lib/python3.7/dist-packages (from retrying-&gt;jupyter-dash) (1.15.0)
+Requirement already satisfied: jupyter-client in /usr/local/lib/python3.7/dist-packages (from ipykernel-&gt;jupyter-dash) (5.3.5)
+Requirement already satisfied: tornado&gt;=4.0 in /usr/local/lib/python3.7/dist-packages (from ipykernel-&gt;jupyter-dash) (5.1.1)
+Requirement already satisfied: ptyprocess&gt;=0.5 in /usr/local/lib/python3.7/dist-packages (from pexpect; sys_platform != &quot;win32&quot;-&gt;ipython-&gt;jupyter-dash) (0.7.0)
+Requirement already satisfied: wcwidth in /usr/local/lib/python3.7/dist-packages (from prompt-toolkit&lt;2.0.0,&gt;=1.0.4-&gt;ipython-&gt;jupyter-dash) (0.2.5)
+Requirement already satisfied: ipython-genutils in /usr/local/lib/python3.7/dist-packages (from traitlets&gt;=4.2-&gt;ipython-&gt;jupyter-dash) (0.2.0)
+Requirement already satisfied: MarkupSafe&gt;=0.23 in /usr/local/lib/python3.7/dist-packages (from Jinja2&lt;3.0,&gt;=2.10.1-&gt;flask-&gt;jupyter-dash) (2.0.1)
+Collecting brotli
+[?25l  Downloading https://files.pythonhosted.org/packages/15/ea/5bd575511b37bbd1c794606a0a621e6feff8e96b7dd007a86a5d218b2d94/Brotli-1.0.9-cp37-cp37m-manylinux1_x86_64.whl (357kB)
+[K     |████████████████████████████████| 358kB 34.7MB/s 
+[?25hRequirement already satisfied: pyzmq&gt;=13 in /usr/local/lib/python3.7/dist-packages (from jupyter-client-&gt;ipykernel-&gt;jupyter-dash) (22.0.3)
+Requirement already satisfied: jupyter-core&gt;=4.6.0 in /usr/local/lib/python3.7/dist-packages (from jupyter-client-&gt;ipykernel-&gt;jupyter-dash) (4.7.1)
+Requirement already satisfied: python-dateutil&gt;=2.1 in /usr/local/lib/python3.7/dist-packages (from jupyter-client-&gt;ipykernel-&gt;jupyter-dash) (2.8.1)
+Building wheels for collected packages: dash, dash-renderer, dash-core-components, dash-html-components, dash-table
+  Building wheel for dash (setup.py) ... [?25l[?25hdone
+  Created wheel for dash: filename=dash-1.20.0-cp37-none-any.whl size=85845 sha256=5e3c6abd8291a29081382e3dafb1d448842f0c0f24319c4550a9ab77cf398869
+  Stored in directory: /root/.cache/pip/wheels/e6/33/41/ce361d0d1da277d2350f815b10f2ab1e331592d93ef2b07e29
+  Building wheel for dash-renderer (setup.py) ... [?25l[?25hdone
+  Created wheel for dash-renderer: filename=dash_renderer-1.9.1-cp37-none-any.whl size=1014873 sha256=e8718c0db14919960665fa1499401a53694d379c2a4473dcc71a272029c0229f
+  Stored in directory: /root/.cache/pip/wheels/03/a9/c5/dd5815c601b0ede164c223ffd7bafebde716ca57de06ef8aec
+  Building wheel for dash-core-components (setup.py) ... [?25l[?25hdone
+  Created wheel for dash-core-components: filename=dash_core_components-1.16.0-cp37-none-any.whl size=3540992 sha256=d75a4ff62365b12450afcd2457d72eb2675bc2c5633af639000a4f8f1a1fa764
+  Stored in directory: /root/.cache/pip/wheels/86/1e/8c/e87ebba30b73c20dcd641224274febc983af88ed0fd7712a07
+  Building wheel for dash-html-components (setup.py) ... [?25l[?25hdone
+  Created wheel for dash-html-components: filename=dash_html_components-1.1.3-cp37-none-any.whl size=319488 sha256=8b940827400852cd5b9b16d3bd1e13d3d1e20f67218487d842c80a2b379d7071
+  Stored in directory: /root/.cache/pip/wheels/07/f9/6c/f9b73a6ae1b7f347a92dc240293cebc267b370ba2a80added2
+  Building wheel for dash-table (setup.py) ... [?25l[?25hdone
+  Created wheel for dash-table: filename=dash_table-4.11.3-cp37-none-any.whl size=1827623 sha256=1e5ce38d3d20c56f9a7f327e7cbdeea746976e593690fc71f1f5ec6575496021
+  Stored in directory: /root/.cache/pip/wheels/51/9b/89/374be1bc250e28a15edbd657cf364f163e392ba5257bfd0e87
+Successfully built dash dash-renderer dash-core-components dash-html-components dash-table
+Installing collected packages: brotli, flask-compress, dash-renderer, dash-core-components, dash-html-components, dash-table, dash, ansi2html, jupyter-dash
+Successfully installed ansi2html-1.6.0 brotli-1.0.9 dash-1.20.0 dash-core-components-1.16.0 dash-html-components-1.1.3 dash-renderer-1.9.1 dash-table-4.11.3 flask-compress-1.9.0 jupyter-dash-0.4.0
+Collecting dash_daq
+[?25l  Downloading https://files.pythonhosted.org/packages/16/c1/9c6adfc3646990965a5b2ca073f579cc9c09d15553fcfcd83aefd1255494/dash_daq-0.5.0.tar.gz (642kB)
+[K     |████████████████████████████████| 645kB 4.2MB/s 
+[?25hRequirement already satisfied: dash&gt;=1.6.1 in /usr/local/lib/python3.7/dist-packages (from dash_daq) (1.20.0)
+Requirement already satisfied: Flask&gt;=1.0.4 in /usr/local/lib/python3.7/dist-packages (from dash&gt;=1.6.1-&gt;dash_daq) (1.1.4)
+Requirement already satisfied: dash-html-components==1.1.3 in /usr/local/lib/python3.7/dist-packages (from dash&gt;=1.6.1-&gt;dash_daq) (1.1.3)
+Requirement already satisfied: dash-table==4.11.3 in /usr/local/lib/python3.7/dist-packages (from dash&gt;=1.6.1-&gt;dash_daq) (4.11.3)
+Requirement already satisfied: flask-compress in /usr/local/lib/python3.7/dist-packages (from dash&gt;=1.6.1-&gt;dash_daq) (1.9.0)
+Requirement already satisfied: future in /usr/local/lib/python3.7/dist-packages (from dash&gt;=1.6.1-&gt;dash_daq) (0.16.0)
+Requirement already satisfied: plotly in /usr/local/lib/python3.7/dist-packages (from dash&gt;=1.6.1-&gt;dash_daq) (4.4.1)
+Requirement already satisfied: dash-core-components==1.16.0 in /usr/local/lib/python3.7/dist-packages (from dash&gt;=1.6.1-&gt;dash_daq) (1.16.0)
+Requirement already satisfied: dash-renderer==1.9.1 in /usr/local/lib/python3.7/dist-packages (from dash&gt;=1.6.1-&gt;dash_daq) (1.9.1)
+Requirement already satisfied: itsdangerous&lt;2.0,&gt;=0.24 in /usr/local/lib/python3.7/dist-packages (from Flask&gt;=1.0.4-&gt;dash&gt;=1.6.1-&gt;dash_daq) (1.1.0)
+Requirement already satisfied: Werkzeug&lt;2.0,&gt;=0.15 in /usr/local/lib/python3.7/dist-packages (from Flask&gt;=1.0.4-&gt;dash&gt;=1.6.1-&gt;dash_daq) (1.0.1)
+Requirement already satisfied: Jinja2&lt;3.0,&gt;=2.10.1 in /usr/local/lib/python3.7/dist-packages (from Flask&gt;=1.0.4-&gt;dash&gt;=1.6.1-&gt;dash_daq) (2.11.3)
+Requirement already satisfied: click&lt;8.0,&gt;=5.1 in /usr/local/lib/python3.7/dist-packages (from Flask&gt;=1.0.4-&gt;dash&gt;=1.6.1-&gt;dash_daq) (7.1.2)
+Requirement already satisfied: brotli in /usr/local/lib/python3.7/dist-packages (from flask-compress-&gt;dash&gt;=1.6.1-&gt;dash_daq) (1.0.9)
+Requirement already satisfied: retrying&gt;=1.3.3 in /usr/local/lib/python3.7/dist-packages (from plotly-&gt;dash&gt;=1.6.1-&gt;dash_daq) (1.3.3)
+Requirement already satisfied: six in /usr/local/lib/python3.7/dist-packages (from plotly-&gt;dash&gt;=1.6.1-&gt;dash_daq) (1.15.0)
+Requirement already satisfied: MarkupSafe&gt;=0.23 in /usr/local/lib/python3.7/dist-packages (from Jinja2&lt;3.0,&gt;=2.10.1-&gt;Flask&gt;=1.0.4-&gt;dash&gt;=1.6.1-&gt;dash_daq) (2.0.1)
+Building wheels for collected packages: dash-daq
+  Building wheel for dash-daq (setup.py) ... [?25l[?25hdone
+  Created wheel for dash-daq: filename=dash_daq-0.5.0-cp37-none-any.whl size=669715 sha256=adea8b7fc20afaee7842ce0128ed6b5cffa018c96303aa7898e371cb19626499
+  Stored in directory: /root/.cache/pip/wheels/1c/9c/f7/84731716eaa9fc952cdbdd1f87df3ca9b8805c317c609efcd6
+Successfully built dash-daq
+Installing collected packages: dash-daq
+Successfully installed dash-daq-0.5.0
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="kn">from</span> <span class="nn">jupyter_dash</span> <span class="kn">import</span> <span class="n">JupyterDash</span>
+<span class="kn">import</span> <span class="nn">dash_core_components</span> <span class="k">as</span> <span class="nn">dcc</span>
+<span class="kn">import</span> <span class="nn">dash_html_components</span> <span class="k">as</span> <span class="nn">html</span>
+<span class="kn">import</span> <span class="nn">dash_daq</span> <span class="k">as</span> <span class="nn">daq</span>
+
+<span class="kn">from</span> <span class="nn">dash.dependencies</span> <span class="kn">import</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Output</span>
+<span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">cycle</span>
+</code></pre></div>
+
+<p><a name='x.0.2'></a></p>
+<h3 id="702-load-dataset">7.0.2 Load Dataset<a class="headerlink" href="#702-load-dataset" title="Permanent link">&para;</a></h3>
+<p><a href="#top">back to top</a></p>
+<div class="codehilite"><pre><span></span><code><span class="n">margin</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://raw.githubusercontent.com/wesleybeckner/ds_for_engineers/main/data/truffle_margin/truffle_margin_customer.csv&quot;</span><span class="p">)</span>
+<span class="n">margin</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Base Cake</th>
+      <th>Truffle Type</th>
+      <th>Primary Flavor</th>
+      <th>Secondary Flavor</th>
+      <th>Color Group</th>
+      <th>Customer</th>
+      <th>Date</th>
+      <th>KG</th>
+      <th>EBITDA/KG</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Butter</td>
+      <td>Candy Outer</td>
+      <td>Butter Pecan</td>
+      <td>Toffee</td>
+      <td>Taupe</td>
+      <td>Slugworth</td>
+      <td>1/2020</td>
+      <td>53770.342593</td>
+      <td>0.500424</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Butter</td>
+      <td>Candy Outer</td>
+      <td>Ginger Lime</td>
+      <td>Banana</td>
+      <td>Amethyst</td>
+      <td>Slugworth</td>
+      <td>1/2020</td>
+      <td>466477.578125</td>
+      <td>0.220395</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Butter</td>
+      <td>Candy Outer</td>
+      <td>Ginger Lime</td>
+      <td>Banana</td>
+      <td>Burgundy</td>
+      <td>Perk-a-Cola</td>
+      <td>1/2020</td>
+      <td>80801.728070</td>
+      <td>0.171014</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Butter</td>
+      <td>Candy Outer</td>
+      <td>Ginger Lime</td>
+      <td>Banana</td>
+      <td>White</td>
+      <td>Fickelgruber</td>
+      <td>1/2020</td>
+      <td>18046.111111</td>
+      <td>0.233025</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Butter</td>
+      <td>Candy Outer</td>
+      <td>Ginger Lime</td>
+      <td>Rum</td>
+      <td>Amethyst</td>
+      <td>Fickelgruber</td>
+      <td>1/2020</td>
+      <td>19147.454268</td>
+      <td>0.480689</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p><a name='x.1'></a></p>
+<h2 id="71-layout">7.1 Layout<a class="headerlink" href="#71-layout" title="Permanent link">&para;</a></h2>
+<p><a href="#top">back to top</a></p>
+<p><a name='x.1.1'></a></p>
+<h3 id="711-applayout">7.1.1 app.layout<a class="headerlink" href="#711-applayout" title="Permanent link">&para;</a></h3>
+<p><a href="#top">back to top</a></p>
+<p>The simplest dash app needs a layout to be set. This will store all the juicy bits that orient our plot objects (think kind of like what the fig was in fig, ax with pyplot!)</p>
+<p>We start by importing our core library and components libraries (more on this in a moment)</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">jupyter_dash</span> <span class="kn">import</span> <span class="n">JupyterDash</span>
+<span class="kn">import</span> <span class="nn">dash_core_components</span> <span class="k">as</span> <span class="nn">dcc</span>
+<span class="kn">import</span> <span class="nn">dash_html_components</span> <span class="k">as</span> <span class="nn">html</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="n">app</span> <span class="o">=</span> <span class="n">JupyterDash</span><span class="p">()</span> <span class="c1"># when using ahem, real dash, this will be</span>
+<span class="c1"># app = Dash()</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">])</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">run_server</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;inline&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>&lt;IPython.core.display.Javascript object&gt;
+</code></pre></div>
+
+<p>let's talk a little bit now about where that html.Div came from</p>
+<p><a name='x.1.2'></a></p>
+<h3 id="712-components">7.1.2 components<a class="headerlink" href="#712-components" title="Permanent link">&para;</a></h3>
+<p><a href="#top">back to top</a></p>
+<p>html is just one of two component libraries we use with Dash, <code>dash_html_components</code> (html) and <code>dash_core_components</code> (dcc). With the components libraries you can build the look and feel of your app - you can also create your own custom components using Javascript and React Js.</p>
+<p><a name='x.1.2.1'></a></p>
+<h4 id="7121-dash_html_components-html">7.1.2.1 dash_html_components (html)<a class="headerlink" href="#7121-dash_html_components-html" title="Permanent link">&para;</a></h4>
+<p><a href="#top">back to top</a></p>
+<p><code>dash_html_components</code> contains all the html components of dash, just like the html components you'd recognize in an html frame work (H1, H2, Div, P, etc.)</p>
+<p><a name='x.1.2.2'></a></p>
+<h4 id="7122-dash_core_components-dcc">7.1.2.2 dash_core_components (dcc)<a class="headerlink" href="#7122-dash_core_components-dcc" title="Permanent link">&para;</a></h4>
+<p><a href="#top">back to top</a></p>
+<p>In order to create a graph in our dash layout, we use the Graph class from <code>dash_core_components</code>. Graph renders visualizations from plotly (because of this, we can prototype our visualization in plotly before incorporating them into a dashboard! We need to supply both a <code>data</code> and a <code>layout</code> to Graph. </p>
+<p>We can change stylings like the background and text colors with Dash. Visit the documentation for the components to get the full list of styling options. the style property is a little different than that of pure HTML. The style dictionary is camelCased (e.g. <code>textAlign</code> vs <code>text-align</code>) </p>
+<p>In the following we dictate the children of each component explicitly. This can be thought of as the content of the component:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">app</span> <span class="o">=</span> <span class="n">JupyterDash</span><span class="p">()</span> 
+
+<span class="n">app</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;backgroundColor&#39;</span><span class="p">:</span> <span class="s1">&#39;#111111&#39;</span><span class="p">},</span> 
+                      <span class="n">children</span><span class="o">=</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">H1</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;#ffffff&#39;</span><span class="p">},</span> <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">]),</span>
+                      <span class="p">)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">run_server</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;inline&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>&lt;IPython.core.display.Javascript object&gt;
+</code></pre></div>
+
+<p>But we can also declare the children implicitly:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># can also be written this way</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">JupyterDash</span><span class="p">()</span> 
+
+<span class="n">app</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span>  <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">H1</span><span class="p">([</span><span class="s2">&quot;Hello World!&quot;</span><span class="p">],</span>
+                <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;#ffffff&#39;</span><span class="p">}),</span>
+              <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;backgroundColor&#39;</span><span class="p">:</span> <span class="s1">&#39;#111111&#39;</span><span class="p">})</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">run_server</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;inline&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>&lt;IPython.core.display.Javascript object&gt;
+</code></pre></div>
+
+<p>If we have multiple children in a component, like the outer <code>Div()</code> wrapper here: we just have to remember to put them in a list:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">app</span> <span class="o">=</span> <span class="n">JupyterDash</span><span class="p">()</span> 
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;background&#39;</span><span class="p">:</span> <span class="s1">&#39;#111111&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;#ffffff&#39;</span><span class="p">}</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span>  <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">H1</span><span class="p">([</span><span class="s2">&quot;Hello World!&quot;</span>
+                  <span class="p">],</span>
+                  <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]}</span>
+                  <span class="p">),</span>
+                <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span>
+                  <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;Graph1&#39;</span><span class="p">,</span>
+                  <span class="n">figure</span><span class="o">=</span><span class="p">{</span>
+                      <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="p">[</span>
+                          <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;SF&#39;</span><span class="p">},</span>
+                          <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;Montréal&#39;</span><span class="p">},</span>
+                              <span class="p">],</span>
+                      <span class="s1">&#39;layout&#39;</span><span class="p">:</span> <span class="p">{</span>
+                          <span class="s1">&#39;plot_bgcolor&#39;</span><span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;background&#39;</span><span class="p">],</span>
+                          <span class="s1">&#39;paper_bgcolor&#39;</span><span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;background&#39;</span><span class="p">],</span>
+                          <span class="s1">&#39;font&#39;</span><span class="p">:</span> <span class="p">{</span>
+                              <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+                              <span class="p">}</span>
+                          <span class="p">}</span>
+                      <span class="p">}</span>
+                  <span class="p">),</span>
+                <span class="p">],</span>
+                <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;backgroundColor&#39;</span><span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;background&#39;</span><span class="p">]}</span>
+                <span class="p">)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">run_server</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;external&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>Dash app running on:
+
+
+
+&lt;IPython.core.display.Javascript object&gt;
+</code></pre></div>
+
+<p>We could've declared that graph object with plotly express. This can often be easier while still getting the figure we desire.</p>
+<blockquote>
+<p>the df we've created  here is an example of <a href="https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html">tidy data</a></p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;Fruit&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Apples&quot;</span><span class="p">,</span> <span class="s2">&quot;Oranges&quot;</span><span class="p">,</span> <span class="s2">&quot;Bananas&quot;</span><span class="p">,</span> <span class="s2">&quot;Apples&quot;</span><span class="p">,</span> <span class="s2">&quot;Oranges&quot;</span><span class="p">,</span> <span class="s2">&quot;Bananas&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;Amount&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+    <span class="s2">&quot;City&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;SF&quot;</span><span class="p">,</span> <span class="s2">&quot;SF&quot;</span><span class="p">,</span> <span class="s2">&quot;SF&quot;</span><span class="p">,</span> <span class="s2">&quot;Montreal&quot;</span><span class="p">,</span> <span class="s2">&quot;Montreal&quot;</span><span class="p">,</span> <span class="s2">&quot;Montreal&quot;</span><span class="p">]</span>
+<span class="p">})</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Fruit&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Amount&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;City&quot;</span><span class="p">,</span> <span class="n">barmode</span><span class="o">=</span><span class="s2">&quot;group&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>After creating the figure in plotly express, we can just include it in the layout:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">app</span> <span class="o">=</span> <span class="n">JupyterDash</span><span class="p">()</span> 
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;background&#39;</span><span class="p">:</span> <span class="s1">&#39;#ffffff&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;#111111&#39;</span><span class="p">}</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span>  <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">H1</span><span class="p">([</span><span class="s2">&quot;Hello World!&quot;</span>
+                  <span class="p">],</span>
+                  <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]}</span>
+                  <span class="p">),</span>
+                <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span>
+                  <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;Graph1&#39;</span><span class="p">,</span>
+                  <span class="n">figure</span><span class="o">=</span><span class="n">fig</span><span class="p">,</span>
+                  <span class="p">),</span>
+                <span class="p">],</span>
+                <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;backgroundColor&#39;</span><span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;background&#39;</span><span class="p">]}</span>
+                <span class="p">)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">run_server</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;inline&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>&lt;IPython.core.display.Javascript object&gt;
+</code></pre></div>
+
+<p>Last note on children: The children property is special. By convention, it's always the first attribute which is why we could ommit it: <code>html.H1(children='Hello World!')</code> is the same as <code>html.H1('Hello World!')</code>. Also, it can contain a string, a number, a single component, or a list of components.</p>
+<p><a name='x.1.2.3'></a></p>
+<h4 id="exercise-1-create-your-first-dashboard">🏋️ Exercise 1: Create your first Dashboard!!!<a class="headerlink" href="#exercise-1-create-your-first-dashboard" title="Permanent link">&para;</a></h4>
+<p><a href="#top">back to top</a></p>
+<p>Visit the documentation for <a href="https://plotly.com/python/line-and-scatter/">plotly scatter plots</a>. Create a scatter plot using <code>plotly.express</code> and embed it in a dashboard.</p>
+<div class="codehilite"><pre><span></span><code>app = JupyterDash() 
+
+colors = {&#39;background&#39;: &#39;#ffffff&#39;,
+          &#39;text&#39;: &#39;#111111&#39;}
+
+app.layout =  html.Div([
+                html.H1([&quot;Hello World!&quot; # YOUR TITLE HERE
+                  ],
+                  style={&#39;color&#39;: colors[&#39;text&#39;]}
+                  ),
+                dcc.Graph(
+                  id=&#39;Graph1&#39;,
+                  figure=fig, # YOUR FIGURE HERE
+                  ),
+                ],
+                style={&#39;backgroundColor&#39;: colors[&#39;background&#39;]}
+                )
+
+app.run_server(mode=&#39;inline&#39;)
+</code></pre></div>
+
+<p>And you can use the following <code>X</code> and <code>y</code> data:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">centers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">cluster_std</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
+
+<span class="c1"># X has 2 dims (for axis 1 and axis 2)</span>
+<span class="c1"># y is a binary that can be used to color the scatter points</span>
+</code></pre></div>
+
+<p>And here I've created a shell for you to work with</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># the scatter plot</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="c1">### YOUR CODE HERE ###</span>
+
+      <span class="p">)</span>
+<span class="c1"># updating fig attributes</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+  <span class="n">autosize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+  <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+  <span class="n">height</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+  <span class="n">title</span><span class="o">=</span><span class="s1">&#39;A Smattering of Points&#39;</span>
+  <span class="p">)</span>
+</code></pre></div>
+
+<p><html>
+<head><meta charset="utf-8" /></head></p>
+<body>
+    <div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax) {MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>
+                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>    
+            <div id="4d47c8be-de49-4a53-95c8-386f9c6b2a9a" class="plotly-graph-div" style="height:500px; width:800px;"></div>
+            <script type="text/javascript">
+
+                    window.PLOTLYENV=window.PLOTLYENV || {};
+
+                if (document.getElementById("4d47c8be-de49-4a53-95c8-386f9c6b2a9a")) {
+                    Plotly.newPlot(
+                        '4d47c8be-de49-4a53-95c8-386f9c6b2a9a',
+                        [],
+                        {"autosize": false, "height": 500, "legend": {"tracegroupgap": 0}, "margin": {"t": 60}, "template": {"data": {"bar": [{"error_x": {"color": "#2a3f5f"}, "error_y": {"color": "#2a3f5f"}, "marker": {"line": {"color": "#E5ECF6", "width": 0.5}}, "type": "bar"}], "barpolar": [{"marker": {"line": {"color": "#E5ECF6", "width": 0.5}}, "type": "barpolar"}], "carpet": [{"aaxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "baxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "type": "carpet"}], "choropleth": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "type": "choropleth"}], "contour": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "contour"}], "contourcarpet": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "type": "contourcarpet"}], "heatmap": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "heatmap"}], "heatmapgl": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "heatmapgl"}], "histogram": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "histogram"}], "histogram2d": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "histogram2d"}], "histogram2dcontour": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "histogram2dcontour"}], "mesh3d": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "type": "mesh3d"}], "parcoords": [{"line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "parcoords"}], "pie": [{"automargin": true, "type": "pie"}], "scatter": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatter"}], "scatter3d": [{"line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatter3d"}], "scattercarpet": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattercarpet"}], "scattergeo": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattergeo"}], "scattergl": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattergl"}], "scattermapbox": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattermapbox"}], "scatterpolar": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatterpolar"}], "scatterpolargl": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatterpolargl"}], "scatterternary": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatterternary"}], "surface": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "surface"}], "table": [{"cells": {"fill": {"color": "#EBF0F8"}, "line": {"color": "white"}}, "header": {"fill": {"color": "#C8D4E3"}, "line": {"color": "white"}}, "type": "table"}]}, "layout": {"annotationdefaults": {"arrowcolor": "#2a3f5f", "arrowhead": 0, "arrowwidth": 1}, "coloraxis": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "colorscale": {"diverging": [[0, "#8e0152"], [0.1, "#c51b7d"], [0.2, "#de77ae"], [0.3, "#f1b6da"], [0.4, "#fde0ef"], [0.5, "#f7f7f7"], [0.6, "#e6f5d0"], [0.7, "#b8e186"], [0.8, "#7fbc41"], [0.9, "#4d9221"], [1, "#276419"]], "sequential": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "sequentialminus": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}, "colorway": ["#636efa", "#EF553B", "#00cc96", "#ab63fa", "#FFA15A", "#19d3f3", "#FF6692", "#B6E880", "#FF97FF", "#FECB52"], "font": {"color": "#2a3f5f"}, "geo": {"bgcolor": "white", "lakecolor": "white", "landcolor": "#E5ECF6", "showlakes": true, "showland": true, "subunitcolor": "white"}, "hoverlabel": {"align": "left"}, "hovermode": "closest", "mapbox": {"style": "light"}, "paper_bgcolor": "white", "plot_bgcolor": "#E5ECF6", "polar": {"angularaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "bgcolor": "#E5ECF6", "radialaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "scene": {"xaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "gridwidth": 2, "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white"}, "yaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "gridwidth": 2, "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white"}, "zaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "gridwidth": 2, "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white"}}, "shapedefaults": {"line": {"color": "#2a3f5f"}}, "ternary": {"aaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "baxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "bgcolor": "#E5ECF6", "caxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "title": {"x": 0.05}, "xaxis": {"automargin": true, "gridcolor": "white", "linecolor": "white", "ticks": "", "title": {"standoff": 15}, "zerolinecolor": "white", "zerolinewidth": 2}, "yaxis": {"automargin": true, "gridcolor": "white", "linecolor": "white", "ticks": "", "title": {"standoff": 15}, "zerolinecolor": "white", "zerolinewidth": 2}}}, "title": {"text": "A Smattering of Points"}, "width": 800, "xaxis": {"anchor": "y", "domain": [0.0, 1.0]}, "yaxis": {"anchor": "x", "domain": [0.0, 1.0]}},
+                        {"responsive": true}
+                    ).then(function(){
+
+var gd = document.getElementById('4d47c8be-de49-4a53-95c8-386f9c6b2a9a');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })
+                };
+
+            </script>
+        </div>
+</body>
+<p></html></p>
+<div class="codehilite"><pre><span></span><code><span class="n">app</span> <span class="o">=</span> <span class="n">JupyterDash</span><span class="p">()</span> 
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;background&#39;</span><span class="p">:</span> <span class="s1">&#39;#ffffff&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;#111111&#39;</span><span class="p">}</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span>  <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">H1</span><span class="p">([</span><span class="s2">&quot;LOOK AT ALL THOSE CHICKENS!&quot;</span> <span class="c1"># YOUR TITLE HERE</span>
+                  <span class="p">],</span>
+                  <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]}</span>
+                  <span class="p">),</span>
+                <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span>
+                  <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;Graph1&#39;</span><span class="p">,</span>
+                  <span class="n">figure</span><span class="o">=</span><span class="n">fig</span><span class="p">,</span> <span class="c1"># YOUR FIGURE HERE</span>
+                  <span class="p">),</span>
+                <span class="p">],</span>
+                <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;backgroundColor&#39;</span><span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;background&#39;</span><span class="p">]}</span>
+                <span class="p">)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">run_server</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;inline&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>&lt;IPython.core.display.Javascript object&gt;
+</code></pre></div>
+
+<p><a name='x.1.3'></a></p>
+<h3 id="713-style-sheets">7.1.3 Style Sheets<a class="headerlink" href="#713-style-sheets" title="Permanent link">&para;</a></h3>
+<p><a href="#top">back to top</a></p>
+<p>You can leverage pre-existing style sheets to stylize your components and layout. We'll do that in the next example with reusable components.</p>
+<p><a name='x.1.4'></a></p>
+<h3 id="714-reusable-components">7.1.4 Reusable Components<a class="headerlink" href="#714-reusable-components" title="Permanent link">&para;</a></h3>
+<p><a href="#top">back to top</a></p>
+<p>We can create reusable components for ourselves without switching contexts or languages. For example, defining a single figure that is reused throughout the app with different parameters. Or a table:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">generate_table</span><span class="p">(</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">max_rows</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">html</span><span class="o">.</span><span class="n">Table</span><span class="p">([</span>
+        <span class="n">html</span><span class="o">.</span><span class="n">Thead</span><span class="p">(</span>
+            <span class="n">html</span><span class="o">.</span><span class="n">Tr</span><span class="p">([</span><span class="n">html</span><span class="o">.</span><span class="n">Th</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">dataframe</span><span class="o">.</span><span class="n">columns</span><span class="p">])</span>
+        <span class="p">),</span>
+        <span class="n">html</span><span class="o">.</span><span class="n">Tbody</span><span class="p">([</span>
+            <span class="n">html</span><span class="o">.</span><span class="n">Tr</span><span class="p">([</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">Td</span><span class="p">(</span><span class="n">dataframe</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">col</span><span class="p">])</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">dataframe</span><span class="o">.</span><span class="n">columns</span>
+            <span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataframe</span><span class="p">),</span> <span class="n">max_rows</span><span class="p">))</span>
+        <span class="p">])</span>
+    <span class="p">])</span>
+
+<span class="n">external_stylesheets</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;https://codepen.io/chriddyp/pen/bWLwgP.css&#39;</span><span class="p">]</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">JupyterDash</span><span class="p">(</span><span class="n">external_stylesheets</span><span class="o">=</span><span class="n">external_stylesheets</span><span class="p">)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span><span class="n">children</span><span class="o">=</span><span class="p">[</span>
+    <span class="n">html</span><span class="o">.</span><span class="n">H4</span><span class="p">(</span><span class="n">children</span><span class="o">=</span><span class="s1">&#39;Our Fruit Data&#39;</span><span class="p">),</span>
+    <span class="n">generate_table</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">run_server</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;inline&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>&lt;IPython.core.display.Javascript object&gt;
+</code></pre></div>
+
+<p>As a side note, it is also easy to just include <code>dash_table</code> from dash to create a ready-to-go table:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">dash_table</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">JupyterDash</span><span class="p">(</span><span class="n">external_stylesheets</span><span class="o">=</span><span class="n">external_stylesheets</span><span class="p">)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span><span class="n">children</span><span class="o">=</span><span class="p">[</span>
+    <span class="n">html</span><span class="o">.</span><span class="n">H4</span><span class="p">(</span><span class="n">children</span><span class="o">=</span><span class="s1">&#39;Our Fruit Data&#39;</span><span class="p">),</span>
+    <span class="n">dash_table</span><span class="o">.</span><span class="n">DataTable</span><span class="p">(</span>
+                        <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;table&#39;</span><span class="p">,</span>
+                        <span class="n">columns</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">i</span><span class="p">}</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">],</span>
+                        <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s1">&#39;records&#39;</span><span class="p">),</span>
+                        <span class="n">page_size</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+                        <span class="n">style_table</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;maxWidth&#39;</span><span class="p">:</span> <span class="s1">&#39;100%&#39;</span><span class="p">,</span>
+                                     <span class="s1">&#39;overflowX&#39;</span><span class="p">:</span> <span class="s1">&#39;auto&#39;</span><span class="p">}</span>
+                        <span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">run_server</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;inline&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>&lt;IPython.core.display.Javascript object&gt;
+</code></pre></div>
+
+<p><a name='x.1.5'></a></p>
+<h3 id="715-markdown">7.1.5 Markdown<a class="headerlink" href="#715-markdown" title="Permanent link">&para;</a></h3>
+<p><a href="#top">back to top</a></p>
+<p>You can also use markdown with dash. </p>
+<div class="codehilite"><pre><span></span><code><span class="n">app</span> <span class="o">=</span> <span class="n">JupyterDash</span><span class="p">(</span><span class="n">external_stylesheets</span><span class="o">=</span><span class="n">external_stylesheets</span><span class="p">)</span>
+
+<span class="n">markdown_text</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">### Dash and Markdown</span>
+
+<span class="s1">Dash apps can be written in Markdown.</span>
+<span class="s1">Dash uses the [CommonMark](http://commonmark.org/)</span>
+<span class="s1">specification of Markdown.</span>
+<span class="s1">Check out their [60 Second Markdown Tutorial](http://commonmark.org/help/)</span>
+<span class="s1">if this is your first introduction to Markdown!</span>
+<span class="s1">&#39;&#39;&#39;</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+    <span class="n">dcc</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="n">children</span><span class="o">=</span><span class="n">markdown_text</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">run_server</span><span class="p">(</span><span class="s1">&#39;inline&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>&lt;IPython.core.display.Javascript object&gt;
+</code></pre></div>
+
+<p><a name='x.1.5.1'></a></p>
+<h4 id="exercise-2-play-with-markdown">🏋️ Exercise 2: Play with Markdown<a class="headerlink" href="#exercise-2-play-with-markdown" title="Permanent link">&para;</a></h4>
+<p><a href="#top">back to top</a></p>
+<p>In the following cell play with markdown. Include 2 different headers, a paragraph, a displayed image, a bulleted list and a numbered list. If you have extra time include a table.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Code cell for exercise 5.1.5.1</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">JupyterDash</span><span class="p">(</span><span class="n">external_stylesheets</span><span class="o">=</span><span class="n">external_stylesheets</span><span class="p">)</span>
+
+
+<span class="c1">### YOUR CODE DOWN BELOW ###</span>
+<span class="n">markdown_text</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+
+<span class="s1">&#39;&#39;&#39;</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+    <span class="n">dcc</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="n">children</span><span class="o">=</span><span class="n">markdown_text</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">run_server</span><span class="p">(</span><span class="s1">&#39;inline&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>&lt;IPython.core.display.Javascript object&gt;
+</code></pre></div>
+
+<p><a name='x.1.6'></a></p>
+<h3 id="716-more-on-dash_core_components">7.1.6 More on dash_core_components<a class="headerlink" href="#716-more-on-dash_core_components" title="Permanent link">&para;</a></h3>
+<p><a href="#top">back to top</a></p>
+<p><code>dash_core_complonents</code> contains all your dashboard goodies: dropdown menus, sliders, range bars, radio buttons, etc. </p>
+<div class="codehilite"><pre><span></span><code><span class="n">external_stylesheets</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;https://codepen.io/chriddyp/pen/bWLwgP.css&#39;</span><span class="p">]</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">JupyterDash</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">external_stylesheets</span><span class="o">=</span><span class="n">external_stylesheets</span><span class="p">)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+    <span class="n">html</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Dropdown&#39;</span><span class="p">),</span>
+    <span class="n">dcc</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span>
+        <span class="n">options</span><span class="o">=</span><span class="p">[</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;New York City&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;NYC&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;Montréal&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;MTL&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;San Francisco&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;SF&#39;</span><span class="p">}</span>
+        <span class="p">],</span>
+        <span class="n">value</span><span class="o">=</span><span class="s1">&#39;MTL&#39;</span>
+    <span class="p">),</span>
+
+    <span class="n">html</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Multi-Select Dropdown&#39;</span><span class="p">),</span>
+    <span class="n">dcc</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span>
+        <span class="n">options</span><span class="o">=</span><span class="p">[</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;New York City&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;NYC&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;Montréal&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;MTL&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;San Francisco&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;SF&#39;</span><span class="p">}</span>
+        <span class="p">],</span>
+        <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;MTL&#39;</span><span class="p">,</span> <span class="s1">&#39;SF&#39;</span><span class="p">],</span>
+        <span class="n">multi</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">),</span>
+
+    <span class="n">html</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Radio Items&#39;</span><span class="p">),</span>
+    <span class="n">dcc</span><span class="o">.</span><span class="n">RadioItems</span><span class="p">(</span>
+        <span class="n">options</span><span class="o">=</span><span class="p">[</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;New York City&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;NYC&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;Montréal&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;MTL&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;San Francisco&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;SF&#39;</span><span class="p">}</span>
+        <span class="p">],</span>
+        <span class="n">value</span><span class="o">=</span><span class="s1">&#39;MTL&#39;</span>
+    <span class="p">),</span>
+
+    <span class="n">html</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Checkboxes&#39;</span><span class="p">),</span>
+    <span class="n">dcc</span><span class="o">.</span><span class="n">Checklist</span><span class="p">(</span>
+        <span class="n">options</span><span class="o">=</span><span class="p">[</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;New York City&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;NYC&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;Montréal&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;MTL&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;San Francisco&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;SF&#39;</span><span class="p">}</span>
+        <span class="p">],</span>
+        <span class="n">value</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;MTL&#39;</span><span class="p">,</span> <span class="s1">&#39;SF&#39;</span><span class="p">]</span>
+    <span class="p">),</span>
+
+    <span class="n">html</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Text Input&#39;</span><span class="p">),</span>
+    <span class="n">dcc</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s1">&#39;MTL&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;text&#39;</span><span class="p">),</span>
+
+    <span class="n">html</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="s1">&#39;Slider&#39;</span><span class="p">),</span>
+    <span class="n">dcc</span><span class="o">.</span><span class="n">Slider</span><span class="p">(</span>
+        <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="nb">max</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+        <span class="n">marks</span><span class="o">=</span><span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="s1">&#39;Label </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">)},</span>
+        <span class="n">value</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;columnCount&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">run_server</span><span class="p">(</span><span class="s1">&#39;inline&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>&lt;IPython.core.display.Javascript object&gt;
+</code></pre></div>
+
+<p><a name='x.2'></a></p>
+<h2 id="72-basic-callbacks">7.2 Basic Callbacks<a class="headerlink" href="#72-basic-callbacks" title="Permanent link">&para;</a></h2>
+<p><a href="#top">back to top</a></p>
+<p>Now we'll talk about how to make our Dash apps interactive (hey, that's what all the dcc components are for anyways!). To do this, we'll write <em>callback</em> functions, that are executed whenever a component on the app is updated. We do this with the <code>@app</code> decorator.</p>
+<p><a name='x.2.1'></a></p>
+<h3 id="721-simple-interactive-dash-app">7.2.1 Simple Interactive Dash App<a class="headerlink" href="#721-simple-interactive-dash-app" title="Permanent link">&para;</a></h3>
+<p><a href="#top">back to top</a></p>
+<p>To make our apps interactive we'll import two new functions <code>Input</code> and <code>Output</code> from <code>dash.dependencies</code></p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">dash.dependencies</span> <span class="kn">import</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Output</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="n">app</span> <span class="o">=</span> <span class="n">JupyterDash</span><span class="p">()</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+    <span class="n">dcc</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;my-id&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;Dash App&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;text&#39;</span><span class="p">),</span>
+    <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;my-div&#39;</span><span class="p">)</span>
+<span class="p">])</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span>
+    <span class="n">Output</span><span class="p">(</span><span class="n">component_id</span><span class="o">=</span><span class="s1">&#39;my-div&#39;</span><span class="p">,</span> <span class="n">component_property</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">),</span>
+    <span class="p">[</span><span class="n">Input</span><span class="p">(</span><span class="n">component_id</span><span class="o">=</span><span class="s1">&#39;my-id&#39;</span><span class="p">,</span> <span class="n">component_property</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">),]</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">update_output_div</span><span class="p">(</span><span class="n">input_value</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39;You</span><span class="se">\&#39;</span><span class="s1">ve entered &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">input_value</span><span class="p">)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">run_server</span><span class="p">(</span><span class="s1">&#39;inline&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>&lt;IPython.core.display.Javascript object&gt;
+</code></pre></div>
+
+<p><a name='x.2.2'></a></p>
+<h3 id="722-multiple-inputs">7.2.2 Multiple Inputs<a class="headerlink" href="#722-multiple-inputs" title="Permanent link">&para;</a></h3>
+<p><a href="#top">back to top</a></p>
+<p>You can have multiple inputs to a callback:</p>
+<div class="codehilite"><pre><span></span><code>@app.callback(
+    Output(&#39;indicator-graphic&#39;, &#39;figure&#39;),
+    [Input(&#39;xaxis-column&#39;, &#39;value&#39;),
+    Input(&#39;yaxis-column&#39;, &#39;value&#39;),
+    Input(&#39;xaxis-type&#39;, &#39;value&#39;),
+    Input(&#39;yaxis-type&#39;, &#39;value&#39;),
+    Input(&#39;year--slider&#39;, &#39;value&#39;)]
+)
+</code></pre></div>
+
+<p><a name='x.2.3'></a></p>
+<h3 id="723-multiple-outputs">7.2.3 Multiple Outputs<a class="headerlink" href="#723-multiple-outputs" title="Permanent link">&para;</a></h3>
+<p><a href="#top">back to top</a></p>
+<p>As well as multiple outputs:</p>
+<div class="codehilite"><pre><span></span><code>@app.callback(
+    [Output(&#39;square&#39;, &#39;children&#39;),
+    Output(&#39;cube&#39;, &#39;children&#39;),
+    Output(&#39;twos&#39;, &#39;children&#39;),
+    Output(&#39;threes&#39;, &#39;children&#39;),
+    Output(&#39;x^x&#39;, &#39;children&#39;),],
+    Input(&#39;num-multi&#39;, &#39;value&#39;))
+</code></pre></div>
+
+<p>Let's put the multiple inputs thing together:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">app</span> <span class="o">=</span> <span class="n">JupyterDash</span><span class="p">()</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+    <span class="n">dcc</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;my-id&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;Green&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;text&#39;</span><span class="p">),</span>
+    <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;my-div&#39;</span><span class="p">),</span>
+
+    <span class="c1">### HERES MY NEW COMPONENT</span>
+    <span class="n">dcc</span><span class="o">.</span><span class="n">Dropdown</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;drop-id&#39;</span><span class="p">,</span>
+        <span class="n">options</span><span class="o">=</span><span class="p">[</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Dipsy&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;Dipsy&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Po&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;Po&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;LaLa&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;LaLa&#39;</span><span class="p">}</span>
+        <span class="p">],</span>
+        <span class="n">value</span><span class="o">=</span><span class="s1">&#39;Dipsy&#39;</span><span class="p">,</span>
+        <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="s1">&#39;300px&#39;</span><span class="p">}</span>
+    <span class="p">),</span>
+<span class="p">])</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span>
+    <span class="n">Output</span><span class="p">(</span><span class="n">component_id</span><span class="o">=</span><span class="s1">&#39;my-div&#39;</span><span class="p">,</span> <span class="n">component_property</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">),</span>
+    <span class="p">[</span><span class="n">Input</span><span class="p">(</span><span class="n">component_id</span><span class="o">=</span><span class="s1">&#39;my-id&#39;</span><span class="p">,</span> <span class="n">component_property</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">),</span>
+     <span class="n">Input</span><span class="p">(</span><span class="n">component_id</span><span class="o">=</span><span class="s1">&#39;drop-id&#39;</span><span class="p">,</span> <span class="n">component_property</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">),]</span> <span class="c1"># HERS MY NEW INPUT</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">update_output_div</span><span class="p">(</span><span class="n">input_value</span><span class="p">,</span> <span class="n">value2</span><span class="p">):</span> <span class="c1"># MY NEW VAR</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> is </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value2</span><span class="p">,</span> <span class="n">input_value</span><span class="p">)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">run_server</span><span class="p">(</span><span class="s1">&#39;inline&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>&lt;IPython.core.display.Javascript object&gt;
+</code></pre></div>
+
+<p><a name='x.2.4'></a></p>
+<h3 id="exercise-3-changing-graph-elements-with-callbacks-and-dash-core-components">🏋️ Exercise 3: Changing Graph Elements with Callbacks and Dash Core Components<a class="headerlink" href="#exercise-3-changing-graph-elements-with-callbacks-and-dash-core-components" title="Permanent link">&para;</a></h3>
+<p><a href="#top">back to top</a></p>
+<p>Take the plot you made in exercise 5.1.2.3 and this time use one of the dcc components to toggle on/off the different classes of data on the plot!</p>
+<p>You will need:</p>
+<ul>
+<li>a new component on your layout that allows the user to select the classes of data to display. I did this with a checklist, but you can choose something else if you want! Note that by setting <code>value=[0,1,2,3]</code> all the values are selected on load:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>html.Label(&#39;Checkboxes&#39;),
+dcc.Checklist(id=&#39;check-1&#39;, # A NEW CHECKLIST TO SELECT CLASSES
+    options=[
+        {&#39;label&#39;: &#39;Green&#39;, &#39;value&#39;: 0},
+        {&#39;label&#39;: &#39;Purple&#39;, &#39;value&#39;: 1},
+        {&#39;label&#39;: &#39;Red&#39;, &#39;value&#39;: 2},
+        {&#39;label&#39;: &#39;Blue&#39;, &#39;value&#39;: 3}
+    ],
+    value=[0, 1, 2, 3]
+    ),
+</code></pre></div>
+
+<ul>
+<li>a function <code>my_fig</code> that properly selects the data before plotting. You can use this code to help you get started (I like to think in dataframes and that's also what we've used most frequently in these classes, but it could also be done with lower level objects like numpy arrays:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>values = [0, 1, 2, 3] # a list that represents the selected classes
+df = pd.DataFrame(np.concatenate((X,(np.array(y).reshape(-1,1))), axis=1))
+  df = df.loc[df[2].isin(values)] # column 2 is the y values
+  Xfilt = df[[0,1]].values # set the new X
+  yfilt = df[2].values # set the new y
+</code></pre></div>
+
+<ul>
+<li>a callback that sends the metadata for what classes have been selected by the user</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>@app.callback(
+    Output(component_id=&#39;&lt;YOUR FIG ID&gt;&#39;, component_property=&#39;figure&#39;),
+    [Input(component_id=&#39;&lt;YOUR COMPONENT ID&gt;&#39;, component_property=&#39;value&#39;)]
+)
+def update_output_div(groups): 
+    return my_fig(groups)
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="n">colors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;background&#39;</span><span class="p">:</span> <span class="s1">&#39;#ffffff&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;#111111&#39;</span><span class="p">}</span>
+
+<span class="n">external_stylesheets</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;https://codepen.io/chriddyp/pen/bWLwgP.css&#39;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">my_fig</span><span class="p">(</span><span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]):</span> <span class="c1"># input parameter for the 4 different groups of data</span>
+
+  <span class="c1">### YOUR CODE THAT PARSES AND SELECTS THE RIGHT DATA ###</span>
+
+  <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">))</span>
+
+  <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">autosize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+    <span class="p">)</span>
+  <span class="k">return</span> <span class="n">fig</span>
+
+<span class="c1">### BEGIN APP ###</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">JupyterDash</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">external_stylesheets</span><span class="o">=</span><span class="n">external_stylesheets</span><span class="p">)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span>  <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">H1</span><span class="p">([</span><span class="s2">&quot;LOOK AT ALL THOSE CHICKENS!&quot;</span> <span class="c1"># YOUR TITLE HERE</span>
+                    <span class="p">],</span>
+                    <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]}</span>
+                    <span class="p">),</span>
+                    <span class="c1">### YOUR COMPONENT THAT ALLOWS THE USER TO SELECT DATA CLASSES</span>
+
+                <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span>
+                    <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;fig-1&#39;</span><span class="p">,</span>
+                    <span class="n">figure</span><span class="o">=</span><span class="n">my_fig</span><span class="p">(),</span> <span class="c1"># YOUR FIGURE HERE</span>
+                    <span class="p">),</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">P</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">),</span> <span class="c1"># A DUMMY ELEMENT TO VIEW TEST DATA</span>
+                <span class="p">],</span>
+                <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;backgroundColor&#39;</span><span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;background&#39;</span><span class="p">]}</span>
+                <span class="p">)</span>
+
+<span class="c1">### YOUR CALLBACK TO CHANGE YOUR FIGURE HERE</span>
+
+
+<span class="c1">### A DUMMY CALLBACK TO HELP YOU TEST OUT SELECTIONS FROM check-1</span>
+<span class="c1">### UNCOMMENT THIS AFTER YOUVE CREATED A COMPONENT WITH THE ID check-1</span>
+<span class="c1">### THEN YOU CAN SEE WHAT DATA IS BEING SENT AROUND BY SENDING IT TO</span>
+<span class="c1">### THE CHILDREN OF TEST</span>
+
+<span class="c1"># @app.callback(</span>
+<span class="c1">#     Output(component_id=&#39;test&#39;, component_property=&#39;children&#39;),</span>
+<span class="c1">#     [Input(component_id=&#39;check-1&#39;, component_property=&#39;value&#39;)]</span>
+<span class="c1"># )</span>
+<span class="c1"># def update_output_div(groups): </span>
+<span class="c1">#     return groups</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">run_server</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;inline&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>&lt;IPython.core.display.Javascript object&gt;
+</code></pre></div>
+
+<p><a name='x.2.5'></a></p>
+<h3 id="enrichment-chained-callbacks">🍒 Enrichment: Chained Callbacks<a class="headerlink" href="#enrichment-chained-callbacks" title="Permanent link">&para;</a></h3>
+<p><a href="#top">back to top</a></p>
+<p>Chained callbacks are worth a nod. We won't go into detail here, but the basic idea and thing to note is that, if you have an interactive element on your page that is dependent on some other interactive element (for instance a radio button series of cities that is dependent on a dropdown menu of states) you can make one callback dependent on another simply by making the input of the dependent element the output of the independent element. Like so:</p>
+<div class="codehilite"><pre><span></span><code># this callback will fire 
+
+@app.callback(
+    Output(&#39;cities-radio&#39;, &#39;options&#39;), # &lt;--- cities-radio is an output
+    Input(&#39;states-radio&#39;, &#39;value&#39;))
+def set_cities_options(selected_state):
+    return [{&#39;label&#39;: i, &#39;value&#39;: i} for i in all_options[selected_state]]
+
+
+# and then this callback will fire
+
+@app.callback(
+    Output(&#39;cities-radio&#39;, &#39;value&#39;),
+    Input(&#39;cities-radio&#39;, &#39;options&#39;)) # &lt;--- cities-radio is an input
+def set_cities_value(available_options):
+    return available_options[0][&#39;value&#39;]
+</code></pre></div>
+
+<p><a name='x.3'></a></p>
+<h2 id="73-interactive-graphing-and-crossfiltering">7.3 Interactive Graphing and Crossfiltering<a class="headerlink" href="#73-interactive-graphing-and-crossfiltering" title="Permanent link">&para;</a></h2>
+<p><a href="#top">back to top</a></p>
+<p>There are four different types of data generated when the user interacts with the plot using their mouse: hover, click, select, and zoom data.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">import</span> <span class="nn">dash</span>
+<span class="kn">import</span> <span class="nn">dash_core_components</span> <span class="k">as</span> <span class="nn">dcc</span>
+<span class="kn">import</span> <span class="nn">dash_html_components</span> <span class="k">as</span> <span class="nn">html</span>
+<span class="kn">from</span> <span class="nn">dash.dependencies</span> <span class="kn">import</span> <span class="n">Input</span><span class="p">,</span> <span class="n">Output</span>
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">external_stylesheets</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;https://codepen.io/chriddyp/pen/bWLwgP.css&#39;</span><span class="p">]</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">JupyterDash</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">external_stylesheets</span><span class="o">=</span><span class="n">external_stylesheets</span><span class="p">)</span>
+
+<span class="n">styles</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;pre&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;border&#39;</span><span class="p">:</span> <span class="s1">&#39;thin lightgrey solid&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;overflowX&#39;</span><span class="p">:</span> <span class="s1">&#39;scroll&#39;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+    <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span>
+    <span class="s2">&quot;customdata&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span>
+    <span class="s2">&quot;fruit&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">]</span>
+<span class="p">})</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;fruit&quot;</span><span class="p">,</span> <span class="n">custom_data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;customdata&quot;</span><span class="p">])</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">clickmode</span><span class="o">=</span><span class="s1">&#39;event+select&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">update_traces</span><span class="p">(</span><span class="n">marker_size</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+    <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span>
+        <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;basic-interactions&#39;</span><span class="p">,</span>
+        <span class="n">figure</span><span class="o">=</span><span class="n">fig</span>
+    <span class="p">),</span>
+
+    <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">(</span><span class="n">className</span><span class="o">=</span><span class="s1">&#39;row&#39;</span><span class="p">,</span> <span class="n">children</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+            <span class="n">dcc</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                **Hover Data**</span>
+
+<span class="s2">                Mouse over values in the graph.</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">),</span>
+            <span class="n">html</span><span class="o">.</span><span class="n">Pre</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;hover-data&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">styles</span><span class="p">[</span><span class="s1">&#39;pre&#39;</span><span class="p">])</span>
+        <span class="p">],</span> <span class="n">className</span><span class="o">=</span><span class="s1">&#39;three columns&#39;</span><span class="p">),</span>
+
+        <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+            <span class="n">dcc</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                **Click Data**</span>
+
+<span class="s2">                Click on points in the graph.</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">),</span>
+            <span class="n">html</span><span class="o">.</span><span class="n">Pre</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;click-data&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">styles</span><span class="p">[</span><span class="s1">&#39;pre&#39;</span><span class="p">]),</span>
+        <span class="p">],</span> <span class="n">className</span><span class="o">=</span><span class="s1">&#39;three columns&#39;</span><span class="p">),</span>
+
+        <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+            <span class="n">dcc</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                **Selection Data**</span>
+
+<span class="s2">                Choose the lasso or rectangle tool in the graph&#39;s menu</span>
+<span class="s2">                bar and then select points in the graph.</span>
+
+<span class="s2">                Note that if `layout.clickmode = &#39;event+select&#39;`, selection data also</span>
+<span class="s2">                accumulates (or un-accumulates) selected data if you hold down the shift</span>
+<span class="s2">                button while clicking.</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">),</span>
+            <span class="n">html</span><span class="o">.</span><span class="n">Pre</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;selected-data&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">styles</span><span class="p">[</span><span class="s1">&#39;pre&#39;</span><span class="p">]),</span>
+        <span class="p">],</span> <span class="n">className</span><span class="o">=</span><span class="s1">&#39;three columns&#39;</span><span class="p">),</span>
+
+        <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+            <span class="n">dcc</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                **Zoom and Relayout Data**</span>
+
+<span class="s2">                Click and drag on the graph to zoom or click on the zoom</span>
+<span class="s2">                buttons in the graph&#39;s menu bar.</span>
+<span class="s2">                Clicking on legend items will also fire</span>
+<span class="s2">                this event.</span>
+<span class="s2">            &quot;&quot;&quot;</span><span class="p">),</span>
+            <span class="n">html</span><span class="o">.</span><span class="n">Pre</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;relayout-data&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">styles</span><span class="p">[</span><span class="s1">&#39;pre&#39;</span><span class="p">]),</span>
+        <span class="p">],</span> <span class="n">className</span><span class="o">=</span><span class="s1">&#39;three columns&#39;</span><span class="p">)</span>
+    <span class="p">])</span>
+<span class="p">])</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span>
+    <span class="n">Output</span><span class="p">(</span><span class="s1">&#39;hover-data&#39;</span><span class="p">,</span> <span class="s1">&#39;children&#39;</span><span class="p">),</span>
+    <span class="n">Input</span><span class="p">(</span><span class="s1">&#39;basic-interactions&#39;</span><span class="p">,</span> <span class="s1">&#39;hoverData&#39;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">display_hover_data</span><span class="p">(</span><span class="n">hoverData</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">hoverData</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span>
+    <span class="n">Output</span><span class="p">(</span><span class="s1">&#39;click-data&#39;</span><span class="p">,</span> <span class="s1">&#39;children&#39;</span><span class="p">),</span>
+    <span class="n">Input</span><span class="p">(</span><span class="s1">&#39;basic-interactions&#39;</span><span class="p">,</span> <span class="s1">&#39;clickData&#39;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">display_click_data</span><span class="p">(</span><span class="n">clickData</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">clickData</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span>
+    <span class="n">Output</span><span class="p">(</span><span class="s1">&#39;selected-data&#39;</span><span class="p">,</span> <span class="s1">&#39;children&#39;</span><span class="p">),</span>
+    <span class="n">Input</span><span class="p">(</span><span class="s1">&#39;basic-interactions&#39;</span><span class="p">,</span> <span class="s1">&#39;selectedData&#39;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">display_selected_data</span><span class="p">(</span><span class="n">selectedData</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">selectedData</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span>
+    <span class="n">Output</span><span class="p">(</span><span class="s1">&#39;relayout-data&#39;</span><span class="p">,</span> <span class="s1">&#39;children&#39;</span><span class="p">),</span>
+    <span class="n">Input</span><span class="p">(</span><span class="s1">&#39;basic-interactions&#39;</span><span class="p">,</span> <span class="s1">&#39;relayoutData&#39;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">display_relayout_data</span><span class="p">(</span><span class="n">relayoutData</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">relayoutData</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">run_server</span><span class="p">(</span><span class="s1">&#39;inline&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p><a name='x.3.1'></a></p>
+<h3 id="exercise-4-interactive-filtering-to-display-aggregate-stats">🏋️ Exercise 4: Interactive Filtering to Display Aggregate Stats<a class="headerlink" href="#exercise-4-interactive-filtering-to-display-aggregate-stats" title="Permanent link">&para;</a></h3>
+<p><a href="#top">back to top</a></p>
+<p>Use Selection Data in your plot from exercise 5.2.4 to display the $\bar y$ and $\bar x$ value of the selected data somewhere in your layout.</p>
+<p>Here's some starter code for handling selectedData:</p>
+<div class="codehilite"><pre><span></span><code>@app.callback(
+    Output(&#39;&lt;SOME DIV ID&gt;&#39;, &#39;children&#39;),
+    Input(&#39;&lt;YOUR FIGURE&gt;&#39;, &#39;selectedData&#39;))
+def display_selected_data(selectedData):
+    if selectedData: # if to avoid error mssg when None
+      sel = pd.DataFrame(selectedData[&quot;points&quot;])
+      ### YOUR CODE ###
+
+      &lt;RETURN&gt; &lt;SOMETHING&gt;
+</code></pre></div>
+
+<blockquote>
+<p>Hint: to figure out what the object <code>sel</code> contains, send <code>sel.to_json</code> to the children of <code>test</code>, the html.P at the bottom of the layout. You can then copy and paste that into a cell in the notebook to parse by hand (after converting it back into a dataframe) so that you get the formula right</p>
+</blockquote>
+<div class="codehilite"><pre><span></span><code><span class="n">colors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;background&#39;</span><span class="p">:</span> <span class="s1">&#39;#ffffff&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;#111111&#39;</span><span class="p">}</span>
+
+<span class="n">external_stylesheets</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;https://codepen.io/chriddyp/pen/bWLwgP.css&#39;</span><span class="p">]</span>
+
+
+<span class="c1">### YOUR FUNCTION FROM my_fig FROM 5.2.4 ###</span>
+<span class="k">def</span> <span class="nf">my_fig</span><span class="p">():</span>
+
+  <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">X</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">X</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">))</span>
+
+  <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">autosize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+
+    <span class="p">)</span>
+  <span class="k">return</span> <span class="n">fig</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">JupyterDash</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">external_stylesheets</span><span class="o">=</span><span class="n">external_stylesheets</span><span class="p">)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span>  <span class="n">html</span><span class="o">.</span><span class="n">Div</span><span class="p">([</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">H1</span><span class="p">([</span><span class="s2">&quot;LOOK AT ALL THOSE CHICKENS!&quot;</span> <span class="c1"># YOUR TITLE HERE</span>
+                    <span class="p">],</span>
+                    <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]}</span>
+                    <span class="p">),</span>
+
+
+                    <span class="c1">### YOUR SELECTION DIV FROM 5.2.4 (dcc.checklist)</span>
+
+                <span class="n">dcc</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span>
+                    <span class="nb">id</span><span class="o">=</span><span class="s1">&#39;fig-1&#39;</span><span class="p">,</span>
+                    <span class="n">figure</span><span class="o">=</span><span class="n">my_fig</span><span class="p">(),</span> <span class="c1"># YOUR FIGURE HERE</span>
+                    <span class="p">),</span>
+                <span class="n">html</span><span class="o">.</span><span class="n">P</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">),</span>
+                <span class="p">],</span>
+                <span class="n">style</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;backgroundColor&#39;</span><span class="p">:</span> <span class="n">colors</span><span class="p">[</span><span class="s1">&#39;background&#39;</span><span class="p">]}</span>
+                <span class="p">)</span>
+
+<span class="c1">### YOUR CALLBACK FROM 5.2.4 FOR UPDATING THE FIG ###</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span>
+    <span class="n">Output</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">,</span> <span class="s1">&#39;children&#39;</span><span class="p">),</span>
+    <span class="n">Input</span><span class="p">(</span><span class="s1">&#39;fig-1&#39;</span><span class="p">,</span> <span class="s1">&#39;selectedData&#39;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">display_selected_data</span><span class="p">(</span><span class="n">selectedData</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">selectedData</span><span class="p">:</span>
+      <span class="n">sel</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">selectedData</span><span class="p">[</span><span class="s2">&quot;points&quot;</span><span class="p">])</span>
+      <span class="k">return</span> <span class="n">sel</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">run_server</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;external&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>Dash app running on:
+
+
+
+&lt;IPython.core.display.Javascript object&gt;
+</code></pre></div>
+
+<p><a name='x.4'></a></p>
+<h3 id="enrichment-deploy-to-heroku">🍒 Enrichment: Deploy to Heroku<a class="headerlink" href="#enrichment-deploy-to-heroku" title="Permanent link">&para;</a></h3>
+<p><a href="#top">back to top</a></p>
+<p><a href="https://www.datacamp.com/community/tutorials/learn-build-dash-python">steps for deploying an app to heroku!</a></p>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../S6_Time_Series_Analysis/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Time Series Analysis" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Time Series Analysis
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../labs/L1_Neural_Network_Linearity/" class="md-footer__link md-footer__link--next" aria-label="Next: Neural Network Linearity" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Neural Network Linearity
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.361d90f1.min.js"}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.289a2a4b.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      
+    
+  </body>
+</html>

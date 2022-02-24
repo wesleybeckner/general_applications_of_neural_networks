@@ -1,0 +1,1151 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.4">
+    
+    
+      
+        <title>Local time series - General Applications of Neural Networks</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bb3983ee.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.e6a45f82.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+      <link rel="stylesheet" href="../styles.css">
+    
+    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-114664473-1","auto"),ga("set","anonymizeIp",!0),ga("send","pageview"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){var e;this.value&&(e=document.location.pathname,ga("send","pageview",e+"?q="+this.value))}),"undefined"!=typeof location$&&location$.subscribe(function(e){ga("send","pageview",e.pathname)})})</script>
+  <script async src="https://www.google-analytics.com/analytics.js"></script>
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#general-applications-of-neural-networks-session-5-recurrent-neural-networks-and-time-series-analysis" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="General Applications of Neural Networks" class="md-header__button md-logo" aria-label="General Applications of Neural Networks" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            General Applications of Neural Networks
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Local time series
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="General Applications of Neural Networks" class="md-nav__button md-logo" aria-label="General Applications of Neural Networks" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    General Applications of Neural Networks
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../introduction/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Sessions
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Sessions" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Sessions
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S1_Multilayer_Perceptron/" class="md-nav__link">
+        The Multilayer Perceptron
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S2_Feed_Forward_Neural_Networks/" class="md-nav__link">
+        Feed Forward Neural Networks
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S3_Computer_Vision_I/" class="md-nav__link">
+        Computer Vision I
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S4_Computer_Vision_II/" class="md-nav__link">
+        Computer Vision II
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S5_Flask/" class="md-nav__link">
+        Building Applications with Flask
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S6_Time_Series_Analysis/" class="md-nav__link">
+        Time Series Analysis
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../S7_Data_Dashboards_with_Plotly_Dash/" class="md-nav__link">
+        Data Dashboards with Plotly Dash
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Labs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Labs" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Labs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../labs/L1_Neural_Network_Linearity/" class="md-nav__link">
+        Neural Network Linearity
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Project
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Project" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Project
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project/P1_Monolithic/" class="md-nav__link">
+        Monolithic Tic-Tac-Toe App
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#50-preparing-environment-and-importing-data" class="md-nav__link">
+    5.0 Preparing Environment and Importing Data
+  </a>
+  
+    <nav class="md-nav" aria-label="5.0 Preparing Environment and Importing Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#501-import-packages" class="md-nav__link">
+    5.0.1 Import Packages
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#502-load-dataset" class="md-nav__link">
+    5.0.2 Load Dataset
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#51-why-we-think-in-sequences" class="md-nav__link">
+    5.1 Why We Think in Sequences
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#52-recurrent-neural-networks" class="md-nav__link">
+    5.2 Recurrent Neural Networks
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2 Recurrent Neural Networks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#521-long-short-term-memory-networks" class="md-nav__link">
+    5.2.1 Long Short-Term Memory Networks
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#53-exploratory-data-analysis-with-plotlypandas" class="md-nav__link">
+    5.3 Exploratory Data Analysis with Plotly/Pandas
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+<p><a href="https://colab.research.google.com/github/wesleybeckner/general_applications_of_neural_networks/blob/main/notebooks/S5_Time_Series_Analysis.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a></p>
+<h1 id="general-applications-of-neural-networks-session-5-recurrent-neural-networks-and-time-series-analysis">General Applications of Neural Networks <br> Session 5: Recurrent Neural Networks and Time Series Analysis<a class="headerlink" href="#general-applications-of-neural-networks-session-5-recurrent-neural-networks-and-time-series-analysis" title="Permanent link">&para;</a></h1>
+<p><strong>Instructor</strong>: Wesley Beckner</p>
+<p><strong>Contact</strong>: <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#119;&#101;&#115;&#108;&#101;&#121;&#98;&#101;&#99;&#107;&#110;&#101;&#114;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#119;&#101;&#115;&#108;&#101;&#121;&#98;&#101;&#99;&#107;&#110;&#101;&#114;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></p>
+<hr />
+<p><br></p>
+<p>In this session, we'll be exploring NN as they apply to sequenced data, specifically time series data.</p>
+<p><br></p>
+<hr />
+<p><br></p>
+<p><a name='top'></a></p>
+<p><a name='x.0'></a></p>
+<h2 id="50-preparing-environment-and-importing-data">5.0 Preparing Environment and Importing Data<a class="headerlink" href="#50-preparing-environment-and-importing-data" title="Permanent link">&para;</a></h2>
+<p><a href="#top">back to top</a></p>
+<p><a name='x.0.1'></a></p>
+<h3 id="501-import-packages">5.0.1 Import Packages<a class="headerlink" href="#501-import-packages" title="Permanent link">&para;</a></h3>
+<p><a href="#top">back to top</a></p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">norm</span><span class="p">,</span> <span class="n">expon</span>
+<span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">interact</span>
+<span class="kn">from</span> <span class="nn">statsmodels.tsa.stattools</span> <span class="kn">import</span> <span class="n">pacf</span><span class="p">,</span> <span class="n">acf</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
+
+<span class="k">def</span> <span class="nf">melt_results</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+  <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+  <span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+  <span class="n">results</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+  <span class="n">results</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">][</span><span class="n">window_size</span><span class="p">:]</span>
+  <span class="n">results</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+  <span class="n">results</span><span class="o">.</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="s1">&#39;real&#39;</span><span class="p">,</span> <span class="s1">&#39;predicted&#39;</span><span class="p">]</span>
+  <span class="n">results</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">id_vars</span><span class="o">=</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;Source&#39;</span><span class="p">,</span> <span class="n">value_name</span><span class="o">=</span><span class="s1">&#39;KG&#39;</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">results</span>
+
+<span class="k">def</span> <span class="nf">process_data</span><span class="p">(</span><span class="n">Xy</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">time_cols</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">remove_null</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+  <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">  This function splits your time series data into the proper windows</span>
+
+<span class="sd">  Parameters</span>
+<span class="sd">  ----------</span>
+<span class="sd">  Xy: array</span>
+<span class="sd">    The input data. If there are non-time series columns, assumes they are on</span>
+<span class="sd">    the left and time columns are on the right. </span>
+<span class="sd">  time_cols: int</span>
+<span class="sd">    The number of time columns, default 12</span>
+<span class="sd">  window: int</span>
+<span class="sd">    The time window size, default 3</span>
+
+<span class="sd">  Returns</span>
+<span class="sd">  -------</span>
+<span class="sd">  X_: array</span>
+<span class="sd">    The independent variables, includes time and non-time series columns with</span>
+<span class="sd">    the new window</span>
+<span class="sd">  y_: array</span>
+<span class="sd">    The dependent variable, selected from the time columns at the end of the </span>
+<span class="sd">    window</span>
+<span class="sd">  labels:</span>
+<span class="sd">    The time series labels, can be used in subsequent plot</span>
+<span class="sd">  &quot;&quot;&quot;</span>
+  <span class="c1"># separate the non-time series columns</span>
+  <span class="n">X_cat</span> <span class="o">=</span> <span class="n">Xy</span><span class="p">[:,:</span><span class="o">-</span><span class="n">time_cols</span><span class="p">]</span>
+
+  <span class="c1"># select the columns to apply the sweeping window</span>
+  <span class="n">X</span> <span class="o">=</span> <span class="n">Xy</span><span class="p">[:,</span><span class="o">-</span><span class="n">time_cols</span><span class="p">:]</span>
+
+  <span class="n">X_</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="n">y</span> <span class="o">=</span> <span class="p">[]</span>
+
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">window</span><span class="p">):</span>
+    <span class="c1"># after attaching the current window to the non-time series </span>
+    <span class="c1"># columns, add it to a growing list</span>
+    <span class="n">X_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">X_cat</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">window</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># add the next time delta after the window to the list of y</span>
+    <span class="c1"># values</span>
+    <span class="n">y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="n">i</span><span class="o">+</span><span class="n">window</span><span class="p">])</span>
+
+  <span class="c1"># X_ is 3D: [number of replicates from sweeping window,</span>
+  <span class="c1">#           length of input data, </span>
+  <span class="c1">#           size of new feature with categories and time]</span>
+  <span class="c1"># we want to reshape X_ so that the replicates due to the sweeping window is </span>
+  <span class="c1"># a part of the same dimension as the instances of the input data</span>
+  <span class="n">X_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X_</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X_</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">window</span><span class="o">+</span><span class="n">X_cat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+  <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],)</span>
+
+  <span class="k">if</span> <span class="n">remove_null</span><span class="p">:</span>
+    <span class="c1"># remove training data where the target is 0 (may be unfair advantage)</span>
+    <span class="n">X_</span> <span class="o">=</span> <span class="n">X_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)))[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)))[</span><span class="mi">0</span><span class="p">]]</span>
+
+  <span class="c1"># create labels that show the previous month values used to train the model</span>
+  <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">X_</span><span class="p">:</span>
+    <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;X: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array2string</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="o">-</span><span class="n">window</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">())))</span>
+  <span class="k">return</span> <span class="n">X_</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">labels</span>
+
+<span class="k">def</span> <span class="nf">train_test_process</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">train_test_val_ratios</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">],</span> <span class="n">window_size</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+  <span class="c1"># get the indices at the associated ratios</span>
+  <span class="n">idx_split1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">train_test_val_ratios</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+  <span class="n">idx_split2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">train_test_val_ratios</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+  <span class="c1"># index the data to build the sets</span>
+  <span class="n">data_train</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,:</span><span class="n">idx_split1</span><span class="p">]</span>
+  <span class="n">data_val</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="n">idx_split1</span><span class="p">:</span><span class="n">idx_split2</span><span class="p">]</span>
+  <span class="n">data_test</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="n">idx_split2</span><span class="p">:]</span>
+
+  <span class="c1"># build out the training sets with the sweeping window method</span>
+  <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">process_data</span><span class="p">(</span><span class="n">data_train</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="n">window_size</span><span class="p">,</span> <span class="n">time_cols</span><span class="o">=</span><span class="mi">132</span><span class="p">)</span>
+  <span class="n">X_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">process_data</span><span class="p">(</span><span class="n">data_val</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="n">window_size</span><span class="p">,</span> <span class="n">time_cols</span><span class="o">=</span><span class="mi">132</span><span class="p">)</span>
+  <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">process_data</span><span class="p">(</span><span class="n">data_test</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="n">window_size</span><span class="p">,</span> <span class="n">time_cols</span><span class="o">=</span><span class="mi">132</span><span class="p">)</span>
+
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;train size: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;val size: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">X_val</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;test size: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+  <span class="k">return</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span>
+</code></pre></div>
+
+<p><a name='x.0.2'></a></p>
+<h3 id="502-load-dataset">5.0.2 Load Dataset<a class="headerlink" href="#502-load-dataset" title="Permanent link">&para;</a></h3>
+<p><a href="#top">back to top</a></p>
+<div class="codehilite"><pre><span></span><code><span class="n">orders</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://raw.githubusercontent.com/wesleybeckner/&quot;</span>\
+                     <span class="s2">&quot;truffletopia/main/truffletopia/data/12_year_orders.csv&quot;</span><span class="p">)</span>
+
+<span class="n">cat_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;base_cake&#39;</span><span class="p">,</span> <span class="s1">&#39;truffle_type&#39;</span><span class="p">,</span> <span class="s1">&#39;primary_flavor&#39;</span><span class="p">,</span> <span class="s1">&#39;secondary_flavor&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;color_group&#39;</span><span class="p">,</span> <span class="s1">&#39;customer&#39;</span><span class="p">]</span>
+
+<span class="n">time_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">orders</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cat_cols</span><span class="p">]</span>
+
+<span class="c1"># note that our data is &#39;untidy&#39; if we wanted to tidy the data we would need to</span>
+<span class="c1"># unpivot or &#39;melt&#39; our date columns like so:</span>
+<span class="n">orders</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">id_vars</span><span class="o">=</span><span class="n">cat_cols</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="n">value_name</span><span class="o">=</span><span class="s1">&#39;kg&#39;</span><span class="p">)</span>
+
+<span class="c1"># however the data as it is, is useful for our purposes of timeseries prediction </span>
+<span class="c1"># today</span>
+</code></pre></div>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>base_cake</th>
+      <th>truffle_type</th>
+      <th>primary_flavor</th>
+      <th>secondary_flavor</th>
+      <th>color_group</th>
+      <th>customer</th>
+      <th>date</th>
+      <th>kg</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Cheese</td>
+      <td>Candy Outer</td>
+      <td>Horchata</td>
+      <td>Vanilla</td>
+      <td>Amethyst</td>
+      <td>Perk-a-Cola</td>
+      <td>1/2010</td>
+      <td>12570.335165</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Tiramisu</td>
+      <td>Chocolate Outer</td>
+      <td>Irish Cream</td>
+      <td>Egg Nog</td>
+      <td>Slate</td>
+      <td>Dandy's Candies</td>
+      <td>1/2010</td>
+      <td>7922.970436</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Sponge</td>
+      <td>Chocolate Outer</td>
+      <td>Ginger Ale</td>
+      <td>Apple</td>
+      <td>Slate</td>
+      <td>Dandy's Candies</td>
+      <td>1/2010</td>
+      <td>10521.306722</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Cheese</td>
+      <td>Chocolate Outer</td>
+      <td>Coffee</td>
+      <td>Pear</td>
+      <td>Opal</td>
+      <td>Dandy's Candies</td>
+      <td>1/2010</td>
+      <td>4739.122200</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Chiffon</td>
+      <td>Jelly Filled</td>
+      <td>Butter Toffee</td>
+      <td>Apricot</td>
+      <td>Olive</td>
+      <td>Slugworth</td>
+      <td>1/2010</td>
+      <td>2756.891961</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>13195</th>
+      <td>Chiffon</td>
+      <td>Chocolate Outer</td>
+      <td>Acai Berry</td>
+      <td>Tangerine</td>
+      <td>Slate</td>
+      <td>Fickelgruber</td>
+      <td>12/2020</td>
+      <td>25714.512372</td>
+    </tr>
+    <tr>
+      <th>13196</th>
+      <td>Butter</td>
+      <td>Jelly Filled</td>
+      <td>Plum</td>
+      <td>Peppermint</td>
+      <td>Olive</td>
+      <td>Fickelgruber</td>
+      <td>12/2020</td>
+      <td>15043.303525</td>
+    </tr>
+    <tr>
+      <th>13197</th>
+      <td>Chiffon</td>
+      <td>Chocolate Outer</td>
+      <td>Wild Cherry Cream</td>
+      <td>Peppermint</td>
+      <td>Taupe</td>
+      <td>Perk-a-Cola</td>
+      <td>12/2020</td>
+      <td>8769.613116</td>
+    </tr>
+    <tr>
+      <th>13198</th>
+      <td>Cheese</td>
+      <td>Candy Outer</td>
+      <td>Mango</td>
+      <td>Mango</td>
+      <td>Rose</td>
+      <td>Dandy's Candies</td>
+      <td>12/2020</td>
+      <td>5065.975534</td>
+    </tr>
+    <tr>
+      <th>13199</th>
+      <td>Sponge</td>
+      <td>Chocolate Outer</td>
+      <td>Ginger Ale</td>
+      <td>Passion Fruit</td>
+      <td>Black</td>
+      <td>Fickelgruber</td>
+      <td>12/2020</td>
+      <td>9466.712219</td>
+    </tr>
+  </tbody>
+</table>
+<p>13200 rows × 8 columns</p>
+</div>
+
+<p><a name='x.1'></a></p>
+<h2 id="51-why-we-think-in-sequences">5.1 Why We Think in Sequences<a class="headerlink" href="#51-why-we-think-in-sequences" title="Permanent link">&para;</a></h2>
+<p><a href="#top">back to top</a></p>
+<p>There are some problems that are best framed as a sequence in either the input or the output. For example, in our image classification we are performing a mapping of many-to-one: sequence input (the pixels) to a single output (classification). Other examples include:</p>
+<ul>
+<li>One-to-many: sequence output, e.x. word (if treated as a single input) to generate a picture</li>
+<li>Many-to-many: sequence input and output, e.x. machine translation (like english to mandarin)</li>
+<li>Synchronized many-to-many: synced sequence input and output, e.x. video classification</li>
+</ul>
+<p>State of the art handling of sequences has occurred in a class of networks called recurrent neural networks</p>
+<p><a name='x.2'></a></p>
+<h2 id="52-recurrent-neural-networks">5.2 Recurrent Neural Networks<a class="headerlink" href="#52-recurrent-neural-networks" title="Permanent link">&para;</a></h2>
+<p><a href="#top">back to top</a></p>
+<p>Recurrent Neural Networks (RNNs) can be thought of as a FFNN with loops added into the architecture. This allows the network to retain information, create "memory" that can be associated with signals later in the sequence. </p>
+<p>We didn't go into much detail about the actual training algorithm of neural networks: <strong><em>back propagation</em></strong>. But what we will say here, is that this algorithm breaks down with recurrent neural networks because of the looped connections. A trick was created to overcome this, where the looped connections are unrolled, using a copy of the "unhooked" neuron to represent where the loop was initally fed back. This algorithm is called <strong><em>back propagation through time</em></strong>.</p>
+<p>Another problem is introduced when training recurrent neural networks, in that the gradients calculated during back propagation can become very large, <strong><em>exploding gradients</em></strong>, or very small <strong><em>vanishing gradients</em></strong>. This problem is modulated in FNNNs by the ReLU, In RNNs, a more sophisticated gating mechanism is used in an architecture we call <strong><em>Long Short-Term Memory Networks</em></strong></p>
+<p align=center>
+<img src="https://miro.medium.com/max/4136/1*SKGAqkVVzT6co-sZ29ze-g.png"></img>
+</p>
+<p><small>LSTM shown in both typical and unfolded format</small></p>
+<h3 id="521-long-short-term-memory-networks">5.2.1 Long Short-Term Memory Networks<a class="headerlink" href="#521-long-short-term-memory-networks" title="Permanent link">&para;</a></h3>
+<p><a href="#top">back to top</a></p>
+<p>Long Short-Term Memory Networks (LSTMs) are a type of RNN that are trained using back propagation through time and overcome the vanishing/exploding gradient problem. Similar to CNNs, their architecture is composed of blocks, this time with memory blocks rather than convolutional blocks. A block is smarter than the classical neuron; it contains gates that manage the block's state and output. The gates are operated by a sigmoid function, determining whether they are open or closed (triggered or not trigerred). There are three types of gates within a memory block:</p>
+<ul>
+<li>Forget gate: decides what information is discarded</li>
+<li>Input gate: decides what information updates the memory state</li>
+<li>Output gate: decides what information to send forward depending on the input and memory state</li>
+</ul>
+<p>These weights that configure these gates are learned during training, and their coordination allow each memory block to learn sophisticated relationships in and among sequenced data. </p>
+<blockquote>
+<p>Big takeaway: memory blocks contain trainable parameters that allow the block to learn relationships between sequenced data </p>
+</blockquote>
+<p><a name='x.3'></a></p>
+<h2 id="53-exploratory-data-analysis-with-plotlypandas">5.3 Exploratory Data Analysis with Plotly/Pandas<a class="headerlink" href="#53-exploratory-data-analysis-with-plotlypandas" title="Permanent link">&para;</a></h2>
+<p><a href="#top">back to top</a></p>
+<div class="codehilite"><pre><span></span><code><span class="n">orders</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div>
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>base_cake</th>
+      <th>truffle_type</th>
+      <th>primary_flavor</th>
+      <th>secondary_flavor</th>
+      <th>color_group</th>
+      <th>customer</th>
+      <th>1/2010</th>
+      <th>2/2010</th>
+      <th>3/2010</th>
+      <th>4/2010</th>
+      <th>...</th>
+      <th>3/2020</th>
+      <th>4/2020</th>
+      <th>5/2020</th>
+      <th>6/2020</th>
+      <th>7/2020</th>
+      <th>8/2020</th>
+      <th>9/2020</th>
+      <th>10/2020</th>
+      <th>11/2020</th>
+      <th>12/2020</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Cheese</td>
+      <td>Candy Outer</td>
+      <td>Horchata</td>
+      <td>Vanilla</td>
+      <td>Amethyst</td>
+      <td>Perk-a-Cola</td>
+      <td>12570.335165</td>
+      <td>11569.168746</td>
+      <td>13616.812204</td>
+      <td>11884.370881</td>
+      <td>...</td>
+      <td>21575.521051</td>
+      <td>18856.178110</td>
+      <td>20701.250676</td>
+      <td>19406.448560</td>
+      <td>22328.687163</td>
+      <td>19384.824042</td>
+      <td>21449.154890</td>
+      <td>19554.405590</td>
+      <td>21873.104938</td>
+      <td>19572.860127</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Tiramisu</td>
+      <td>Chocolate Outer</td>
+      <td>Irish Cream</td>
+      <td>Egg Nog</td>
+      <td>Slate</td>
+      <td>Dandy's Candies</td>
+      <td>7922.970436</td>
+      <td>6464.558625</td>
+      <td>6616.092291</td>
+      <td>8244.991928</td>
+      <td>...</td>
+      <td>10145.394106</td>
+      <td>13132.925131</td>
+      <td>10821.805709</td>
+      <td>10829.961838</td>
+      <td>12995.340352</td>
+      <td>10504.814195</td>
+      <td>10617.199735</td>
+      <td>13377.165673</td>
+      <td>11065.835571</td>
+      <td>11135.386324</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Sponge</td>
+      <td>Chocolate Outer</td>
+      <td>Ginger Ale</td>
+      <td>Apple</td>
+      <td>Slate</td>
+      <td>Dandy's Candies</td>
+      <td>10521.306722</td>
+      <td>5543.335645</td>
+      <td>5294.892374</td>
+      <td>11010.452413</td>
+      <td>...</td>
+      <td>8516.098910</td>
+      <td>17498.911792</td>
+      <td>8369.846849</td>
+      <td>8334.206937</td>
+      <td>17519.678690</td>
+      <td>8595.378915</td>
+      <td>8909.348040</td>
+      <td>17234.636475</td>
+      <td>9002.216839</td>
+      <td>8794.467252</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Cheese</td>
+      <td>Chocolate Outer</td>
+      <td>Coffee</td>
+      <td>Pear</td>
+      <td>Opal</td>
+      <td>Dandy's Candies</td>
+      <td>4739.122200</td>
+      <td>2733.281035</td>
+      <td>4984.394797</td>
+      <td>2750.709519</td>
+      <td>...</td>
+      <td>8093.541144</td>
+      <td>4301.081977</td>
+      <td>8235.616589</td>
+      <td>4151.474242</td>
+      <td>8213.665500</td>
+      <td>4008.885583</td>
+      <td>7912.641813</td>
+      <td>4275.162782</td>
+      <td>8031.227879</td>
+      <td>4628.989194</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Chiffon</td>
+      <td>Jelly Filled</td>
+      <td>Butter Toffee</td>
+      <td>Apricot</td>
+      <td>Olive</td>
+      <td>Slugworth</td>
+      <td>2756.891961</td>
+      <td>1739.900797</td>
+      <td>1791.975108</td>
+      <td>1533.023665</td>
+      <td>...</td>
+      <td>1864.015449</td>
+      <td>1800.566323</td>
+      <td>1625.130275</td>
+      <td>1908.316219</td>
+      <td>2696.631511</td>
+      <td>1859.017636</td>
+      <td>1690.042699</td>
+      <td>1764.410866</td>
+      <td>1909.608709</td>
+      <td>1711.780317</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 138 columns</p>
+</div>
+
+<div class="codehilite"><pre><span></span><code><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">orders</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">time_cols</span><span class="p">])</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">data</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="s1">&#39;KG&#39;</span><span class="p">]</span>
+<span class="n">data</span>
+<span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span>  <span class="n">y</span><span class="o">=</span><span class="s1">&#39;KG&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p><html>
+<head><meta charset="utf-8" /></head></p>
+<body>
+    <div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax) {MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script src="https://cdn.plot.ly/plotly-2.9.0.min.js"></script> 
+                          <div id="98732d03-d58b-4130-9666-2568a26317b9" class="plotly-graph-div" style="height:525px; width:100%;"></div>            
+                          <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("98732d03-d58b-4130-9666-2568a26317b9")) {                    Plotly.newPlot(                        "98732d03-d58b-4130-9666-2568a26317b9",                        [{"hovertemplate": "Date=%{x}<br>KG=%{y}<extra></extra>", "legendgroup": "", "marker": {"color": "#636efa", "symbol": "circle"}, "mode": "markers", "name": "", "orientation": "v", "showlegend": false, "type": "scatter", "x": ["1/2010", "2/2010", "3/2010", "4/2010", "5/2010", "6/2010", "7/2010", "8/2010", "9/2010", "10/2010", "11/2010", "12/2010", "1/2011", "2/2011", "3/2011", "4/2011", "5/2011", "6/2011", "7/2011", "8/2011", "9/2011", "10/2011", "11/2011", "12/2011", "1/2012", "2/2012", "3/2012", "4/2012", "5/2012", "6/2012", "7/2012", "8/2012", "9/2012", "10/2012", "11/2012", "12/2012", "1/2013", "2/2013", "3/2013", "4/2013", "5/2013", "6/2013", "7/2013", "8/2013", "9/2013", "10/2013", "11/2013", "12/2013", "1/2014", "2/2014", "3/2014", "4/2014", "5/2014", "6/2014", "7/2014", "8/2014", "9/2014", "10/2014", "11/2014", "12/2014", "1/2015", "2/2015", "3/2015", "4/2015", "5/2015", "6/2015", "7/2015", "8/2015", "9/2015", "10/2015", "11/2015", "12/2015", "1/2016", "2/2016", "3/2016", "4/2016", "5/2016", "6/2016", "7/2016", "8/2016", "9/2016", "10/2016", "11/2016", "12/2016", "1/2017", "2/2017", "3/2017", "4/2017", "5/2017", "6/2017", "7/2017", "8/2017", "9/2017", "10/2017", "11/2017", "12/2017", "1/2018", "2/2018", "3/2018", "4/2018", "5/2018", "6/2018", "7/2018", "8/2018", "9/2018", "10/2018", "11/2018", "12/2018", "1/2019", "2/2019", "3/2019", "4/2019", "5/2019", "6/2019", "7/2019", "8/2019", "9/2019", "10/2019", "11/2019", "12/2019", "1/2020", "2/2020", "3/2020", "4/2020", "5/2020", "6/2020", "7/2020", "8/2020", "9/2020", "10/2020", "11/2020", "12/2020"], "xaxis": "x", "y": [12570.33516482565, 11569.168746227244, 13616.8122044598, 11884.3708810225, 13950.332334409884, 12781.156535682429, 14256.210023357236, 12887.711959877463, 15038.574005789536, 12626.48930557771, 14611.291109090684, 13194.81429999148, 14921.016215576235, 13477.391456909943, 15409.211079596587, 13999.215068692507, 15597.436975845374, 14098.12497823274, 15596.818092478728, 14941.69403166363, 15715.347212025836, 14181.212141927937, 16282.0980055455, 14650.929410064904, 16433.20900828632, 15400.579033515967, 16756.981262857273, 15128.148250492244, 17523.979943307248, 15413.0446914734, 16366.264377017458, 14568.470958551738, 16901.11154186154, 14659.021365286097, 16494.903960781197, 15398.721298130027, 17938.090871773184, 15850.35787113158, 18236.778754419982, 15956.750789202086, 17401.696472111977, 15890.103219350918, 17283.79073343649, 16302.509223010222, 17229.645014787257, 16223.309276278227, 17796.223621100053, 16344.001270241426, 17782.006164552513, 16326.588260101846, 18253.569321985724, 16818.123129181142, 18554.33980878632, 16900.704327264033, 18479.00603218699, 17042.963875823145, 18287.35559715585, 17244.887842050513, 18822.494484753846, 17603.725932131478, 18766.104076650663, 17170.126490680243, 19632.147600450644, 16856.921979192426, 18854.690380403008, 17880.884218985302, 19087.480847049384, 18196.112254637806, 19770.963054596545, 16488.739325030063, 19699.01989730995, 17194.707087425755, 19372.657901571318, 17715.24432224015, 19227.53144133251, 17691.136252909622, 20114.534506297117, 17926.25260490304, 19880.02532889845, 16690.02893115867, 19928.02694695529, 18553.766165315024, 20547.154033981024, 17301.11715078875, 19538.97650435099, 17902.44835514176, 21269.577926886348, 18842.69654955895, 20095.445399491346, 17670.300576591326, 20310.884287446843, 18754.84178182952, 20736.279238797022, 18617.387584546323, 20783.71123390676, 17470.755864944782, 20523.579839792714, 18796.93690580505, 20028.582492587037, 18677.535295190337, 20048.1074217522, 18929.24861718753, 20571.15590247796, 18207.20465623173, 20839.04289237627, 18966.53298378622, 20909.977545252816, 18589.807151786372, 21287.370122673103, 17987.976866769444, 21111.062684974826, 18538.311320658097, 21797.267132392342, 18935.35277235507, 21331.37841983855, 18783.75961074272, 22139.12337340894, 18553.79727063604, 21579.50628438568, 19726.43311123112, 21147.624131226225, 19232.360491469408, 21575.52105110441, 18856.1781102771, 20701.25067582265, 19406.448559709923, 22328.68716294986, 19384.824041986754, 21449.154889830093, 19554.40558950196, 21873.104938389297, 19572.860127015803], "yaxis": "y"}],                        {"legend": {"tracegroupgap": 0}, "margin": {"t": 60}, "template": {"data": {"bar": [{"error_x": {"color": "#2a3f5f"}, "error_y": {"color": "#2a3f5f"}, "marker": {"line": {"color": "#E5ECF6", "width": 0.5}}, "type": "bar"}], "barpolar": [{"marker": {"line": {"color": "#E5ECF6", "width": 0.5}}, "type": "barpolar"}], "carpet": [{"aaxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "baxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "type": "carpet"}], "choropleth": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "type": "choropleth"}], "contour": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "contour"}], "contourcarpet": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "type": "contourcarpet"}], "heatmap": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "heatmap"}], "heatmapgl": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "heatmapgl"}], "histogram": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "histogram"}], "histogram2d": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "histogram2d"}], "histogram2dcontour": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "histogram2dcontour"}], "mesh3d": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "type": "mesh3d"}], "parcoords": [{"line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "parcoords"}], "pie": [{"automargin": true, "type": "pie"}], "scatter": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatter"}], "scatter3d": [{"line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatter3d"}], "scattercarpet": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattercarpet"}], "scattergeo": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattergeo"}], "scattergl": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattergl"}], "scattermapbox": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scattermapbox"}], "scatterpolar": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatterpolar"}], "scatterpolargl": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatterpolargl"}], "scatterternary": [{"marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "type": "scatterternary"}], "surface": [{"colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "type": "surface"}], "table": [{"cells": {"fill": {"color": "#EBF0F8"}, "line": {"color": "white"}}, "header": {"fill": {"color": "#C8D4E3"}, "line": {"color": "white"}}, "type": "table"}]}, "layout": {"annotationdefaults": {"arrowcolor": "#2a3f5f", "arrowhead": 0, "arrowwidth": 1}, "autotypenumbers": "strict", "coloraxis": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "colorscale": {"diverging": [[0, "#8e0152"], [0.1, "#c51b7d"], [0.2, "#de77ae"], [0.3, "#f1b6da"], [0.4, "#fde0ef"], [0.5, "#f7f7f7"], [0.6, "#e6f5d0"], [0.7, "#b8e186"], [0.8, "#7fbc41"], [0.9, "#4d9221"], [1, "#276419"]], "sequential": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "sequentialminus": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}, "colorway": ["#636efa", "#EF553B", "#00cc96", "#ab63fa", "#FFA15A", "#19d3f3", "#FF6692", "#B6E880", "#FF97FF", "#FECB52"], "font": {"color": "#2a3f5f"}, "geo": {"bgcolor": "white", "lakecolor": "white", "landcolor": "#E5ECF6", "showlakes": true, "showland": true, "subunitcolor": "white"}, "hoverlabel": {"align": "left"}, "hovermode": "closest", "mapbox": {"style": "light"}, "paper_bgcolor": "white", "plot_bgcolor": "#E5ECF6", "polar": {"angularaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "bgcolor": "#E5ECF6", "radialaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "scene": {"xaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "gridwidth": 2, "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white"}, "yaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "gridwidth": 2, "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white"}, "zaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "gridwidth": 2, "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white"}}, "shapedefaults": {"line": {"color": "#2a3f5f"}}, "ternary": {"aaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "baxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "bgcolor": "#E5ECF6", "caxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "title": {"x": 0.05}, "xaxis": {"automargin": true, "gridcolor": "white", "linecolor": "white", "ticks": "", "title": {"standoff": 15}, "zerolinecolor": "white", "zerolinewidth": 2}, "yaxis": {"automargin": true, "gridcolor": "white", "linecolor": "white", "ticks": "", "title": {"standoff": 15}, "zerolinecolor": "white", "zerolinewidth": 2}}}, "xaxis": {"anchor": "y", "domain": [0.0, 1.0], "title": {"text": "Date"}}, "yaxis": {"anchor": "x", "domain": [0.0, 1.0], "title": {"text": "KG"}}},                        {"responsive": true}                    ).then(function(){
+
+var gd = document.getElementById('98732d03-d58b-4130-9666-2568a26317b9');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                            
+                        </script>        </div> 
+                        </body>
+<p></html></p>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.361d90f1.min.js"}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.289a2a4b.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      
+    
+  </body>
+</html>
