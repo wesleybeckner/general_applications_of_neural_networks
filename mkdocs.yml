@@ -20,11 +20,13 @@ nav:
       - Feed Forward Neural Networks: S2_Feed_Forward_Neural_Networks.md
       - Computer Vision I: S3_Computer_Vision_I.md
       - Computer Vision II: S4_Computer_Vision_II.md
-      - Time Series Analysis: S5_Time_Series_Analysis.md
+      - Building Applications with Flask: S5_Flask.md
+      - Time Series Analysis: S6_Time_Series_Analysis.md
+      - Data Dashboards with Plotly Dash: S7_Data_Dashboards_with_Plotly_Dash.md
   - Labs:
       - Neural Network Linearity: labs/L1_Neural_Network_Linearity.md
   - Project:
-      - The Flask Application Factory: project/P1_Flask.md
+      - Monolithic Tic-Tac-Toe App: project/P1_Monolithic.md
 markdown_extensions:
   - admonition
   - codehilite:

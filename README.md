@@ -15,17 +15,17 @@ The breakdown for this course is as follows:
     * S2: Feed Forward Neural Networks
     * S3: Computer Vision I
     * S4: Computer Vision II
-    * S5: Time Series Analysis
-    * S6: Natural Language Processing I
-    * S7: Natural Language Processing II
+    * S5: Building Applications with Flask
+    * S6: Time Series Analysis
+    * S7: Data Dashboards with Plotly Dash
 *	Labs
     * L1: Neural Network Linearity
     * L2: Wine Quality Prediction
-    * L3: Motor Impellar Quality Prediction
+    * L3: Motor Impeller Quality Prediction
     * L4: Customer Forecasting 
-    * L5: Motor Impellar Flask Application
+    * L5: Motor Impeller Flask Application
 *	Project
-    * P1: The Flask Application Factory
-    * P2: Monolithic Application: Tic-Tac-Toe
-    * P3: Microservices Application: Tic-Tac-Toe
-    * P4: Unit Tests and Continuous Integration for Python Applications
+    * P1: Monolithic Tic-Tac-Toe App
+    * P2: Microservices Tic-Tac-Toe App
+    * P3: Unit Tests for Flask Applications
+    * P4: Continuous Integration for Flask Applications
