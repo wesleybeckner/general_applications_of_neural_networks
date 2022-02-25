@@ -27,6 +27,8 @@ nav:
       - Neural Network Linearity: labs/L1_Neural_Network_Linearity.md
   - Project:
       - Monolithic Tic-Tac-Toe App: project/P1_Monolithic.md
+  - Extras:
+      - Reinforcement Learning Agents: extras/X1_Tictactoe_RNN.md
 markdown_extensions:
   - admonition
   - codehilite:
