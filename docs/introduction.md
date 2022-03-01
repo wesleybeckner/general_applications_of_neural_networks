@@ -13,9 +13,9 @@ The breakdown for this course is as follows:
     * S2: Feed Forward Neural Networks
     * S3: Computer Vision I
     * S4: Computer Vision II
-    * S5: Building Applications with Flask
+    * S5: Applications with Flask
     * S6: Time Series Analysis
-    * S7: Data Dashboards with Plotly Dash
+    * S7: Dashboards with Plotly Dash
 *	Labs
     * L1: Neural Network Linearity
     * L2: Wine Quality Prediction
