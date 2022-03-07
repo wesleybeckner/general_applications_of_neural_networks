@@ -1,3 +1,5 @@
+<a href="https://colab.research.google.com/github/wesleybeckner/general_applications_of_neural_networks/blob/main/notebooks/extras/X1_Tictactoe_RNN.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+
 # General Applications of Neural Networks <br> X1: Reinforcement Learning Based Agents
 
 **Instructor**: Wesley Beckner
@@ -112,7 +114,7 @@ install baselines from openAI
 
     Get:1 https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/ InRelease [3,626 B]
     Ign:2 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64  InRelease
-    Get:3 http://security.ubuntu.com/ubuntu bionic-security InRelease [88.7 kB]
+    Get:3 http://security.ubuntu.com/ubuntu bionic-security InRelease [88.7 kB]    
     Ign:4 https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64  InRelease
     Get:5 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64  Release [696 B]
     Hit:6 https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64  Release
