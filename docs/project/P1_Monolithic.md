@@ -5,9 +5,6 @@
 **Instructor**: Wesley Beckner
 
 **Contact**: wesleybeckner@gmail.com
-
-<br>
-
 ---
 
 <br>
@@ -18,8 +15,6 @@ In this session we'll be building a monolithic application that allows a user to
 <br>
 
 ---
-
-<br>
 
 
 <a name='x.0'></a>
@@ -810,6 +805,24 @@ game.board
 
 
     {1: ' ', 2: ' ', 3: ' ', 4: ' ', 5: ' ', 6: ' ', 7: ' ', 8: ' ', 9: ' '}
+
+
+
+
+```python
+for key, value in game.board.items():
+    game.board[key] = game.board[key].replace(' ', '_')
+```
+
+
+```python
+game.board[key]
+```
+
+
+
+
+    '_'
 
 
 

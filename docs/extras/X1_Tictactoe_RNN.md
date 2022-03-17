@@ -6,8 +6,6 @@
 
 **Contact**: wesleybeckner@gmail.com
 
-<br>
-
 ---
 
 <br>
@@ -18,8 +16,6 @@ In this lesson we'll abandon the world of heuristical agents and embrace the wil
 <br>
 
 ---
-
-<br>
 
 
 <a name='x.0'></a>
