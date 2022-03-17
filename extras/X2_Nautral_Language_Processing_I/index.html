@@ -1,0 +1,782 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.4">
+    
+    
+      
+        <title>General Applications of Neural Networks Session 6: Natural Language Processing I - General Applications of Neural Networks</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bb3983ee.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../extra.css">
+    
+      <link rel="stylesheet" href="../../styles.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","UA-114664473-1","auto"),ga("set","anonymizeIp",!0),ga("send","pageview"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){var e;this.value&&(e=document.location.pathname,ga("send","pageview",e+"?q="+this.value))}),"undefined"!=typeof location$&&location$.subscribe(function(e){ga("send","pageview",e.pathname)})})</script>
+  <script async src="https://www.google-analytics.com/analytics.js"></script>
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#general-applications-of-neural-networks-session-6-natural-language-processing-i" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="General Applications of Neural Networks" class="md-header__button md-logo" aria-label="General Applications of Neural Networks" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            General Applications of Neural Networks
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              General Applications of Neural Networks <br> Session 6: Natural Language Processing I
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="General Applications of Neural Networks" class="md-nav__button md-logo" aria-label="General Applications of Neural Networks" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    General Applications of Neural Networks
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../introduction/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Sessions
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Sessions" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Sessions
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../S1_Multilayer_Perceptron/" class="md-nav__link">
+        The Multilayer Perceptron
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../S2_Feed_Forward_Neural_Networks/" class="md-nav__link">
+        Feed Forward Neural Networks
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../S3_Computer_Vision_I/" class="md-nav__link">
+        Computer Vision I
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../S4_Computer_Vision_II/" class="md-nav__link">
+        Computer Vision II
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../S5_Flask/" class="md-nav__link">
+        Applications with Flask
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../S6_Time_Series_Analysis/" class="md-nav__link">
+        Time Series Analysis
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../S7_Data_Dashboards_with_Plotly_Dash/" class="md-nav__link">
+        Dashboards with Plotly Dash
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Labs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Labs" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Labs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../labs/L1_Neural_Network_Linearity/" class="md-nav__link">
+        Neural Network Linearity
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          Project
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Project" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Project
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../project/P1_Monolithic/" class="md-nav__link">
+        Monolithic Tic-Tac-Toe App
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          Extras
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Extras" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Extras
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../X1_Tictactoe_RNN/" class="md-nav__link">
+        Reinforcement Learning Agents
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#question-1-what-is-nlp" class="md-nav__link">
+    🙋 Question 1: What is NLP?
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+<h1 id="general-applications-of-neural-networks-session-6-natural-language-processing-i">General Applications of Neural Networks <br> Session 6: Natural Language Processing I<a class="headerlink" href="#general-applications-of-neural-networks-session-6-natural-language-processing-i" title="Permanent link">&para;</a></h1>
+<p><strong>Instructor</strong>: Wesley Beckner</p>
+<p><strong>Contact</strong>: <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#119;&#101;&#115;&#108;&#101;&#121;&#98;&#101;&#99;&#107;&#110;&#101;&#114;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#119;&#101;&#115;&#108;&#101;&#121;&#98;&#101;&#99;&#107;&#110;&#101;&#114;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></p>
+<hr />
+<p><br></p>
+<p>In this session we will introduce tactics for processing, analyzing, and performing predictive capabilities around text, aka, Natural Language Processing or NLP.
+<br></p>
+<hr />
+<p><br></p>
+<p><a name='top'></a></p>
+<h2 id="question-1-what-is-nlp">🙋 Question 1: What is NLP?<a class="headerlink" href="#question-1-what-is-nlp" title="Permanent link">&para;</a></h2>
+<p>Where are some places we experience NLP?</p>
+<p>To start us off here are some I'd like to mention:</p>
+<ul>
+<li>The Alexa device on my bedside table</li>
+<li>Gmail sentence completion</li>
+<li>Advertisement suggestions from Facebook listening to my conversations from my iPhone 😵‍💫</li>
+</ul>
+<h1 id="word-embeddings">Word Embeddings<a class="headerlink" href="#word-embeddings" title="Permanent link">&para;</a></h1>
+<p><a href="#top">back to top</a></p>
+<p>It is important to note that, while a lot of NLP involves machine learning, a great extent of it does not. As a first order of business, we will need to convert the raw text data into a machine readable format, ie a numeric or vector representation that is meaningful.</p>
+<h2 id="definitions">Definitions<a class="headerlink" href="#definitions" title="Permanent link">&para;</a></h2>
+<p><a href="#top">back to top</a></p>
+<ul>
+<li>Corpus: the documents that serve as the data for the analyses or training a machine learning model</li>
+<li>Vocabulary: the set of unique words contained in the corpus</li>
+</ul>
+<p>Let's take a very simple example:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">corpus</span> <span class="o">=</span> <span class="s1">&#39;DREAM SEQUENCE: EXT. ARRAKIS - END OF DAY 1</span><span class="se">\</span>
+<span class="s1">The planet Arrakis, as seen from space. </span><span class="se">\</span>
+<span class="s1">Track across its endless windswept terrain. </span><span class="se">\</span>
+<span class="s1">We glide into a low-hanging dark cloud that’s generated by a</span><span class="se">\</span>
+<span class="s1">massive mining vehicle, a HARVESTER, kicking up glowing</span><span class="se">\</span>
+<span class="s1">flecks of SPICE. We PUSH through the SPICE, creating a</span><span class="se">\</span>
+<span class="s1">dreamlike swirl of orange flakes. </span><span class="se">\</span>
+<span class="s1">Through the swirl WE REVEAL a SECOND HARVESTER airborne,</span><span class="se">\</span>
+<span class="s1">being hauled by a powerful CARRYALL. </span><span class="se">\</span>
+<span class="s1">ON THE GROUND - HARKONNEN SOLDIERS flanking the harvester,</span><span class="se">\</span>
+<span class="s1">leading the industrial nightmare through the darkness. One of</span><span class="se">\</span>
+<span class="s1">them holds a massive flag bearing the HARKONNEN EMBLEM. </span><span class="se">\</span>
+<span class="s1">Now these soldiers are observed through the P.O.V. of a</span><span class="se">\</span>
+<span class="s1">thermal scope. Reveal that this scope is attached to a</span><span class="se">\</span>
+<span class="s1">strange MISSLE LAUNCHER, one of multiple cloth-shrouded</span><span class="se">\</span>
+<span class="s1">weapons being wielded by a small band of blue-eye FREMEN</span><span class="se">\</span>
+<span class="s1">FIGHTERS taking cover behind a sprawling black rock. A young</span><span class="se">\</span>
+<span class="s1">female fighter, CHANI, is among them; along with a&#39;</span>
+</code></pre></div>
+
+<p>we grab the unique words in the corpus to build the vocabulary:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">vocabulary</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">corpus</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">word</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">vocabulary</span><span class="p">:</span>
+    <span class="n">vocabulary</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+</code></pre></div>
+
+<p>and then we can confirm that the vocabulary is a subset of the corpus:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">len</span><span class="p">(</span><span class="n">corpus</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">))</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>137
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="nb">len</span><span class="p">(</span><span class="n">vocabulary</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>112
+</code></pre></div>
+
+<p>Some extra things to note from this example is that your corpus could also be defined as a <em>collection</em> of texts and the vocabulary could be <em>character</em> based instead of <em>word</em> based, although this is much less common.</p>
+<h2 id="tokenization-cleaning-that-corpus">Tokenization <br> <em>🧹cleaning that corpus</em><a class="headerlink" href="#tokenization-cleaning-that-corpus" title="Permanent link">&para;</a></h2>
+<p><a href="#top">back to top</a></p>
+<p>The first step in gearing our corpus for analyses is to tokenize, or represent the interesting components (i.e. words) of our corpus into objects. To do this we typically filter out punctuation, special characters, and other dandruff and organize the words into lists or lists of lists if our corpus is a collection. </p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># first split according to sentences</span>
+<span class="n">processed</span> <span class="o">=</span> <span class="n">corpus</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;. &#39;</span><span class="p">)</span>
+
+<span class="c1"># then according to words</span>
+<span class="n">processed</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">processed</span><span class="p">]</span>
+
+<span class="c1"># show the first three sentences</span>
+<span class="n">processed</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>[[&#39;DREAM&#39;, &#39;SEQUENCE:&#39;, &#39;EXT&#39;],
+ [&#39;ARRAKIS&#39;,
+  &#39;-&#39;,
+  &#39;END&#39;,
+  &#39;OF&#39;,
+  &#39;DAY&#39;,
+  &#39;1The&#39;,
+  &#39;planet&#39;,
+  &#39;Arrakis,&#39;,
+  &#39;as&#39;,
+  &#39;seen&#39;,
+  &#39;from&#39;,
+  &#39;space&#39;],
+ [&#39;Track&#39;, &#39;across&#39;, &#39;its&#39;, &#39;endless&#39;, &#39;windswept&#39;, &#39;terrain&#39;]]
+</code></pre></div>
+
+<p>We can also, preferrably, perform this with tensorflow:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">Tokenizer</span><span class="p">()</span>
+
+<span class="c1"># note that, the default behavior of fit_on_texts is to split</span>
+<span class="c1"># the high-level iterable in the corpus, i.e. if corpus is just a string</span>
+<span class="c1"># and not a list, it will treat each character as an element and tokenize</span>
+<span class="c1"># the letters instead of the words.</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">corpus</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;. &#39;</span><span class="p">))</span>
+</code></pre></div>
+
+<p>We like using tensorflow becuase this takes care of a lot of the dirty work of removing punctuation and converting to lowercase:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">word_index</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>{&#39;a&#39;: 1, &#39;the&#39;: 2, &#39;of&#39;: 3, &#39;through&#39;: 4, &#39;we&#39;: 5, &#39;by&#39;: 6, &#39;harvester&#39;: 7, &#39;arrakis&#39;: 8, &#39;spice&#39;: 9, &#39;swirl&#39;: 10, &#39;reveal&#39;: 11, &#39;being&#39;: 12, &#39;harkonnen&#39;: 13, &#39;soldiers&#39;: 14, &#39;one&#39;: 15, &#39;scope&#39;: 16, &#39;is&#39;: 17, &#39;dream&#39;: 18, &#39;sequence&#39;: 19, &#39;ext&#39;: 20, &#39;end&#39;: 21, &#39;day&#39;: 22, &#39;1the&#39;: 23, &#39;planet&#39;: 24, &#39;as&#39;: 25, &#39;seen&#39;: 26, &#39;from&#39;: 27, &#39;space&#39;: 28, &#39;track&#39;: 29, &#39;across&#39;: 30, &#39;its&#39;: 31, &#39;endless&#39;: 32, &#39;windswept&#39;: 33, &#39;terrain&#39;: 34, &#39;glide&#39;: 35, &#39;into&#39;: 36, &#39;low&#39;: 37, &#39;hanging&#39;: 38, &#39;dark&#39;: 39, &#39;cloud&#39;: 40, &#39;that’s&#39;: 41, &#39;generated&#39;: 42, &#39;amassive&#39;: 43, &#39;mining&#39;: 44, &#39;vehicle&#39;: 45, &#39;kicking&#39;: 46, &#39;up&#39;: 47, &#39;glowingflecks&#39;: 48, &#39;push&#39;: 49, &#39;creating&#39;: 50, &#39;adreamlike&#39;: 51, &#39;orange&#39;: 52, &#39;flakes&#39;: 53, &#39;second&#39;: 54, &#39;airborne&#39;: 55, &#39;hauled&#39;: 56, &#39;powerful&#39;: 57, &#39;carryall&#39;: 58, &#39;on&#39;: 59, &#39;ground&#39;: 60, &#39;flanking&#39;: 61, &#39;leading&#39;: 62, &#39;industrial&#39;: 63, &#39;nightmare&#39;: 64, &#39;darkness&#39;: 65, &#39;ofthem&#39;: 66, &#39;holds&#39;: 67, &#39;massive&#39;: 68, &#39;flag&#39;: 69, &#39;bearing&#39;: 70, &#39;emblem&#39;: 71, &#39;now&#39;: 72, &#39;these&#39;: 73, &#39;are&#39;: 74, &#39;observed&#39;: 75, &#39;p&#39;: 76, &#39;o&#39;: 77, &#39;v&#39;: 78, &#39;athermal&#39;: 79, &#39;that&#39;: 80, &#39;this&#39;: 81, &#39;attached&#39;: 82, &#39;to&#39;: 83, &#39;astrange&#39;: 84, &#39;missle&#39;: 85, &#39;launcher&#39;: 86, &#39;multiple&#39;: 87, &#39;cloth&#39;: 88, &#39;shroudedweapons&#39;: 89, &#39;wielded&#39;: 90, &#39;small&#39;: 91, &#39;band&#39;: 92, &#39;blue&#39;: 93, &#39;eye&#39;: 94, &#39;fremenfighters&#39;: 95, &#39;taking&#39;: 96, &#39;cover&#39;: 97, &#39;behind&#39;: 98, &#39;sprawling&#39;: 99, &#39;black&#39;: 100, &#39;rock&#39;: 101, &#39;youngfemale&#39;: 102, &#39;fighter&#39;: 103, &#39;chani&#39;: 104, &#39;among&#39;: 105, &#39;them&#39;: 106, &#39;along&#39;: 107, &#39;with&#39;: 108}
+</code></pre></div>
+
+<p>note that, if the tokenizer sees a word that it hasn't fit to (i.e. was not in the original corpus) it will not now what number to represent the word by.</p>
+<p>For example, 'brutal' was not included in the original corpus:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">([</span><span class="s1">&#39;The harkonnen are brutal&#39;</span><span class="p">])</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>[[2, 13, 74]]
+</code></pre></div>
+
+<h2 id="tokenizer-parameters">Tokenizer Parameters<a class="headerlink" href="#tokenizer-parameters" title="Permanent link">&para;</a></h2>
+<p><a href="#top">back to top</a></p>
+<p>Now we'll discuss variations we may want to make to the initialized Tokenizer object.</p>
+<h3 id="out-of-vocabulary">Out of Vocabulary<a class="headerlink" href="#out-of-vocabulary" title="Permanent link">&para;</a></h3>
+<p><a href="#top">back to top</a></p>
+<p>An important setting is to determine what the tokenizer does when it encounters a word it hasn't seen in the corpus. Setting <code>oov_token</code> with a string value will dictate how unseen words are counted during texts_to_sequences</p>
+<div class="codehilite"><pre><span></span><code><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">Tokenizer</span><span class="p">(</span>
+  <span class="n">oov_token</span><span class="o">=</span><span class="s1">&#39;OOV&#39;</span><span class="p">)</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">corpus</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;. &#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">([</span><span class="s1">&#39;The harkonnen are brutal&#39;</span><span class="p">]))</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>[[3, 14, 75, 1]]
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">word_index</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>{&#39;OOV&#39;: 1, &#39;a&#39;: 2, &#39;the&#39;: 3, &#39;of&#39;: 4, &#39;through&#39;: 5, &#39;we&#39;: 6, &#39;by&#39;: 7, &#39;harvester&#39;: 8, &#39;arrakis&#39;: 9, &#39;spice&#39;: 10, &#39;swirl&#39;: 11, &#39;reveal&#39;: 12, &#39;being&#39;: 13, &#39;harkonnen&#39;: 14, &#39;soldiers&#39;: 15, &#39;one&#39;: 16, &#39;scope&#39;: 17, &#39;is&#39;: 18, &#39;dream&#39;: 19, &#39;sequence&#39;: 20, &#39;ext&#39;: 21, &#39;end&#39;: 22, &#39;day&#39;: 23, &#39;1the&#39;: 24, &#39;planet&#39;: 25, &#39;as&#39;: 26, &#39;seen&#39;: 27, &#39;from&#39;: 28, &#39;space&#39;: 29, &#39;track&#39;: 30, &#39;across&#39;: 31, &#39;its&#39;: 32, &#39;endless&#39;: 33, &#39;windswept&#39;: 34, &#39;terrain&#39;: 35, &#39;glide&#39;: 36, &#39;into&#39;: 37, &#39;low&#39;: 38, &#39;hanging&#39;: 39, &#39;dark&#39;: 40, &#39;cloud&#39;: 41, &#39;that’s&#39;: 42, &#39;generated&#39;: 43, &#39;amassive&#39;: 44, &#39;mining&#39;: 45, &#39;vehicle&#39;: 46, &#39;kicking&#39;: 47, &#39;up&#39;: 48, &#39;glowingflecks&#39;: 49, &#39;push&#39;: 50, &#39;creating&#39;: 51, &#39;adreamlike&#39;: 52, &#39;orange&#39;: 53, &#39;flakes&#39;: 54, &#39;second&#39;: 55, &#39;airborne&#39;: 56, &#39;hauled&#39;: 57, &#39;powerful&#39;: 58, &#39;carryall&#39;: 59, &#39;on&#39;: 60, &#39;ground&#39;: 61, &#39;flanking&#39;: 62, &#39;leading&#39;: 63, &#39;industrial&#39;: 64, &#39;nightmare&#39;: 65, &#39;darkness&#39;: 66, &#39;ofthem&#39;: 67, &#39;holds&#39;: 68, &#39;massive&#39;: 69, &#39;flag&#39;: 70, &#39;bearing&#39;: 71, &#39;emblem&#39;: 72, &#39;now&#39;: 73, &#39;these&#39;: 74, &#39;are&#39;: 75, &#39;observed&#39;: 76, &#39;p&#39;: 77, &#39;o&#39;: 78, &#39;v&#39;: 79, &#39;athermal&#39;: 80, &#39;that&#39;: 81, &#39;this&#39;: 82, &#39;attached&#39;: 83, &#39;to&#39;: 84, &#39;astrange&#39;: 85, &#39;missle&#39;: 86, &#39;launcher&#39;: 87, &#39;multiple&#39;: 88, &#39;cloth&#39;: 89, &#39;shroudedweapons&#39;: 90, &#39;wielded&#39;: 91, &#39;small&#39;: 92, &#39;band&#39;: 93, &#39;blue&#39;: 94, &#39;eye&#39;: 95, &#39;fremenfighters&#39;: 96, &#39;taking&#39;: 97, &#39;cover&#39;: 98, &#39;behind&#39;: 99, &#39;sprawling&#39;: 100, &#39;black&#39;: 101, &#39;rock&#39;: 102, &#39;youngfemale&#39;: 103, &#39;fighter&#39;: 104, &#39;chani&#39;: 105, &#39;among&#39;: 106, &#39;them&#39;: 107, &#39;along&#39;: 108, &#39;with&#39;: 109}
+</code></pre></div>
+
+<h3 id="maximum-vocabulary">Maximum Vocabulary<a class="headerlink" href="#maximum-vocabulary" title="Permanent link">&para;</a></h3>
+<p><a href="#top">back to top</a></p>
+<p>The <code>num_words</code> parameter will limit the number of words represented by the Tokenizer object from the corpus. This may be useful for corpora that contain many, many words (and we would like to speed up our pipeline) or when we would like overfitting to overly specific words within training data </p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">Tokenizer</span><span class="p">(</span>
+  <span class="n">oov_token</span><span class="o">=</span><span class="s1">&#39;OOV&#39;</span><span class="p">,</span> <span class="n">num_words</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">corpus</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;. &#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">([</span><span class="s1">&#39;The harkonnen are brutal&#39;</span><span class="p">]))</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>[[3, 1, 1, 1]]
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">word_index</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>{&#39;OOV&#39;: 1, &#39;a&#39;: 2, &#39;the&#39;: 3, &#39;of&#39;: 4, &#39;through&#39;: 5, &#39;we&#39;: 6, &#39;by&#39;: 7, &#39;harvester&#39;: 8, &#39;arrakis&#39;: 9, &#39;spice&#39;: 10, &#39;swirl&#39;: 11, &#39;reveal&#39;: 12, &#39;being&#39;: 13, &#39;harkonnen&#39;: 14, &#39;soldiers&#39;: 15, &#39;one&#39;: 16, &#39;scope&#39;: 17, &#39;is&#39;: 18, &#39;dream&#39;: 19, &#39;sequence&#39;: 20, &#39;ext&#39;: 21, &#39;end&#39;: 22, &#39;day&#39;: 23, &#39;1the&#39;: 24, &#39;planet&#39;: 25, &#39;as&#39;: 26, &#39;seen&#39;: 27, &#39;from&#39;: 28, &#39;space&#39;: 29, &#39;track&#39;: 30, &#39;across&#39;: 31, &#39;its&#39;: 32, &#39;endless&#39;: 33, &#39;windswept&#39;: 34, &#39;terrain&#39;: 35, &#39;glide&#39;: 36, &#39;into&#39;: 37, &#39;low&#39;: 38, &#39;hanging&#39;: 39, &#39;dark&#39;: 40, &#39;cloud&#39;: 41, &#39;that’s&#39;: 42, &#39;generated&#39;: 43, &#39;amassive&#39;: 44, &#39;mining&#39;: 45, &#39;vehicle&#39;: 46, &#39;kicking&#39;: 47, &#39;up&#39;: 48, &#39;glowingflecks&#39;: 49, &#39;push&#39;: 50, &#39;creating&#39;: 51, &#39;adreamlike&#39;: 52, &#39;orange&#39;: 53, &#39;flakes&#39;: 54, &#39;second&#39;: 55, &#39;airborne&#39;: 56, &#39;hauled&#39;: 57, &#39;powerful&#39;: 58, &#39;carryall&#39;: 59, &#39;on&#39;: 60, &#39;ground&#39;: 61, &#39;flanking&#39;: 62, &#39;leading&#39;: 63, &#39;industrial&#39;: 64, &#39;nightmare&#39;: 65, &#39;darkness&#39;: 66, &#39;ofthem&#39;: 67, &#39;holds&#39;: 68, &#39;massive&#39;: 69, &#39;flag&#39;: 70, &#39;bearing&#39;: 71, &#39;emblem&#39;: 72, &#39;now&#39;: 73, &#39;these&#39;: 74, &#39;are&#39;: 75, &#39;observed&#39;: 76, &#39;p&#39;: 77, &#39;o&#39;: 78, &#39;v&#39;: 79, &#39;athermal&#39;: 80, &#39;that&#39;: 81, &#39;this&#39;: 82, &#39;attached&#39;: 83, &#39;to&#39;: 84, &#39;astrange&#39;: 85, &#39;missle&#39;: 86, &#39;launcher&#39;: 87, &#39;multiple&#39;: 88, &#39;cloth&#39;: 89, &#39;shroudedweapons&#39;: 90, &#39;wielded&#39;: 91, &#39;small&#39;: 92, &#39;band&#39;: 93, &#39;blue&#39;: 94, &#39;eye&#39;: 95, &#39;fremenfighters&#39;: 96, &#39;taking&#39;: 97, &#39;cover&#39;: 98, &#39;behind&#39;: 99, &#39;sprawling&#39;: 100, &#39;black&#39;: 101, &#39;rock&#39;: 102, &#39;youngfemale&#39;: 103, &#39;fighter&#39;: 104, &#39;chani&#39;: 105, &#39;among&#39;: 106, &#39;them&#39;: 107, &#39;along&#39;: 108, &#39;with&#39;: 109}
+</code></pre></div>
+
+<h2 id="context-windows-for-embeddings">Context Windows for Embeddings<a class="headerlink" href="#context-windows-for-embeddings" title="Permanent link">&para;</a></h2>
+<p>One of the problems with representing our words with simple integers, is we don't have any meangingful <em>relationships</em> between our embeddings. For instance, if we have</p>
+<ul>
+<li><code>apple = 1</code></li>
+<li><code>pear = 2</code></li>
+<li><code>toaster = 3</code></li>
+</ul>
+<p>we might expect that apple and pear should have a <em>similar</em> representation in their enconding space, but by this simple tokenization process, it does not. Furthermore, the relationships between these representations are troublesome. For instance:</p>
+<p><code>1 + 2 = 3</code></p>
+<p>but</p>
+<p><code>'apple' + 'pear' != 'toaster'</code></p>
+<p>Troublesome indeed!</p>
+<p>To overcome this challenge, data scientists use vector representations of their words for all but the simplest of analyses. </p>
+<blockquote>
+<p>In practice, we typically use the fourth root of the corpus size as the length of the embedded vector, i.e. a corpus with 10,000 words would represent each word with a 10 element length vector. Before we get into the actual algorithms for determining the vector we need to build our training set that will be used by the algorithm.</p>
+</blockquote>
+<h1 id="text-classification">Text Classification<a class="headerlink" href="#text-classification" title="Permanent link">&para;</a></h1>
+<h2 id="bi-directional-lstms">Bi-Directional LSTMs<a class="headerlink" href="#bi-directional-lstms" title="Permanent link">&para;</a></h2>
+<div class="codehilite"><pre><span></span><code>
+</code></pre></div>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.361d90f1.min.js"}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.289a2a4b.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      
+    
+  </body>
+</html>
